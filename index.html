@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Calculator Tool</title>
+    <script
+      defer
+      src="https://unpkg.com/js-big-decimal@1.3.1/dist/web/js-big-decimal.min.js"
+    ></script>
+    <script defer src="script.js"></script>
+  </head>
+  <body>
+    <div class="background">
+      <div class="container">
+        <header><h1>Calculator</h1></header>
+
+        <div class="tool__container">
+          <nav class="nav">
+            <div class="nav__drop"></div>
+            <h2>Standard</h2>
+          </nav>
+          <aside class="history">
+            <div class="history_title"><h3>History</h3></div>
+            <div class="history_list__container">
+              <ul class="history_list">
+                <!--
+                <il class="history_item"
+                  ><div class="history__item--expression">5 + 5 =</div>
+                  <div class="history__item--result">10</div></il
+                >
+                -->
+              </ul>
+            </div>
+            <div class="history_bottom">
+              <button class="history_btn--clear">
+                <img
+                  src="imgs/trash-can-50-gray.svg"
+                  alt="A trash Can icon, click to clear history"
+                  class="trash__svg svg__gray"
+                />
+                <img
+                  src="imgs/trash-can-50-white.svg"
+                  alt="A trash Can icon, click to clear history"
+                  class="trash__svg svg__white hidden"
+                />
+              </button>
+            </div>
+          </aside>
+
+          <main class="standard_container">
+            <div class="calc_display_container">
+              <div class="calc_display_expression"></div>
+              <div class="calc_display_result">0</div>
+            </div>
+            <div class="standard_pad">
+              <button class="standard_btn" value="%">&percnt;</button>
+              <button class="standard_btn" value="clear entry">CE</button>
+              <button class="standard_btn" value="clear">C</button>
+              <button class="standard_btn" value="back">Back</button>
+              <button class="standard_btn" value="inverse">
+                x<span class="standard_expo">-1</span>
+              </button>
+              <button class="standard_btn" value="sqr">
+                x<span class="standard_expo">2</span>
+              </button>
+              <button class="standard_btn" value="sqrt">&Sqrt;</button>
+              <button class="standard_btn" value="/">&divide;</button>
+              <button class="standard_btn" value="7">7</button>
+              <button class="standard_btn" value="8">8</button>
+              <button class="standard_btn" value="9">9</button>
+              <button class="standard_btn" value="*">&times;</button>
+              <button class="standard_btn" value="4">4</button>
+              <button class="standard_btn" value="5">5</button>
+              <button class="standard_btn" value="6">6</button>
+              <button class="standard_btn" value="-">&minus;</button>
+              <button class="standard_btn" value="1">1</button>
+              <button class="standard_btn" value="2">2</button>
+              <button class="standard_btn" value="3">3</button>
+              <button class="standard_btn" value="+">&plus;</button>
+              <button class="standard_btn" value="+/-">&plusmn;</button>
+              <button class="standard_btn" value="0">0</button>
+              <button class="standard_btn" value=".">.</button>
+              <button class="standard_btn" value="=">&equals;</button>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
