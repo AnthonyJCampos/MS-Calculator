@@ -27,6 +27,13 @@ header {
   border-radius: var(--border-radius-primary);
 }
 
+.background {
+  margin-top: 50px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 /* Main Container */
 .container {
   height: 725px;
