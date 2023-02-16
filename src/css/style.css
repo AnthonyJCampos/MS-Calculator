@@ -203,6 +203,57 @@ header {
   overflow: hidden;
 }
 
+/* Basic Button Styling */
+
+.btn {
+  height: 75px;
+  width: auto;
+  font-size: 20px;
+  font-weight: bold;
+  color: inherit;
+  background-color: var(--color-primary);
+  border: none;
+  border-radius: 5px;
+  box-shadow: var(--shadow-primary);
+}
+
+/* Button Container Styling */
+
+.btn_container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  grid-gap: 3px;
+  margin-top: 3px;
+}
+
+/* Command Pad Styling */
+
+.cmd_pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 3px;
+}
+
+/* Number Pad Styling */
+
+.number_pad {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(4, 1fr);
+  grid-gap: 3px;
+}
+
+/* .number:nth-child(10) {
+  grid-column: 2 / 3;
+  grid-row: 4 / 5;
+}
+
+.number:last-child {
+  grid-column: 3 / 4;
+  grid-row: 4 / 5;
+} */
+
 /* Standard Button Pad Container */
 .standard_pad {
   margin-top: 4px;
