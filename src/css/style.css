@@ -221,21 +221,26 @@ header {
 
 .btn_container {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: repeat(6, 1fr);
   grid-gap: 3px;
   margin-top: 3px;
 }
 
 /* Command Pad Styling */
 
-.cmd_pad {
+/* .cmd_pad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   grid-gap: 3px;
-}
+} */
 
 /* Number Pad Styling */
+
+.number_pad_standard {
+  grid-column: 1 / -2;
+  grid-row: 3 / -1;
+}
 
 .number_pad {
   display: grid;

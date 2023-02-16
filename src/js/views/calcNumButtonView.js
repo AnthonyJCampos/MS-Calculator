@@ -1,9 +1,5 @@
-import NumberPadView from './numberPadView.js';
-
-class CalculatorNumberPadView extends NumberPadView {
-  _parentEl = document.querySelector('.number_pad');
-
-  _generateMarkup() {
+class CalcNumButtonView {
+  _generateButtons() {
     return `
       <button class="btn number" value="7">7</button>
       <button class="btn number" value="8">8</button>
@@ -19,6 +15,6 @@ class CalculatorNumberPadView extends NumberPadView {
       <button class="btn number" value=".">.</button>
     `;
   } // end generateMarkup
-} // end of CalculatorNumberPadView
+} // end of CalcNumButtonView
 
-export default new CalculatorNumberPadView();
+export default new CalcNumButtonView();
