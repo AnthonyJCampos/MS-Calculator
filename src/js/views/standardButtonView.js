@@ -12,8 +12,6 @@ class StandardButtonView extends ButtonView {
       ${CalcNumButtonView._generateButtons()}
     </div>
     `;
-
-    // return CalcNumButtonView._generateButtons();
   } // end generateMarkup
 } // end StandardButtonView
 

@@ -1,4 +1,4 @@
-export default class ButtonView {
+export default class DisplayView {
   render() {
     const markup = this._generateMarkup();
     console.log('Button View Render');
