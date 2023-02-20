@@ -1,7 +1,7 @@
-export default class DisplayView {
+export default class ToolView {
   render() {
     const markup = this._generateMarkup();
-    console.log('Display View Render');
+    console.log('Tool View Render');
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   } // end render
@@ -9,4 +9,4 @@ export default class DisplayView {
   _clear() {
     this._parentEl.innerHTML = '';
   } // end clear
-} // end ButtonView
+} // end ToolView
