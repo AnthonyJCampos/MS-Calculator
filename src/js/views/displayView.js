@@ -1,7 +1,6 @@
 export default class DisplayView {
   render() {
     const markup = this._generateMarkup();
-    console.log('Display View Render');
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   } // end render
