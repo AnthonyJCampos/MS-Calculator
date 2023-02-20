@@ -1,3 +1,8 @@
-import StandardButtonView from './views/standardButtonView.js';
+// import StandardButtonView from './views/standardButtonView.js';
 
-StandardButtonView.render();
+// StandardButtonView.render();
+
+import StandardToolView from './views/standardToolView.js';
+
+StandardToolView.render();
+StandardToolView.generateComponents();

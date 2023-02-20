@@ -1,4 +1,4 @@
-import DisplayView from './displayView';
+import DisplayView from './displayView.js';
 
 class CalcDisplayView extends DisplayView {
   _parentEl = document.querySelector('.display_container');
@@ -8,7 +8,7 @@ class CalcDisplayView extends DisplayView {
   _generateMarkup() {
     return `
       <div class="calc_display_expression"></div>
-      <div class="calc_display_result">0</div>  
+      <div class="calc_display_result">0</div>
     `;
   } // end generateMarkup
 
@@ -18,4 +18,4 @@ class CalcDisplayView extends DisplayView {
   }
 } // end CalcDisplayView
 
-export default CalcDisplayView();
+export default new CalcDisplayView();
