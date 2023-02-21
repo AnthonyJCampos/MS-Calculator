@@ -1,5 +1,5 @@
 export default class View {
-  render() {
+  render(layout) {
     const markup = this._generateMarkup();
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
