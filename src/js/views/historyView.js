@@ -1,7 +1,8 @@
 import View from './View.js';
 
 class HistoryView extends View {
-  _parentEl = document.querySelector('.history');
+  // _parentEl = document.querySelector('.history');
+  _parentEl;
 
   _generateMarkup() {
     return `

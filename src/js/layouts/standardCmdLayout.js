@@ -1,4 +1,4 @@
-class CalculatorNumberPadView {
+class StandardCmdLayout {
   _generateButtons() {
     return `
     <button class="btn cmd" value="%">&percnt;</button>
@@ -19,6 +19,6 @@ class CalculatorNumberPadView {
     <button class="btn cmd" value="=">&equals;</button>
     `;
   } // end generateMarkup
-} // end of CalculatorNumberPadView
+} // end of StandardCmdLayout
 
-export default new CalculatorNumberPadView();
+export default new StandardCmdLayout();

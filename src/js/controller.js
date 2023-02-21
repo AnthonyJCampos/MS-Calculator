@@ -1,8 +1,15 @@
-// import StandardButtonView from './views/standardButtonView.js';
+import ButtonView from './views/buttonView.js';
+import standardToolView from './views/standardToolView.js';
 
-// StandardButtonView.render();
+const controlBtnPress = function () {
+  console.log();
+}; // end controlBtnPress
 
-import StandardToolView from './views/standardToolView.js';
+const initCalc = function () {
+  standardToolView.render();
+  standardToolView.generateComponents();
+  const buttonView = new ButtonView();
+  buttonView.addHandlerBtnPress(controlBtnPress);
+}; // end initCalc
 
-StandardToolView.render();
-StandardToolView.generateComponents();
+initCalc();

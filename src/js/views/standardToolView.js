@@ -1,7 +1,7 @@
 import View from './View.js';
 import HistoryView from './historyView.js';
 import CalcDisplayView from './calcDisplayView.js';
-import StandardButtonView from './standardButtonView.js';
+import StandardButtonView from '../layouts/standardButtonLayout.js';
 
 class StandardToolView extends View {
   _parentEl = document.querySelector('.tool_container');
@@ -24,8 +24,11 @@ class StandardToolView extends View {
   } // end generateMarkup
 
   generateComponents() {
+    HistoryView.setParentEl('history');
     HistoryView.render();
+    CalcDisplayView.setParentEl('display_container');
     CalcDisplayView.render();
+    StandardButtonView.setParentEl('btn_container');
     StandardButtonView.render();
   } // end generateCompenets
 } // end StandardToolView

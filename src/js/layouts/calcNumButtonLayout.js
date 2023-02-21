@@ -1,4 +1,4 @@
-class CalcNumButtonView {
+class CalcNumButtonLayout {
   _generateButtons() {
     return `
       <button class="btn number" value="7">7</button>
@@ -15,6 +15,6 @@ class CalcNumButtonView {
       <button class="btn number" value=".">.</button>
     `;
   } // end generateMarkup
-} // end of CalcNumButtonView
+} // end of CalcNumButtonLayout
 
-export default new CalcNumButtonView();
+export default new CalcNumButtonLayout();

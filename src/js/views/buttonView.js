@@ -1,11 +1,21 @@
-export default class ButtonView {
-  render() {
-    const markup = this._generateMarkup();
-    this._clear();
-    this._parentEl.insertAdjacentHTML('afterbegin', markup);
-  } // end render
+import View from './View.js';
 
-  _clear() {
-    this._parentEl.innerHTML = '';
-  } // end clear
+export default class ButtonView extends View {
+  // _parentEl = document.querySelector('.btn_container');
+  _parentEl;
+
+  addHandlerBtnPress(handler) {
+    this._parentEl.addEventListner('click', function (event) {
+      const btn = event.target.closest('.btn');
+      if (!btn) {
+        return;
+      } // end if
+      handler();
+    }); // end addEventListner
+  } // end addHandlerBtnPress
+
+  _generateMarkup(layout) {
+    return `
+    `;
+  } // end generateMarkup
 } // end ButtonView

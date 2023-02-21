@@ -1,7 +1,8 @@
 import DisplayView from './displayView.js';
 
 class CalcDisplayView extends DisplayView {
-  _parentEl = document.querySelector('.display_container');
+  // _parentEl = document.querySelector('.display_container');
+  _parentEl;
   _resultEl;
   _expressionEl;
 

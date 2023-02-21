@@ -1,11 +1,15 @@
 export default class View {
   render() {
     const markup = this._generateMarkup();
+    this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
   } // end render
 
+  setParentEl(classString) {
+    this._parentEl = document.querySelector(`.${classString}`);
+  }
+
   _clear() {
-    console.log('clear called');
     this._parentEl.innerHTML = '';
   } // end clear
 } // end View
