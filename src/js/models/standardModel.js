@@ -1,5 +1,3 @@
-//import { getPrettyValue } from '../../../node_modules/js-big-decimal/dist/node/js-big-decimal.js';
-import * as bigDecimal from '../../../node_modules/js-big-decimal/dist/node/js-big-decimal.js';
 /** STATE FOR CONTROLLER */
 
 export const state = {
@@ -111,13 +109,13 @@ const _validateOprend = function (val, inputVal) {
 
 const _generateResultString = function (result) {
   if (isFinite(result)) {
-    state.result = getPrettyValue(result);
+    state.result = bigDecimal.getPrettyValue(result);
   }
 }; // end _generateResultString
 
 const _generateInputString = function (input) {
   if (isFinite(input)) {
-    state.input = getPrettyValue(input);
+    state.input = bigDecimal.getPrettyValue(input);
   } else {
     state.input = input;
   }
