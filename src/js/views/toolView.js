@@ -1,12 +1,24 @@
-export default class ToolView {
-  render() {
-    const markup = this._generateMarkup();
-    console.log('Tool View Render');
-    this._clear();
-    this._parentEl.insertAdjacentHTML('afterbegin', markup);
-  } // end render
+import { LAYOUT_MAP } from '../config.js';
+import View from './View.js';
 
-  _clear() {
-    this._parentEl.innerHTML = '';
-  } // end clear
+class ToolView extends View {
+  _parentEl = document.querySelector('.tool_container');
+  _toolType = 'Standard';
+
+  setTool(toolType = 'Standard') {
+    this._toolType = toolType;
+  } // end setTool
+
+  _generateMarkup() {
+    console.log(this._toolType);
+    return `
+      <nav class="nav">
+        <div class="nav__drop"></div>
+        <h2>${this._toolType}</h2>
+      </nav>
+      ${LAYOUT_MAP.get(this._toolType)}
+      `;
+  } // end generateMarkup
 } // end ToolView
+
+export default new ToolView();

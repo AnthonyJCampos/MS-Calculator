@@ -13,9 +13,4 @@ export default class ButtonView extends View {
       handler();
     }); // end addEventListner
   } // end addHandlerBtnPress
-
-  _generateMarkup(layout) {
-    return `
-    `;
-  } // end generateMarkup
 } // end ButtonView
