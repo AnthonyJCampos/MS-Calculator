@@ -7,6 +7,8 @@ import * as standardModel from './models/standardModel.js';
 
 const controlBtnPress = function (btnVal) {
   console.log(btnVal);
+  standardModel.inputDelegatory(btnVal);
+  console.log(standardModel.state);
 }; // end controlBtnPress
 
 const initCalc = function () {

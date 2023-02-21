@@ -18,5 +18,8 @@
   "homepage": "https://github.com/AnthonyJCampos/MS-Calculator#readme",
   "devDependencies": {
     "parcel": "^2.8.2"
+  },
+  "dependencies": {
+    "js-big-decimal": "^1.4.1"
   }
 }
