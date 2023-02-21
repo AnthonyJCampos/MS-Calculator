@@ -3,8 +3,10 @@ import buttonView from './views/buttonView.js';
 import historyView from './views/historyView.js';
 import calcDisplayView from './views/calcDisplayView.js';
 
-const controlBtnPress = function (btnValue) {
-  console.log(btnValue);
+import * as standardModel from './models/standardModel.js';
+
+const controlBtnPress = function (btnVal) {
+  console.log(btnVal);
 }; // end controlBtnPress
 
 const initCalc = function () {

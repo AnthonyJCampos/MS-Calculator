@@ -234,6 +234,10 @@ header {
   font-size: 200%;
 }
 
+.btn:active {
+  background-color: var(--color-primary);
+  color: var(--color-font-primary);
+}
 /* Button Container Styling */
 
 .btn_container {
