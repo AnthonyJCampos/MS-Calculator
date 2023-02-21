@@ -1,4 +1,4 @@
-import { LAYOUT_MAP } from '../config.js';
+import { LAYOUT_MAP, BtnContainer } from '../config.js';
 import View from './View.js';
 
 class ToolView extends View {
@@ -19,6 +19,13 @@ class ToolView extends View {
       ${LAYOUT_MAP.get(this._toolType)}
       `;
   } // end generateMarkup
+
+  initComponents(components) {
+    for (const component of Object.values(components)) {
+      component?.init();
+      console.log(component);
+    } // end for
+  }
 } // end ToolView
 
 export default new ToolView();

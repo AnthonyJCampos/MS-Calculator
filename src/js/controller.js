@@ -1,12 +1,23 @@
-import ToolView from './views/toolView.js';
+import toolView from './views/toolView.js';
+import buttonView from './views/buttonView.js';
+import historyView from './views/historyView.js';
+import calcDisplayView from './views/calcDisplayView.js';
 
-ToolView.render();
-// const controlBtnPress = function () {
-//   console.log();
-// }; // end controlBtnPress
+const controlBtnPress = function (btnValue) {
+  console.log(btnValue);
+}; // end controlBtnPress
 
-// const initCalc = function () {
+const initCalc = function () {
+  toolView.render();
+  const Components = {
+    calcDisplay: calcDisplayView,
+    btnComp: buttonView,
+    historyComp: historyView,
+  };
+  toolView.initComponents(Components);
+  buttonView.addHandlerBtnPress(controlBtnPress);
+}; // end initCalc
 
-// }; // end initCalc
+initCalc();
 
-// initCalc();
+//DisplayView.render();

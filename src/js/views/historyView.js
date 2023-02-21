@@ -4,6 +4,10 @@ class HistoryView extends View {
   // _parentEl = document.querySelector('.history');
   _parentEl;
 
+  init() {
+    this._parentEl = document.querySelector('.history');
+  } // end init
+
   _generateMarkup() {
     return `
       <div class="history_title"><h3>History</h3></div>
