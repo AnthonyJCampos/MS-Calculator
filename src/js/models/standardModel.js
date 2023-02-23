@@ -1,5 +1,7 @@
 /** STATE FOR CONTROLLER */
 
+'use strict';
+
 export const state = {
   result: '',
   expression: '',
@@ -163,7 +165,235 @@ const _generateExpressionString = function () {
 
 /** CALCULATION METHODS */
 
+const _computeSpecialOp = function () {
+  let result = data.curExpression[pos];
+  stack.forEach(action => {
+    if (action === 'inverse') {
+      result = Math.pow(result, -1);
+    }
+    if (action === 'sqrt') {
+      result = Math.sqrt(result);
+    }
+    if (action === 'sqr') {
+      result = Math.pow(result, 2);
+    }
+  }); // end forEach
+  return result;
+}; // end _computeSpecialOp
+
+const _determineExpression = function () {
+  let [oprendL, operator, oprendR] = data.curExpression;
+  if (!_leftStackIsEmpty()) {
+    oprendL = _computeSpecialOp(data.leftOprendStack, 0);
+  }
+
+  if (!_rightStackIsEmpty()) {
+    oprendR = _computeSpecialOp(data.rightOprendStack, 2);
+  }
+
+  return [oprendL, operator, oprendR];
+}; // end  _determineExpression
+
+const _performSpecialOp = function (inputVal) {
+  let result;
+  if (data.curExpPos === 0) {
+    data.leftOprendStack.push(inputVal);
+    result = _computeSpecialOp(data.leftOprendStack, 0);
+  } // end if
+
+  if (data.curExpPos === 2) {
+    data.rightOprendStack.push(inputVal);
+    result = _computeSpecialOp(data.rightOprendStack, 2);
+  } // end if
+
+  return result;
+}; // end _performSpecialOp
+
+const _percent = function () {
+  // if position 0 set to zero
+  const pos = _getPositionInExpression();
+  if (pos === 0) {
+    _setCurrentPosValue('0');
+    return ['0', _getCurrentPosValue()];
+  }
+
+  // if POS 1, copy left oprend to right oprend
+  if (pos === 1) {
+    _incrementPosition();
+    _copyLeftOprendToRight();
+  }
+  // account for special operations
+  const [leftOp, , rightOp] = _determineExpression();
+
+  // (POS1 * POS2 / 100), Then set POS2 to result
+  const result = bigDecimal.divide(
+    bigDecimal.multiply(leftOp, rightOp),
+    '100',
+    2
+  );
+  _setCurrentPosValue(result);
+  // if right position has special operators, clear
+  data.rightOprendStack = [];
+
+  return [result, _generateExpressionString()];
+}; // end _percent
+
 /** COMMAND METHODS */
+
+const _negate = function () {
+  // if current position is 1, do nothing
+  if (data.curExpPos === 1) {
+    return [];
+  }
+
+  // data.curExpression[data.curExpPos] = bigDecimal.negate(
+  //   data.curExpression[data.curExpPos]
+  // );
+
+  _setCurrentPosValue(bigDecimal.negate(_getCurrentPosValue()));
+
+  //this._updateDisplayInput(this.#curExpression[this.#curExpPos]);
+  return [_getCurrentPosValue()];
+}; // end _negate
+
+const _back = function () {
+  // if current position is 1 do nothing
+  if (data.curExpPos === 1) {
+    return [];
+  }
+
+  // if full expression solved
+  // e.i the display contains a '=' sign
+  // clear special stacks, and display
+  if (_getSolvedState()) {
+    _updateSolvedState(false);
+    data.leftOprendStack = [];
+    data.rightOprendStack = [];
+    //this._updateDisplayExpress("");
+    return [, ' '];
+  }
+
+  // this is for special operations
+  if (data.calcResult) {
+    return [];
+  }
+
+  // get current position value and remove a single char
+  // let curVal = this.#curExpression[this.#curExpPos];
+  let curVal = _getCurrentPosValue();
+  // if there is only a single char, turn it to 0
+  if (curVal.length === 1) {
+    curVal = '0';
+  } else {
+    // else remove last char
+    curVal = curVal.slice(0, -1);
+  }
+
+  // update the current expression
+  // this.#curExpression[this.#curExpPos] = curVal;
+  _setCurrentPosValue(curVal);
+  //updated display Input
+  //this._updateDisplayInput(curVal);
+  return [_getCurrentPosValue()];
+}; // end _back
+
+const _clear = function () {
+  _resetData();
+  // return input and expression
+  return [_getCurrentPosValue(), ' '];
+}; // end _clear
+
+const _clearEntry = function () {
+  // if the current state is solved, clear all
+  if (_getSolvedState()) {
+    //this._clear();
+    return _clear();
+  }
+  // don't clear operators
+  if (data.curExpPos !== 1) {
+    // this.#curExpression[this.#curExpPos] = "0";
+    _setCurrentPosValue('0');
+  }
+
+  //this._updateDisplayInput("0");
+  return [_getCurrentPosValue()];
+}; // end _clearEntry
+
+const _calcInput = function () {
+  const expression = data.curExpression;
+  const opMap = new Map([
+    ['+', bigDecimal.add],
+    ['-', bigDecimal.subtract],
+    ['*', bigDecimal.multiply],
+    ['/', bigDecimal.divide],
+  ]);
+
+  let result;
+  // its a special event when the user tries to compute already solved special operator
+  let specialEvent = false;
+  // index 1 should always be the operator
+  if (expression.length === 1) {
+    // if there is only a single oprend, then return itself
+
+    if (_leftStackIsEmpty()) {
+      result = expression[0];
+    } else {
+      result = _computeSpecialOp(data.leftOprendStack, 0);
+      // we set it to true, as this special case has occured
+      specialEvent = true;
+    }
+  } // end if
+
+  if (expression.length === 2) {
+    // if there is only one oprend then make this oprend the 2nd one as well
+    //expression.push(expression[0]);
+    _copyLeftOprendToRight();
+  }
+
+  let error = false;
+  if (expression.length === 3) {
+    const [oprendL, operator, oprendR] = _determineExpression();
+
+    if (operator === '/' && oprendR === '0') {
+      // display error message
+      error = true;
+      result = 'Cannot divide by zero';
+    }
+
+    if (!error) {
+      // compute results
+      result = opMap.get(operator)(oprendL, oprendR);
+    }
+  }
+
+  let output = ' ';
+  if (!error) {
+    output = _generateExpressionString() + ' =';
+    // this.#calcResult = result;
+    _setResult(result);
+    // after getting results store in history
+    // this._addToHistory();
+    _updateSolvedState(true);
+  } else {
+    _updateSolvedState(false);
+    _resetData();
+  } // end if
+
+  // update result display field
+  //this._updateDisplayInput(result);
+  //this._updateDisplayExpress(output);
+
+  // take care of special event
+  if (specialEvent) {
+    // set left oprend to result
+    expression[0] = result;
+    // and clear any special operations
+    data.leftOprendStack = [];
+  } // end if
+
+  // update result display field
+  return [result, output];
+}; // end _calcInput
 
 const _commandDelegatory = function (inputVal) {
   const cmdMap = new Map([
@@ -174,8 +404,10 @@ const _commandDelegatory = function (inputVal) {
     ['+/-', _negate],
     ['%', _percent],
   ]);
-  const cmd = cmdMap.get(inputVal);
 
+  const cmd = cmdMap.get(inputVal);
+  /** TEST CODE */
+  console.log(cmd);
   if (!cmd) {
     return;
   } // end of guard
@@ -216,7 +448,7 @@ const _numberDelegatory = function (inputVal) {
 
   // check if currently at operator
   if (_getPositionInExpression() === 1) {
-    _incremenetPosition();
+    _incrementPosition();
     _setCurrentPosValue('0');
   }
 
@@ -239,10 +471,9 @@ const _hasOperator = function (operators, inputVal) {
 const _processOprend = function (inputVal) {
   // this.#curExpression[++this.#curExpPos] = inputVal;
   _incrementPosition();
-  _getCurrentPosValue(inputVal);
+  _setCurrentPosValue(inputVal);
   // update current expression display
-  // const output = this._output();
-  // this._updateDisplayExpress(output);
+  state.expression = _generateExpressionString();
 }; // end _processOprend
 
 const _operatorDelegatory = function (inputVal) {
@@ -265,9 +496,42 @@ const _operatorDelegatory = function (inputVal) {
   ) {
     _processOprend(inputVal);
   }
-
-  return undefined;
 }; // end operatorDelegatory
+
+const _specialOpsDelegatory = function (inputVal) {
+  // if currently positioned on a operator,
+  // take first left oprend and use it
+  if (data.curExpPos === 1) {
+    if (!_leftStackIsEmpty()) {
+      data.curExpression.push(data.calcResult);
+    } else {
+      data.curExpression.push(data.curExpression[0]);
+    }
+    // this.#curExpPos++;
+    _incrementPosition();
+  }
+
+  let output = ' ';
+  let result;
+  if (
+    inputVal === 'inverse' &&
+    // this.#curExpression[this.#curExpPos] === "0"
+    _getCurrentPosValue() === '0'
+  ) {
+    _resetData();
+    output = '1/(0)';
+    result = 'Cannot divide by zero';
+  } else {
+    result = _performSpecialOp(inputVal);
+    output = _generateExpressionString();
+    // this.#calcResult = result;
+    _setResult(result);
+  }
+  // this._updateDisplayInput(result);
+  // this._updateDisplayExpress(output);
+  state.result = result;
+  state.expression = output;
+};
 
 export const inputDelegatory = function (inputVal) {
   // check if button pressed is a number or decimal
@@ -275,41 +539,16 @@ export const inputDelegatory = function (inputVal) {
     _numberDelegatory(inputVal);
   } // end number check if
 
-  // if (OPERATORS.includes(inputVal)) {
-  // _operatorDelegatory(inputVal);
-  // } // end of operator check
+  if (OPERATORS.includes(inputVal)) {
+    _operatorDelegatory(inputVal);
+  } // end of operator check
 
-  // const specialOps = ["sqrt", "sqr", "inverse"];
-  // if (specialOps.includes(inputVal)) {
-  //   // if currently positioned on a operator,
-  //   // take first left oprend and use it
-  //   if (this.#curExpPos === 1) {
-  //     if (!this._leftStackIsEmpty()) {
-  //       this.#curExpression.push(this.#calcResult);
-  //     } else {
-  //       this.#curExpression.push(this.#curExpression[0]);
-  //     }
-  //     this.#curExpPos++;
-  //   }
+  const specialOps = ['sqrt', 'sqr', 'inverse'];
+  if (specialOps.includes(inputVal)) {
+    _specialOpsDelegatory(inputVal);
+  } // end of special operation check
 
-  //   let output = " ";
-  //   let result;
-  //   if (
-  //     inputVal === "inverse" &&
-  //     this.#curExpression[this.#curExpPos] === "0"
-  //   ) {
-  //     this._resetData();
-  //     output = "1/(0)";
-  //     result = "Cannot divide by zero";
-  //   } else {
-  //     result = this._performSpecialOp(inputVal);
-  //     output = this._output();
-  //     this.#calcResult = result;
-  //   }
-  //   this._updateDisplayInput(result);
-  //   this._updateDisplayExpress(output);
-  // }
-
-  // // we can just run the commmand at the end for now
+  // we can just run the commmand at the end for now
   // this._commandMap(inputVal);
+  _commandDelegatory(inputVal);
 }; // end inputDelegatory
