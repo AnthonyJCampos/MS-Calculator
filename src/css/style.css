@@ -228,16 +228,13 @@ header {
   box-shadow: var(--shadow-primary);
 }
 
-.btn:hover {
+.btn:hover,
+.btn:active {
   background-color: var(--color-tertiary);
   color: var(--color-font-secondary);
   font-size: 200%;
 }
 
-.btn:active {
-  background-color: var(--color-primary);
-  color: var(--color-font-primary);
-}
 /* Button Container Styling */
 
 .btn_container {

@@ -4,12 +4,17 @@ class CalcDisplayView {
   _resultEl;
   _expressionEl;
 
-  update(data) {} // end update
+  update(data) {
+    const { result, expression } = data;
+
+    this._resultEl.textContent = result;
+    this._expressionEl.textContent = expression;
+  } // end update
 
   init() {
     this._parentEl = document.querySelector('.display_container');
-    this._resultEl = document.querySelector('.calc_display_expression');
-    this._expressionEl = document.querySelector('.calc_display_result');
+    this._expressionEl = document.querySelector('.calc_display_expression');
+    this._resultEl = document.querySelector('.calc_display_result');
   } // end init
 } // end CalcDisplayView
 

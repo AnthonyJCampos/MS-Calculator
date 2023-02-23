@@ -9,6 +9,7 @@ const controlBtnPress = function (btnVal) {
   console.log(btnVal);
   standardModel.inputDelegatory(btnVal);
   console.log(standardModel.state);
+  calcDisplayView.update(standardModel.state);
 }; // end controlBtnPress
 
 const initCalc = function () {
