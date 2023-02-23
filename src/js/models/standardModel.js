@@ -405,19 +405,21 @@ const _commandDelegatory = function (inputVal) {
     ['%', _percent],
   ]);
 
+  /* TEST CODE */
+  // console.log(`INPUT: ${inputVal}`);
   const cmd = cmdMap.get(inputVal);
-  /** TEST CODE */
-  console.log(cmd);
   if (!cmd) {
     return;
   } // end of guard
 
-  // const [displayInput, displayExpression] = cmd();
+  const [displayInput, displayExpression] = cmd();
 
   /** TEST CODE */
-  // console.log(displayInput, displayExpression);
+  console.log(displayInput, displayExpression);
   // displayInput && this._updateDisplayInput(displayInput);
+  displayInput && (state.result = displayInput);
   // displayExpression && this._updateDisplayExpress(displayExpression);
+  displayExpression && (state.expression = displayExpression);
 }; // end commandDelegatory
 
 /** Input Handlers METHODS */
