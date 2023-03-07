@@ -8,7 +8,7 @@ export const state = {
 }; // end state
 
 /** DATA FOR COMPUTATION */
-const data = {
+export const data = {
   curExpression: ['0'],
   curExpPos: 0,
   result: undefined,
@@ -22,8 +22,9 @@ const data = {
 
 const OPERATORS = ['/', '*', '-', '+'];
 
-/** HELPER METHODS */
+/** DATA METHODS  */
 
+////// RESULTS METHODS
 const _setResult = function (val) {
   data.result = val;
 }; // end _setResult
@@ -40,6 +41,8 @@ const _resetResult = function () {
   data.result = undefined;
 }; // end _resetResult
 
+////// SOLVED STATE METHODS
+
 const _getSolvedState = function () {
   return data.solvedFlag;
 }; // end _getSolvedState
@@ -47,6 +50,26 @@ const _getSolvedState = function () {
 const _updateSolvedState = function (bool) {
   data.solvedFlag = bool;
 }; // end _updateSolvedState
+
+////// STACK METHODS
+
+const _leftStackIsEmpty = function () {
+  return data.leftOprendStack.length === 0;
+}; // end _leftStackIsEmpty
+
+const _rightStackIsEmpty = function () {
+  return data.rightOprendStack.length === 0;
+}; // end _rightStackIsEmpty
+
+const _resetLeftStack = function () {
+  data.leftOprendStack = [];
+}; // end _resetLeftStack
+
+const _resetRightStack = function () {
+  data._resetRightStack = [];
+}; // end _resetRightStack
+
+////// EXPRESSION METHODS
 
 const _setCurrentPosition = function (pos) {
   data.curExpPos = pos;
@@ -56,9 +79,9 @@ const _getPositionInExpression = function () {
   return data.curExpPos;
 }; // end _getPositionInExpression
 
-const _incrementPosition = function () {
-  data.curExpPos++;
-}; // end _incrementPosition
+const _getValueAt = function (pos) {
+  return data.expression[pos];
+}; // end _getValueAt
 
 const _setCurrentPosValue = function (val) {
   data.curExpression[_getPositionInExpression()] = val;
@@ -70,27 +93,27 @@ const _getCurrentPosValue = function () {
 
 const _resetExpression = function () {
   data.curExpression = ['0'];
-  data.leftOprendStack = [];
-  data.rightOprendStack = [];
-  data.setCurrentPosition(0);
+  // data.leftOprendStack = [];
+  // data.rightOprendStack = [];
+  _resetLeftStack();
+  _resetRightStack();
+  _setCurrentPosition(0);
 }; // end _resetExpression
 
-const _leftStackIsEmpty = function () {
-  return data.leftOprendStack.length === 0;
-}; // end _leftStackIsEmpty
+////// POSITION METHODS
 
-const _rightStackIsEmpty = function () {
-  return data.rightOprendStack.length === 0;
-}; // end _rightStackIsEmpty
+const _incrementPosition = function () {
+  data.curExpPos++;
+}; // end _incrementPosition
 
 const _resetData = function () {
-  data.curExpPos = 0;
-  data.curExpression = ['0'];
-  data.leftOprendStack = [];
-  data.rightOprendStack = [];
-  data.result = undefined;
-  data.solvedFlag = false;
+  _setCurrentPosition(0);
+  _resetExpression();
+  _resetResult();
+  _updateSolvedState(false);
 }; // end _resetData
+
+/** HELPER METHODS */
 
 const _validateOprend = function (val, inputVal) {
   if (val === '0' && inputVal !== '.') {
@@ -165,8 +188,8 @@ const _generateExpressionString = function () {
 
 /** CALCULATION METHODS */
 
-const _computeSpecialOp = function () {
-  let result = data.curExpression[pos];
+const _computeSpecialOp = function (stack, pos) {
+  let result = data.expression[pos];
   stack.forEach(action => {
     if (action === 'inverse') {
       result = Math.pow(result, -1);
@@ -233,7 +256,8 @@ const _percent = function () {
   );
   _setCurrentPosValue(result);
   // if right position has special operators, clear
-  data.rightOprendStack = [];
+  _resetRightStack();
+  // data.rightOprendStack = [];
 
   return [result, _generateExpressionString()];
 }; // end _percent
@@ -274,7 +298,7 @@ const _back = function () {
   }
 
   // this is for special operations
-  if (data.calcResult) {
+  if (data.result) {
     return [];
   }
 
@@ -484,10 +508,10 @@ const _operatorDelegatory = function (inputVal) {
   // or if operator is 4th input process expression
   if (_getPositionInExpression() === 2) {
     // if operator is 4th input process expression
-    !data.calcResult && _commandDelegatory('=');
+    !data.result && _commandDelegatory('=');
     // save the result as the first value, and add the operator to the expression
     _resetExpression();
-    _setCurrentPosValue(data.calcResult);
+    _setCurrentPosValue(data.result);
     _processOprend(inputVal);
   }
   // if operator is 1st or 2nd input and is not already in expression
@@ -505,7 +529,7 @@ const _specialOpsDelegatory = function (inputVal) {
   // take first left oprend and use it
   if (data.curExpPos === 1) {
     if (!_leftStackIsEmpty()) {
-      data.curExpression.push(data.calcResult);
+      data.curExpression.push(data.result);
     } else {
       data.curExpression.push(data.curExpression[0]);
     }
