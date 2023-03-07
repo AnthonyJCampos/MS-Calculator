@@ -274,7 +274,6 @@ const _percent = function () {
   _setCurrentPosValue(result);
   // if right position has special operators, clear
   _resetRightStack();
-  // data.rightOprendStack = [];
 
   return [result, _generateExpressionString()];
 }; // end _percent
@@ -283,7 +282,7 @@ const _percent = function () {
 
 const _negate = function () {
   // if current position is 1, do nothing
-  if (data.curExpPos === 1) {
+  if (_getPositionInExpression() === 1) {
     return [];
   }
 
@@ -336,27 +335,21 @@ const _clear = function () {
 const _clearEntry = function () {
   // if the current state is solved, clear all
   if (_getSolvedState()) {
-    //this._clear();
     return _clear();
   }
   // don't clear operators
   if (_getPositionInExpression() !== 1) {
-    // this.#curExpression[this.#curExpPos] = "0";
     _setCurrentPosValue('0');
   }
 
-  //this._updateDisplayInput("0");
   return [_getCurrentPosValue()];
 }; // end _clearEntry
 
 const _solveOneOperator = function () {
   // if there is only a single oprend, then return itself
   if (_leftStackIsEmpty()) {
-    // result = expression[0];
     return { result: _getValueAt(0), specialEvent: false, error: false };
   } else {
-    // result = _computeSpecialOp(data.leftOprendStack, 0);
-    // specialEvent = true;
     // we set it to true, as this special case has occured
     return {
       result: _computeSpecialOp(data.leftOprendStack, 0),
@@ -388,7 +381,6 @@ const _equalSign = function () {
   // special case, when user hits enter on solved
   // expression, use the result as the left hand oprend
   if (_getSolvedState()) {
-    console.log('SOLVED STATE Equal ');
     data.curExpression[0] = _getResult();
     _resetLeftStack();
   }
@@ -396,20 +388,17 @@ const _equalSign = function () {
   // index 1 should always be the operator
   let results;
   if (_expressionLengthIs(1)) {
-    console.log('length 1');
     results = _solveOneOperator();
   }
 
   // if there is only one oprend then make this oprend the 2nd one as well
   // then process as a full expression in next block
   if (_expressionLengthIs(2)) {
-    console.log('length 2');
     _copyLeftOprendToRight();
   }
 
   // solve complete expression
   if (_expressionLengthIs(3)) {
-    console.log('length 3');
     results = _solveTwoOperatorOprend();
   }
 
@@ -428,9 +417,7 @@ const _equalSign = function () {
 
   // its a special event when the user tries to compute already solved special operator
   if (results.specialEvent) {
-    console.log('Special Event');
     // set left oprend to result
-    // expression[0] = result;
     data.curExpression[0] = results.result;
     // and clear any special operations
     _resetLeftStack();
@@ -450,8 +437,6 @@ const _commandDelegatory = function (inputVal) {
     ['%', _percent],
   ]);
 
-  /* TEST CODE */
-  // console.log(`INPUT: ${inputVal}`);
   const cmd = cmdMap.get(inputVal);
   if (!cmd) {
     return;
@@ -501,7 +486,6 @@ const _numberDelegatory = function (inputVal) {
 
   _setCurrentPosValue(_validateOprend(_getCurrentPosValue(), inputVal));
 
-  // _updateDisplayInput(_getCurrentPosValue());
   state.result = _generateInputString(_getCurrentPosValue());
   // set the value in the calcDisplay
 }; // end numberDelegatory
@@ -516,7 +500,6 @@ const _hasOperator = function (operators, inputVal) {
 }; // end _hasOperator
 
 const _processOprend = function (inputVal) {
-  // this.#curExpression[++this.#curExpPos] = inputVal;
   _incrementPosition();
   _setCurrentPosValue(inputVal);
   // update current expression display
@@ -524,13 +507,9 @@ const _processOprend = function (inputVal) {
 }; // end _processOprend
 
 const _operatorDelegatory = function (inputVal) {
-  /** TEST CODE */
   // if the expression has been solved and the expression has been reset
   if (_getSolvedState() && _getPositionInExpression() === 0) {
-    console.log('here 1');
     _setCurrentPosValue(_getResult());
-    // and clear any special operations
-    // _resetLeftStack();
     _updateSolvedState(false);
   }
 
@@ -577,7 +556,6 @@ const _specialOpsDelegatory = function (inputVal) {
     if (!_leftStackIsEmpty()) {
       data.curExpression.push(_getResult());
     } else {
-      // data.curExpression.push(data.curExpression[0]);
       data.curExpression.push(_getValueAt(0));
     }
 
@@ -586,22 +564,16 @@ const _specialOpsDelegatory = function (inputVal) {
 
   let output = ' ';
   let result;
-  if (
-    inputVal === 'inverse' &&
-    // this.#curExpression[this.#curExpPos] === "0"
-    _getCurrentPosValue() === '0'
-  ) {
+  if (inputVal === 'inverse' && _getCurrentPosValue() === '0') {
     _resetData();
     output = '1/(0)';
     result = 'Cannot divide by zero';
   } else {
     result = _performSpecialOp(inputVal);
     output = _generateExpressionString();
-    // this.#calcResult = result;
     _setResult(result);
   }
-  // this._updateDisplayInput(result);
-  // this._updateDisplayExpress(output);
+
   state.result = result;
   state.expression = output;
 };
@@ -622,12 +594,11 @@ export const inputDelegatory = function (inputVal) {
   } // end of special operation check
 
   // we can just run the commmand at the end for now
-  // this._commandMap(inputVal);
   _commandDelegatory(inputVal);
 
   /** TEST CODE */
-  console.log(data.curExpression);
+  // console.log(data.curExpression);
   // console.log(data);
-  console.log(_getSolvedState());
-  console.log(data.curExpPos);
+  // console.log(_getSolvedState());
+  // console.log(data.curExpPos);
 }; // end inputDelegatory
