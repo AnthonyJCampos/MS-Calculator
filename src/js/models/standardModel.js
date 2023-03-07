@@ -70,6 +70,11 @@ const _resetRightStack = function () {
   data.rightOprendStack = [];
 }; // end _resetRightStack
 
+const _copyLeftOprendToRight = function () {
+  _incrementPosition();
+  _setCurrentPosValue(_computeSpecialOp(data.leftOprendStack, 0));
+}; // end _copyLeftOprendToRight
+
 ////// EXPRESSION METHODS
 
 const _setCurrentPosition = function (pos) {
@@ -247,7 +252,6 @@ const _percent = function () {
 
   // if POS 1, copy left oprend to right oprend
   if (pos === 1) {
-    _incrementPosition();
     _copyLeftOprendToRight();
   }
   // account for special operations
@@ -366,7 +370,6 @@ const _calcInput = function () {
 
   if (expression.length === 2) {
     // if there is only one oprend then make this oprend the 2nd one as well
-    //expression.push(expression[0]);
     _copyLeftOprendToRight();
   }
 
@@ -443,9 +446,9 @@ const _commandDelegatory = function (inputVal) {
 /** Input Handlers METHODS */
 const _numberDelegatory = function (inputVal) {
   // Check if expression already solved
-  if (_getSolvedState()) {
-    _resetData();
-  }
+  // if (_getSolvedState()) {
+  //   _resetData();
+  // }
 
   // if right hand oprend  & has special op -> replace
   if (_getPositionInExpression() === 2 && !_rightStackIsEmpty()) {
@@ -496,17 +499,16 @@ const _processOprend = function (inputVal) {
 }; // end _processOprend
 
 const _operatorDelegatory = function (inputVal) {
-  /** Refactored Code */
-  // so if expression is full & there is a result
-  // or if operator is 4th input process expression
+  // so if expression is full
   if (_getPositionInExpression() === 2) {
-    // if operator is 4th input process expression
-    !data.result && _commandDelegatory('=');
+    // compute result
+    _commandDelegatory('=');
     // save the result as the first value, and add the operator to the expression
     _resetExpression();
     _setCurrentPosValue(data.result);
     _processOprend(inputVal);
   }
+
   // if operator is 1st or 2nd input and is not already in expression
   if (
     !_hasOperator(OPERATORS, inputVal) &&
@@ -571,4 +573,9 @@ export const inputDelegatory = function (inputVal) {
   // we can just run the commmand at the end for now
   // this._commandMap(inputVal);
   _commandDelegatory(inputVal);
+
+  /** TEST CODE */
+  console.log(data.curExpression);
+  // console.log(data);
+  console.log(_getSolvedState());
 }; // end inputDelegatory

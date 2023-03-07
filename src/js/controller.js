@@ -7,9 +7,9 @@ import * as standardModel from './models/standardModel.js';
 
 const controlBtnPress = function (btnVal) {
   standardModel.inputDelegatory(btnVal);
-  console.log(standardModel.state);
+  // console.log(standardModel.state);
   calcDisplayView.update(standardModel.state);
-  console.log(standardModel.data);
+  // console.log(standardModel.data);
   historyView.render(standardModel.state.history);
 }; // end controlBtnPress
 
