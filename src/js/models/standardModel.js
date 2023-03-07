@@ -573,9 +573,9 @@ const _specialOpsDelegatory = function (inputVal) {
   /** NEW CODE END */
   // if currently positioned on a operator,
   // take first left oprend and use it
-  if (data.curExpPos === 1) {
+  if (_expressionLengthIs(1)) {
     if (!_leftStackIsEmpty()) {
-      data.curExpression.push(data.result);
+      data.curExpression.push(_getResult());
     } else {
       // data.curExpression.push(data.curExpression[0]);
       data.curExpression.push(_getValueAt(0));
