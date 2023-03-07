@@ -10,7 +10,6 @@ class ToolView extends View {
   } // end setTool
 
   _generateMarkup() {
-    console.log(this._toolType);
     return `
       <nav class="nav">
         <div class="nav__drop"></div>
@@ -23,7 +22,6 @@ class ToolView extends View {
   initComponents(components) {
     for (const component of Object.values(components)) {
       component?.init();
-      console.log(component);
     } // end for
   }
 } // end ToolView

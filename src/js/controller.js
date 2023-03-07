@@ -6,11 +6,11 @@ import calcDisplayView from './views/calcDisplayView.js';
 import * as standardModel from './models/standardModel.js';
 
 const controlBtnPress = function (btnVal) {
-  console.log(btnVal);
   standardModel.inputDelegatory(btnVal);
   console.log(standardModel.state);
   calcDisplayView.update(standardModel.state);
   console.log(standardModel.data);
+  historyView.render(standardModel.state.history);
 }; // end controlBtnPress
 
 const initCalc = function () {

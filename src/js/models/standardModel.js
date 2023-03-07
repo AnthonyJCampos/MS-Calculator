@@ -5,6 +5,7 @@
 export const state = {
   result: '',
   expression: '',
+  history: [],
 }; // end state
 
 /** DATA FOR COMPUTATION */
@@ -177,6 +178,18 @@ const _generateExpressionString = function () {
 
   return output;
 }; // end generateExpressionString
+
+/** ------------------------ HISTORY SECTION ------------------------ */
+
+const _addToHistory = function () {
+  state.history.push({ expression: state.expression, result: state.result });
+}; // end _addToHistory
+
+export const clearHistory = function () {
+  state.history = [];
+}; // end _clearHistory
+
+/** ------------------------ CALCULATION SECTION ------------------------ */
 
 /** CALCULATION METHODS */
 
@@ -376,10 +389,9 @@ const _calcInput = function () {
   let output = ' ';
   if (!error) {
     output = _generateExpressionString() + ' =';
-    // this.#calcResult = result;
     _setResult(result);
     // after getting results store in history
-    // this._addToHistory();
+    // _addToHistory();
     _updateSolvedState(true);
   } else {
     _updateSolvedState(false);
@@ -419,10 +431,13 @@ const _commandDelegatory = function (inputVal) {
 
   const [displayInput, displayExpression] = cmd();
 
-  // displayInput && this._updateDisplayInput(displayInput);
   displayInput && (state.result = displayInput);
-  // displayExpression && this._updateDisplayExpress(displayExpression);
   displayExpression && (state.expression = displayExpression);
+
+  // update calc history
+  if (_getSolvedState()) {
+    _addToHistory();
+  }
 }; // end commandDelegatory
 
 /** Input Handlers METHODS */
@@ -442,7 +457,7 @@ const _numberDelegatory = function (inputVal) {
   // if result is defined and only input (special op)
   if (!_resultIsEmpty() && _getPositionInExpression() === 0) {
     // store to history
-    // this._addToHistory();
+    _addToHistory();
 
     // reset result
     _resetResult();
