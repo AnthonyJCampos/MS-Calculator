@@ -66,7 +66,7 @@ const _resetLeftStack = function () {
 }; // end _resetLeftStack
 
 const _resetRightStack = function () {
-  data._resetRightStack = [];
+  data.rightOprendStack = [];
 }; // end _resetRightStack
 
 ////// EXPRESSION METHODS
@@ -80,7 +80,7 @@ const _getPositionInExpression = function () {
 }; // end _getPositionInExpression
 
 const _getValueAt = function (pos) {
-  return data.expression[pos];
+  return data.curExpression[pos];
 }; // end _getValueAt
 
 const _setCurrentPosValue = function (val) {
@@ -93,8 +93,6 @@ const _getCurrentPosValue = function () {
 
 const _resetExpression = function () {
   data.curExpression = ['0'];
-  // data.leftOprendStack = [];
-  // data.rightOprendStack = [];
   _resetLeftStack();
   _resetRightStack();
   _setCurrentPosition(0);
@@ -160,26 +158,20 @@ const _buildSpecialExpression = function (stack, oprend) {
 const _generateExpressionString = function () {
   let output = ' ';
   if (!_leftStackIsEmpty()) {
-    output = _buildSpecialExpression(
-      data.leftOprendStack,
-      data.curExpression[0]
-    );
+    output = _buildSpecialExpression(data.leftOprendStack, _getValueAt(0));
   } else {
-    output = data.curExpression[0];
+    output = _getValueAt(0);
   }
 
   if (_getPositionInExpression() >= 1) {
-    output += ` ${data.curExpression[1]} `;
+    output += ` ${_getValueAt(1)} `;
   }
 
   if (_getPositionInExpression() === 2) {
     if (!_rightStackIsEmpty()) {
-      output += _buildSpecialExpression(
-        data.rightOprendStack,
-        data.curExpression[2]
-      );
+      output += _buildSpecialExpression(data.rightOprendStack, _getValueAt(2));
     } else {
-      output += data.curExpression[2];
+      output += _getValueAt(2);
     } // end if
   } // end if
 
@@ -189,7 +181,7 @@ const _generateExpressionString = function () {
 /** CALCULATION METHODS */
 
 const _computeSpecialOp = function (stack, pos) {
-  let result = data.expression[pos];
+  let result = _getValueAt(pos);
   stack.forEach(action => {
     if (action === 'inverse') {
       result = Math.pow(result, -1);
@@ -219,12 +211,12 @@ const _determineExpression = function () {
 
 const _performSpecialOp = function (inputVal) {
   let result;
-  if (data.curExpPos === 0) {
+  if (_getPositionInExpression() === 0) {
     data.leftOprendStack.push(inputVal);
     result = _computeSpecialOp(data.leftOprendStack, 0);
   } // end if
 
-  if (data.curExpPos === 2) {
+  if (_getPositionInExpression() === 2) {
     data.rightOprendStack.push(inputVal);
     result = _computeSpecialOp(data.rightOprendStack, 2);
   } // end if
@@ -270,19 +262,14 @@ const _negate = function () {
     return [];
   }
 
-  // data.curExpression[data.curExpPos] = bigDecimal.negate(
-  //   data.curExpression[data.curExpPos]
-  // );
-
   _setCurrentPosValue(bigDecimal.negate(_getCurrentPosValue()));
 
-  //this._updateDisplayInput(this.#curExpression[this.#curExpPos]);
   return [_getCurrentPosValue()];
 }; // end _negate
 
 const _back = function () {
   // if current position is 1 do nothing
-  if (data.curExpPos === 1) {
+  if (_getPositionInExpression() === 1) {
     return [];
   }
 
@@ -291,9 +278,8 @@ const _back = function () {
   // clear special stacks, and display
   if (_getSolvedState()) {
     _updateSolvedState(false);
-    data.leftOprendStack = [];
-    data.rightOprendStack = [];
-    //this._updateDisplayExpress("");
+    _resetLeftStack();
+    _resetRightStack();
     return [, ' '];
   }
 
@@ -303,7 +289,6 @@ const _back = function () {
   }
 
   // get current position value and remove a single char
-  // let curVal = this.#curExpression[this.#curExpPos];
   let curVal = _getCurrentPosValue();
   // if there is only a single char, turn it to 0
   if (curVal.length === 1) {
@@ -314,10 +299,8 @@ const _back = function () {
   }
 
   // update the current expression
-  // this.#curExpression[this.#curExpPos] = curVal;
   _setCurrentPosValue(curVal);
   //updated display Input
-  //this._updateDisplayInput(curVal);
   return [_getCurrentPosValue()];
 }; // end _back
 
@@ -334,7 +317,7 @@ const _clearEntry = function () {
     return _clear();
   }
   // don't clear operators
-  if (data.curExpPos !== 1) {
+  if (_getPositionInExpression() !== 1) {
     // this.#curExpression[this.#curExpPos] = "0";
     _setCurrentPosValue('0');
   }
@@ -404,15 +387,13 @@ const _calcInput = function () {
   } // end if
 
   // update result display field
-  //this._updateDisplayInput(result);
-  //this._updateDisplayExpress(output);
 
   // take care of special event
   if (specialEvent) {
     // set left oprend to result
     expression[0] = result;
     // and clear any special operations
-    data.leftOprendStack = [];
+    _resetLeftStack();
   } // end if
 
   // update result display field
@@ -438,8 +419,6 @@ const _commandDelegatory = function (inputVal) {
 
   const [displayInput, displayExpression] = cmd();
 
-  /** TEST CODE */
-  console.log(displayInput, displayExpression);
   // displayInput && this._updateDisplayInput(displayInput);
   displayInput && (state.result = displayInput);
   // displayExpression && this._updateDisplayExpress(displayExpression);
@@ -455,10 +434,9 @@ const _numberDelegatory = function (inputVal) {
 
   // if right hand oprend  & has special op -> replace
   if (_getPositionInExpression() === 2 && !_rightStackIsEmpty()) {
-    data.rightOprendStack = [];
+    _resetRightStack();
     _setCurrentPosition(1);
     // update expression display
-    // _updateDisplayExpress(this._output());
     state.expression = _generateExpressionString();
   }
   // if result is defined and only input (special op)
@@ -531,9 +509,10 @@ const _specialOpsDelegatory = function (inputVal) {
     if (!_leftStackIsEmpty()) {
       data.curExpression.push(data.result);
     } else {
-      data.curExpression.push(data.curExpression[0]);
+      // data.curExpression.push(data.curExpression[0]);
+      data.curExpression.push(_getValueAt(0));
     }
-    // this.#curExpPos++;
+
     _incrementPosition();
   }
 
