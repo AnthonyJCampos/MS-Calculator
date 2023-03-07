@@ -97,6 +97,14 @@ const _getCurrentPosValue = function () {
   return data.curExpression[_getPositionInExpression()];
 }; // end _getCurrentPosValue
 
+const _getExpressionLength = function () {
+  return data.curExpression.length;
+}; // end _getExpressionLength
+
+const _expressionLengthIs = function (length) {
+  return data.curExpression.length === length;
+}; // end _expressionLengthIs
+
 const _resetExpression = function () {
   data.curExpression = ['0'];
   _resetLeftStack();
@@ -292,11 +300,9 @@ const _back = function () {
 
   // if full expression solved
   // e.i the display contains a '=' sign
-  // clear special stacks, and display
+  // clear special stacks and expression, and display
   if (_getSolvedState()) {
-    _updateSolvedState(false);
-    _resetLeftStack();
-    _resetRightStack();
+    _resetExpression();
     return [, ' '];
   }
 
@@ -343,83 +349,102 @@ const _clearEntry = function () {
   return [_getCurrentPosValue()];
 }; // end _clearEntry
 
-const _calcInput = function () {
-  const expression = data.curExpression;
+const _solveOneOperator = function () {
+  // if there is only a single oprend, then return itself
+  if (_leftStackIsEmpty()) {
+    // result = expression[0];
+    return { result: _getValueAt(0), specialEvent: false, error: false };
+  } else {
+    // result = _computeSpecialOp(data.leftOprendStack, 0);
+    // specialEvent = true;
+    // we set it to true, as this special case has occured
+    return {
+      result: _computeSpecialOp(data.leftOprendStack, 0),
+      specialEvent: true,
+      error: false,
+    };
+  }
+}; // end _solveOneOperator
+
+const _solveTwoOperatorOprend = function () {
+  const [oprendL, operator, oprendR] = _determineExpression();
+  if (operator === '/' && oprendR === '0') {
+    //  error message Cannot divide by zero
+    return { result: undefined };
+  } // end guard
+
+  // operator map
   const opMap = new Map([
     ['+', bigDecimal.add],
     ['-', bigDecimal.subtract],
     ['*', bigDecimal.multiply],
     ['/', bigDecimal.divide],
   ]);
+  // compute results
+  return { result: opMap.get(operator)(oprendL, oprendR) };
+}; // end _solveTwoOperatorOprend
 
-  let result;
-  // its a special event when the user tries to compute already solved special operator
-  let specialEvent = false;
+const _equalSign = function () {
+  // special case, when user hits enter on solved
+  // expression, use the result as the left hand oprend
+  if (_getSolvedState()) {
+    console.log('SOLVED STATE Equal ');
+    data.curExpression[0] = _getResult();
+    _resetLeftStack();
+  }
+
   // index 1 should always be the operator
-  if (expression.length === 1) {
-    // if there is only a single oprend, then return itself
+  let results;
+  if (_expressionLengthIs(1)) {
+    console.log('length 1');
+    results = _solveOneOperator();
+  }
 
-    if (_leftStackIsEmpty()) {
-      result = expression[0];
-    } else {
-      result = _computeSpecialOp(data.leftOprendStack, 0);
-      // we set it to true, as this special case has occured
-      specialEvent = true;
-    }
-  } // end if
-
-  if (expression.length === 2) {
-    // if there is only one oprend then make this oprend the 2nd one as well
+  // if there is only one oprend then make this oprend the 2nd one as well
+  // then process as a full expression in next block
+  if (_expressionLengthIs(2)) {
+    console.log('length 2');
     _copyLeftOprendToRight();
   }
 
-  let error = false;
-  if (expression.length === 3) {
-    const [oprendL, operator, oprendR] = _determineExpression();
-
-    if (operator === '/' && oprendR === '0') {
-      // display error message
-      error = true;
-      result = 'Cannot divide by zero';
-    }
-
-    if (!error) {
-      // compute results
-      result = opMap.get(operator)(oprendL, oprendR);
-    }
+  // solve complete expression
+  if (_expressionLengthIs(3)) {
+    console.log('length 3');
+    results = _solveTwoOperatorOprend();
   }
 
   let output = ' ';
-  if (!error) {
+  if (results.result !== undefined) {
     output = _generateExpressionString() + ' =';
-    _setResult(result);
+    _setResult(results.result);
     // after getting results store in history
     // _addToHistory();
     _updateSolvedState(true);
   } else {
     _updateSolvedState(false);
     _resetData();
+    output = 'Cannot divide by zero';
   } // end if
 
-  // update result display field
-
-  // take care of special event
-  if (specialEvent) {
+  // its a special event when the user tries to compute already solved special operator
+  if (results.specialEvent) {
+    console.log('Special Event');
     // set left oprend to result
-    expression[0] = result;
+    // expression[0] = result;
+    data.curExpression[0] = results.result;
     // and clear any special operations
     _resetLeftStack();
   } // end if
 
   // update result display field
-  return [result, output];
-}; // end _calcInput
+  return [results.result, output];
+}; // end _equalSign
 
 const _commandDelegatory = function (inputVal) {
   const cmdMap = new Map([
     ['clear', _clear],
     ['clear entry', _clearEntry],
-    ['=', _calcInput],
+    ['=', _equalSign],
     ['back', _back],
     ['+/-', _negate],
     ['%', _percent],
@@ -499,6 +524,16 @@ const _processOprend = function (inputVal) {
 }; // end _processOprend
 
 const _operatorDelegatory = function (inputVal) {
+  /** TEST CODE */
+  // if the expression has been solved and the expression has been reset
+  if (_getSolvedState() && _getPositionInExpression() === 0) {
+    console.log('here 1');
+    _setCurrentPosValue(_getResult());
+    // and clear any special operations
+    // _resetLeftStack();
+    _updateSolvedState(false);
+  }
+
   // so if expression is full
   if (_getPositionInExpression() === 2) {
     // compute result
@@ -523,6 +558,19 @@ const _operatorDelegatory = function (inputVal) {
 }; // end operatorDelegatory
 
 const _specialOpsDelegatory = function (inputVal) {
+  /** NEW CODE START */
+
+  if (_expressionLengthIs(3) && _getSolvedState()) {
+    _resetExpression();
+    _setCurrentPosValue(_getResult());
+    _updateSolvedState(false);
+  }
+  if (_getSolvedState()) {
+    // in the event
+    _updateSolvedState(false);
+  }
+
+  /** NEW CODE END */
   // if currently positioned on a operator,
   // take first left oprend and use it
   if (data.curExpPos === 1) {
@@ -581,4 +629,5 @@ export const inputDelegatory = function (inputVal) {
   console.log(data.curExpression);
   // console.log(data);
   console.log(_getSolvedState());
+  console.log(data.curExpPos);
 }; // end inputDelegatory
