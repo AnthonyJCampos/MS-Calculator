@@ -446,9 +446,9 @@ const _commandDelegatory = function (inputVal) {
 /** Input Handlers METHODS */
 const _numberDelegatory = function (inputVal) {
   // Check if expression already solved
-  // if (_getSolvedState()) {
-  //   _resetData();
-  // }
+  if (_getSolvedState()) {
+    _resetData();
+  }
 
   // if right hand oprend  & has special op -> replace
   if (_getPositionInExpression() === 2 && !_rightStackIsEmpty()) {
@@ -505,8 +505,11 @@ const _operatorDelegatory = function (inputVal) {
     _commandDelegatory('=');
     // save the result as the first value, and add the operator to the expression
     _resetExpression();
+
     _setCurrentPosValue(data.result);
     _processOprend(inputVal);
+    /** TEST CODE */
+    _updateSolvedState(false);
   }
 
   // if operator is 1st or 2nd input and is not already in expression
