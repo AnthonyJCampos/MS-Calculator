@@ -18,6 +18,10 @@ const clearBtnPress = function () {
   standardModel.clearHistory();
 };
 
+const menuBtnPress = function () {
+  console.log('Menu Change');
+};
+
 const initCalc = function () {
   toolView.render();
   const Components = {
@@ -26,6 +30,7 @@ const initCalc = function () {
     historyComp: historyView,
   };
   toolView.initComponents(Components);
+  toolView.addHandlerNav(menuBtnPress);
   buttonView.addHandlerBtnPress(controlBtnPress);
   historyView.addHandlerClear(clearBtnPress);
 }; // end initCalc

@@ -11,19 +11,23 @@ class ToolView extends View {
 
   addHandlerNav(handler) {
     this._parentEl.addEventListener('click', function (event) {
-      const btn = event.target.closet('.nav__dropdown');
+      console.log('Menu Press');
+      const btn = event.target.closest('.nav__btn');
+
       if (!btn) {
         return;
       }
 
-      btn.toggle('hidden');
+      const dropdownEl = document.querySelector('.nav__dropdown');
+      dropdownEl.classList.toggle('hidden');
+      handler();
     });
   }
 
   _generateMarkup() {
     return `
       <div class="nav__dropdown hidden">
-        <button class="nav__dropdown">
+        <button class="nav__btn">
           <img
             src="src/img/menu-symbol.svg"
             alt="menu button, click to open menu"
