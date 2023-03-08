@@ -56,6 +56,11 @@ header {
 
 /* Nav Container */
 
+.tool__title {
+  font-size: 20px;
+  padding: 0 0 2px 0;
+}
+
 .nav {
   height: 35px;
   grid-area: nav;
@@ -67,10 +72,43 @@ header {
 }
 
 .nav__btn {
+  height: 35px;
+  width: 35px;
   background-color: transparent;
   border-radius: 0.5rem 0 0 0.5rem;
   border: none;
-  padding: 10px;
+  padding: 0 10px 0 10px;
+}
+
+.nav__dropdown {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  grid-column: 1 / 2;
+  grid-row: 1 / -1;
+  background-color: var(--color-secondary);
+  border-radius: var(--border-radius-primary);
+  box-shadow: var(--shadow-primary);
+
+  /* display: grid;
+  grid-template-columns: 1fr;
+  align-items: start; */
+
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.calc_list--title {
+  font-size: 14px;
+}
+
+.calc_item {
+  list-style: none;
+  font-size: 12px;
+  padding-left: 10px;
 }
 
 .menu__svg {
@@ -180,12 +218,13 @@ header {
   height: auto;
   width: auto;
   display: grid;
-  grid-template-columns: 65% 35%;
+  grid-template-columns: 32.5% 32.5% 35%;
   grid-template-rows: 5% auto;
   grid-template-areas:
-    'nav aside'
-    'main aside';
+    'nav  nav aside'
+    'main main aside';
   align-content: stretch;
+  position: relative;
 }
 
 /* Standard Container */
