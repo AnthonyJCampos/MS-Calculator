@@ -28,7 +28,7 @@ class HistoryView {
       if (!btn) {
         return;
       }
-      btn.style.backgroundColor = 'gray';
+      btn.style.backgroundColor = '#212529';
       const [svgGray, svgWhite] = btn.children;
       svgGray.classList.add('hidden');
       svgWhite.classList.remove('hidden');
