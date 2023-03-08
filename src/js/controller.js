@@ -10,8 +10,13 @@ const controlBtnPress = function (btnVal) {
   // console.log(standardModel.state);
   calcDisplayView.update(standardModel.state);
   // console.log(standardModel.data);
-  historyView.render(standardModel.state.history);
+  // historyView.render(standardModel.state.history);
+  historyView.update(standardModel.state.history.at(-1));
 }; // end controlBtnPress
+
+const clearBtnPress = function () {
+  standardModel.clearHistory();
+};
 
 const initCalc = function () {
   toolView.render();
@@ -22,6 +27,7 @@ const initCalc = function () {
   };
   toolView.initComponents(Components);
   buttonView.addHandlerBtnPress(controlBtnPress);
+  historyView.addHandlerClear(clearBtnPress);
 }; // end initCalc
 
 initCalc();
