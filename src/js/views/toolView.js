@@ -12,7 +12,13 @@ class ToolView extends View {
   _generateMarkup() {
     return `
       <nav class="nav">
-        <div class="nav__drop"></div>
+        <button class="nav__btn">
+          <img
+            src="src/img/menu-symbol.svg"
+            alt="menu button, click to open menu"
+            class="menu__svg"
+          />
+        </button>
         <h2>${this._toolType}</h2>
       </nav>
       ${LAYOUT_MAP.get(this._toolType)}
