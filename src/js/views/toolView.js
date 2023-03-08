@@ -34,10 +34,16 @@ class ToolView extends View {
             class="menu__svg"
           />
         </button>
-        <h2 class="calc_list--title">Calculator</h2>
+        <h2 class="nav_list--title">Calculator</h2>
         <ul class="calc_list">
-        <li class="calc_item">
+        <li class="list_item">
           Standard
+        </li>
+        </ul>
+        <h2 class="nav_list--title">Converter</h2>
+        <ul class="converter_list">
+        <li class="list_item">
+          Length
         </li>
         </ul>
       </div> 
