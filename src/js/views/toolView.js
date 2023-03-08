@@ -11,7 +11,6 @@ class ToolView extends View {
 
   addHandlerNav(handler) {
     this._parentEl.addEventListener('click', function (event) {
-      console.log('Menu Press');
       const btn = event.target.closest('.nav__btn');
 
       if (!btn) {

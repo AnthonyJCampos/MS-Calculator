@@ -51,10 +51,14 @@ class HistoryView {
   } // end _btnAnimation
 
   update(data) {
-    if (!data) {
+    if (!data || data.length < 1) {
       return;
     } // end of guard
-    const markup = this._generateMarkupItem(data);
+
+    if (data.length < this._listEl.childElementCount) {
+      return;
+    }
+    const markup = this._generateMarkupItem(data.at(-1));
     this._listEl.insertAdjacentHTML('afterbegin', markup);
     // keep user at top of scroll window
     this._listEl.scrollTop = 0;

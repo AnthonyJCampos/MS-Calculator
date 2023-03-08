@@ -11,7 +11,8 @@ const controlBtnPress = function (btnVal) {
   calcDisplayView.update(standardModel.state);
   // console.log(standardModel.data);
   // historyView.render(standardModel.state.history);
-  historyView.update(standardModel.state.history.at(-1));
+  // historyView.update(standardModel.state.history.at(-1));
+  historyView.update(standardModel.state.history);
 }; // end controlBtnPress
 
 const clearBtnPress = function () {

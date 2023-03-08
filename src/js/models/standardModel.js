@@ -448,7 +448,8 @@ const _commandDelegatory = function (inputVal) {
   displayExpression && (state.expression = displayExpression);
 
   // update calc history
-  if (_getSolvedState()) {
+  // possibly refactor to deal with duplicating back cmd
+  if (_getSolvedState() && inputVal !== 'back') {
     _addToHistory();
   }
 }; // end commandDelegatory
@@ -598,7 +599,7 @@ export const inputDelegatory = function (inputVal) {
 
   /** TEST CODE */
   // console.log(data.curExpression);
-  // console.log(data);
+  // console.log(state);
   // console.log(_getSolvedState());
   // console.log(data.curExpPos);
 }; // end inputDelegatory
