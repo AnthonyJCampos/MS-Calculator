@@ -121,6 +121,11 @@ header {
   height: 16px;
 }
 
+.menu__svg:hover,
+.menu__svg:active {
+  height: 18px;
+}
+
 /* History Container */
 
 .history {
@@ -226,20 +231,47 @@ header {
   display: grid;
   grid-template-columns: 32.5% 32.5% 35%;
   grid-template-rows: 5% auto;
-  grid-template-areas:
+  /* grid-template-areas:
     'nav  nav aside'
-    'main main aside';
+    'main main aside'; */
   align-content: stretch;
   position: relative;
 }
 
+.standard {
+  grid-template-areas:
+    'nav  nav aside'
+    'main main aside';
+}
+
+.converter {
+  grid-template-areas:
+    'nav nav nav'
+    'main main main';
+}
+
+.tool--converter {
+  grid-area: main;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-area: 1fr 1fr;
+}
+
 /* Standard Container */
 
-.standard_container {
+/* .standard_container {
   margin-top: 3px;
   grid-area: main;
-  /* display: flex;
-  flex-direction: column; */
+
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.25fr 0.75fr;
+} */
+
+.tool--standard {
+  margin-top: 3px;
+  grid-area: main;
+
   display: grid;
   grid-template-columns: 1fr;
   grid-template-rows: 0.25fr 0.75fr;
@@ -293,6 +325,15 @@ header {
   font-size: 200%;
 }
 
+.btn--converter {
+  font-size: 34px;
+}
+
+.btn--converter:hover,
+.btn--converter:active {
+  background-color: red;
+  font-size: 350%;
+}
 /* Button Container Styling */
 
 .btn_container {
@@ -301,6 +342,13 @@ header {
   grid-template-rows: repeat(6, 1fr);
   grid-gap: 6px;
   margin-top: 4px;
+}
+
+.btn_container--converter {
+  margin-top: 6px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  grid-column: 2;
 }
 
 /* Command Pad Styling */
@@ -325,16 +373,6 @@ header {
   /* grid-gap: 3px; */
   gap: inherit;
 }
-
-/* .number:nth-child(10) {
-  grid-column: 2 / 3;
-  grid-row: 4 / 5;
-}
-
-.number:last-child {
-  grid-column: 3 / 4;
-  grid-row: 4 / 5;
-} */
 
 /* Standard Button Pad Container */
 .standard_pad {
@@ -363,3 +401,5 @@ header {
   vertical-align: super;
   font-size: 50%;
 }
+
+/* Convert Button Pad Container */

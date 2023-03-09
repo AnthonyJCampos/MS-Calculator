@@ -3,10 +3,14 @@ import View from './View.js';
 
 class ToolView extends View {
   _parentEl = document.querySelector('.tool_container');
-  _toolType = 'Standard';
+  _toolType;
 
   setTool(toolType = 'Standard') {
+    if (this._toolType) {
+      this._parentEl.classList.remove(this._toolType.toLowerCase());
+    }
     this._toolType = toolType;
+    this._parentEl.classList.add(this._toolType.toLowerCase());
   } // end setTool
 
   addHandlerNav(handler) {

@@ -24,6 +24,8 @@ const menuBtnPress = function () {
 };
 
 const initCalc = function () {
+  // toolView.setTool('Converter');
+  toolView.setTool('Standard');
   toolView.render();
   const Components = {
     calcDisplay: calcDisplayView,

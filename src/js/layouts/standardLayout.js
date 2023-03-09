@@ -30,7 +30,7 @@ const standardBtnLayout = `
 
 const standardLayout = `
   ${historyLayout}
-  <main class="standard_container">
+  <main class="tool tool--standard">
     ${calcDisplayLayout}
     ${standardBtnLayout}
   </main>`;
