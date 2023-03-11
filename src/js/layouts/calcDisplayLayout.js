@@ -1,6 +1,6 @@
 const calcDisplayLayout = `
-  <div class="display_container">
-    <div class="calc_display_expression"></div>
-    <div class="calc_display_result">0</div>
+  <div class="display_container display_container--standard">
+    <div class="display_expression--standard"></div>
+    <div class="display_result--standard">0</div>
   </div>`;
 export default calcDisplayLayout;

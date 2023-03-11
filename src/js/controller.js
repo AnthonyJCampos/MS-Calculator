@@ -6,12 +6,13 @@ import calcDisplayView from './views/calcDisplayView.js';
 import * as standardModel from './models/standardModel.js';
 
 const controlBtnPress = function (btnVal) {
+  // 1. process input
   standardModel.inputDelegatory(btnVal);
-  // console.log(standardModel.state);
+
+  // 2. update tool display
   calcDisplayView.update(standardModel.state);
-  // console.log(standardModel.data);
-  // historyView.render(standardModel.state.history);
-  // historyView.update(standardModel.state.history.at(-1));
+
+  // 3. update history display
   historyView.update(standardModel.state.history);
 }; // end controlBtnPress
 
@@ -24,8 +25,8 @@ const menuBtnPress = function () {
 };
 
 const initCalc = function () {
-  // toolView.setTool('Converter');
-  toolView.setTool('Standard');
+  toolView.setTool('Converter');
+  // toolView.setTool('Standard');
   toolView.render();
   const Components = {
     calcDisplay: calcDisplayView,

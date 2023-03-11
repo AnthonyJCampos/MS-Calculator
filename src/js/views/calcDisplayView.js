@@ -12,9 +12,11 @@ class CalcDisplayView {
   } // end update
 
   init() {
-    this._parentEl = document.querySelector('.display_container');
-    this._expressionEl = document.querySelector('.calc_display_expression');
-    this._resultEl = document.querySelector('.calc_display_result');
+    this._parentEl = document.querySelector('.display_container--standard');
+    this._expressionEl = document.querySelector(
+      '.display_expression--standard'
+    );
+    this._resultEl = document.querySelector('.display_result--standard');
   } // end init
 } // end CalcDisplayView
 
