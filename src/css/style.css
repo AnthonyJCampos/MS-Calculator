@@ -162,12 +162,12 @@ header {
 
 /* Basic Button Styling */
 svg {
-  width: 40px;
+  width: 24px;
 }
 
-/* .btn svg:hover {
-  width: 50px;
-} */
+.btn:hover svg {
+  transform: scale(1.5);
+}
 
 .btn {
   font-size: 20px;
@@ -180,8 +180,7 @@ svg {
 }
 
 .btn:hover,
-.btn:active,
-svg:hover {
+.btn:active {
   background-color: var(--color-tertiary);
   color: var(--color-font-secondary);
   font-size: 200%;
@@ -272,6 +271,14 @@ svg:hover {
 .btn--converter:hover,
 .btn--converter:active {
   font-size: 350%;
+}
+
+.btn--converter svg {
+  width: 60%;
+}
+.btn--converter:hover svg {
+  margin-top: 15%;
+  transform: scale(1.5);
 }
 /* Calculator Styles */
 
