@@ -106,12 +106,19 @@ header {
 
 .list_item {
   list-style: none;
-  font-size: 12px;
   padding: 5px 0 5px 10px;
 }
 
 .list_item:hover {
   background-color: var(--color-primary);
+}
+
+.list_btn {
+  text-align: start;
+  font-size: 14px;
+  border: none;
+  background-color: inherit;
+  width: 100%;
 }
 
 .menu__svg {
@@ -265,7 +272,8 @@ svg {
 }
 
 .btn--converter {
-  font-size: 34px;
+  /* font-size: 34px; */
+  font-size: 200%;
 }
 
 .btn--converter:hover,
@@ -274,7 +282,7 @@ svg {
 }
 
 .btn--converter svg {
-  width: 60%;
+  width: 50%;
 }
 .btn--converter:hover svg {
   margin-top: 15%;
@@ -282,7 +290,7 @@ svg {
 }
 /* Calculator Styles */
 
-.standard {
+.calculator {
   grid-template-areas:
     'nav  nav aside'
     'main main aside';

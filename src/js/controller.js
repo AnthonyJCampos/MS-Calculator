@@ -20,13 +20,14 @@ const clearBtnPress = function () {
   standardModel.clearHistory();
 };
 
-const menuBtnPress = function () {
-  console.log('Menu Change');
+const menuBtnPress = function (selection) {
+  toolView.setTool(selection);
+  toolView.render();
 };
 
 const initCalc = function () {
-  toolView.setTool('Converter');
-  // toolView.setTool('Standard');
+  // toolView.setTool('Length');
+  toolView.setTool('Standard');
   toolView.render();
   const Components = {
     calcDisplay: calcDisplayView,
@@ -34,7 +35,7 @@ const initCalc = function () {
     historyComp: historyView,
   };
   toolView.initComponents(Components);
-  toolView.addHandlerNav(menuBtnPress);
+  toolView.addHandlerMenuSelection(menuBtnPress);
   buttonView.addHandlerBtnPress(controlBtnPress);
   historyView.addHandlerClear(clearBtnPress);
 }; // end initCalc

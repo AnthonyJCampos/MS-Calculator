@@ -7,13 +7,23 @@ class ToolView extends View {
 
   setTool(toolType = 'Standard') {
     if (this._toolType) {
-      this._parentEl.classList.remove(this._toolType.toLowerCase());
+      this._parentEl.classList.remove(LAYOUT_MAP.get(this._toolType).type);
     }
     this._toolType = toolType;
-    this._parentEl.classList.add(this._toolType.toLowerCase());
+    this._parentEl.classList.add(LAYOUT_MAP.get(this._toolType).type);
   } // end setTool
 
-  addHandlerNav(handler) {
+  addHandlerMenuSelection(handler) {
+    this._parentEl.addEventListener('click', function (event) {
+      const btn = event.target.closest('.list_btn');
+      if (!btn) {
+        return;
+      }
+
+      handler(btn.value);
+    });
+  }
+  _addHandlerNav() {
     this._parentEl.addEventListener('click', function (event) {
       const btn = event.target.closest('.nav__btn');
 
@@ -23,10 +33,8 @@ class ToolView extends View {
 
       const dropdownEl = document.querySelector('.nav__dropdown');
       dropdownEl.classList.toggle('hidden');
-      handler();
     });
   }
-
   _generateMarkup() {
     return `
       <div class="nav__dropdown hidden">
@@ -40,13 +48,13 @@ class ToolView extends View {
         <h2 class="nav_list--title">Calculator</h2>
         <ul class="calc_list">
         <li class="list_item">
-          Standard
+          <button class="list_btn" value="Standard">Standard</button>
         </li>
         </ul>
         <h2 class="nav_list--title">Converter</h2>
         <ul class="converter_list">
         <li class="list_item">
-          Length
+          <button class="list_btn" value="Length">Length</button>
         </li>
         </ul>
       </div> 
@@ -60,7 +68,7 @@ class ToolView extends View {
         </button>
         <h2 class="tool__title">${this._toolType}</h2>
       </nav>
-      ${LAYOUT_MAP.get(this._toolType)}
+      ${LAYOUT_MAP.get(this._toolType).layout}
       `;
   } // end generateMarkup
 
@@ -68,6 +76,7 @@ class ToolView extends View {
     for (const component of Object.values(components)) {
       component?.init();
     } // end for
+    this._addHandlerNav();
   }
 } // end ToolView
 
