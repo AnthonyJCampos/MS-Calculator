@@ -1,21 +1,37 @@
-import { LAYOUT_MAP, BtnContainer } from '../config.js';
-import View from './View.js';
-
-class ToolView extends View {
+class ToolView {
   _parentEl = document.querySelector('.tool_container');
   _toolType;
 
-  setTool(toolType = 'Standard') {
-    if (this._toolType) {
-      this._parentEl.classList.remove(LAYOUT_MAP.get(this._toolType).type);
+  render(layoutPackage) {
+    if (!layoutPackage) {
+      return;
     }
+
+    // remove previous styling
+    if (this._toolType) {
+      this._parentEl.classList.remove(this._toolType);
+    }
+    const { toolType, toolTitle, toolLayout } = layoutPackage;
+    // set the current tool type, options converter or calculator
     this._toolType = toolType;
-    this._parentEl.classList.add(LAYOUT_MAP.get(this._toolType).type);
-  } // end setTool
+    // add new tool type styling
+    this._parentEl.classList.add(this._toolType);
+    const markup = this._generateMarkup(toolLayout, toolTitle);
+
+    this._clear();
+    this._parentEl.insertAdjacentHTML('afterbegin', markup);
+  } // end render
+
+  initComponents(components) {
+    for (const component of Object.values(components)) {
+      component?.init();
+    } // end for
+  }
 
   addHandlerMenuSelection(handler) {
     this._parentEl.addEventListener('click', function (event) {
       const btn = event.target.closest('.list_btn');
+      console.log(`Button Clicked: ${btn}`);
       if (!btn) {
         return;
       }
@@ -23,7 +39,8 @@ class ToolView extends View {
       handler(btn.value);
     });
   }
-  _addHandlerNav() {
+
+  addHandlerNav() {
     this._parentEl.addEventListener('click', function (event) {
       const btn = event.target.closest('.nav__btn');
 
@@ -35,7 +52,7 @@ class ToolView extends View {
       dropdownEl.classList.toggle('hidden');
     });
   }
-  _generateMarkup() {
+  _generateMarkup(toolLayout, toolTitle) {
     return `
       <div class="nav__dropdown hidden">
         <button class="nav__btn">
@@ -66,21 +83,15 @@ class ToolView extends View {
             class="menu__svg"
           />
         </button>
-        <h2 class="tool__title">${this._toolType}</h2>
+        <h2 class="tool__title">${toolTitle}</h2>
       </nav>
-      ${LAYOUT_MAP.get(this._toolType).layout}
+      ${toolLayout}
       `;
   } // end generateMarkup
 
-  initComponents(components) {
-    for (const component of Object.values(components)) {
-      component?.init();
-    } // end for
-    this._addHandlerNav();
-  }
+  _clear() {
+    this._parentEl.innerHTML = '';
+  } // end clear
 } // end ToolView
 
 export default new ToolView();
-
-{
-}

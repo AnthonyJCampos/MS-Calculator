@@ -1,46 +1,51 @@
 import toolView from './views/toolView.js';
-import buttonView from './views/buttonView.js';
 import dropdownView from './views/dropdownView.js';
-import historyView from './views/historyView.js';
-import calcDisplayView from './views/calcDisplayView.js';
-import * as standardModel from './models/standardModel.js';
+import calculator from '../tools/calculator.js';
+import converter from '../tools/converter.js';
 
-// when app first loads the tool is set to standard calculator
+import { CONVERTER_TOOLS, CALCULATOR_TOOLS } from './config.js';
 
-const controlBtnPress = function (btnVal) {
-  // 1. process input
-  standardModel.inputDelegatory(btnVal);
+// 1) get layout
 
-  // 2. update tool display
-  calcDisplayView.update(standardModel.state);
+// 2) render layout
 
-  // 3. update history display
-  historyView.update(standardModel.state.history);
-}; // end controlBtnPress
+// 3) init components of tool
 
-const clearBtnPress = function () {
-  standardModel.clearHistory();
-};
+// 4) set event menu
 
-const menuBtnPress = function (selection) {
-  toolView.setTool(selection);
+function changeTool(tool, selection) {
+  const renderPackage = tool.getLayoutPackage(selection);
+  if (!renderPackage) {
+    console.error('TOOL NOT FOUND');
+  }
+
+  toolView.render(renderPackage);
+  toolView.initComponents(tool.getUniqueComponents());
+  tool.initTool();
+}
+
+function menuBtnPress(selection) {
+  if (CALCULATOR_TOOLS.has(selection)) {
+    changeTool(calculator, selection);
+  }
+
+  if (CONVERTER_TOOLS.has(selection)) {
+    changeTool(converter, selection);
+  }
+
   toolView.render();
   /// development code
+}
+
+// when app first loads the tool is set to standard calculator
+const initialInit = function () {
+  // defualt is standard
+  const renderPackage = calculator.getLayoutPackage();
+  toolView.render(renderPackage);
+  toolView.addHandlerNav();
+  toolView.initComponents(calculator.getUniqueComponents());
+  calculator.initTool();
+  toolView.addHandlerMenuSelection(menuBtnPress);
 };
 
-const initCalc = function () {
-  // toolView.setTool('Length');
-  toolView.setTool('Standard');
-  toolView.render();
-  const Components = {
-    calcDisplay: calcDisplayView,
-    btnComp: buttonView,
-    historyComp: historyView,
-  };
-  toolView.initComponents(Components);
-  toolView.addHandlerMenuSelection(menuBtnPress);
-  buttonView.addHandlerBtnPress(controlBtnPress);
-  historyView.addHandlerClear(clearBtnPress);
-}; // end initCalc
-
-initCalc();
+initialInit();
