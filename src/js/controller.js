@@ -1,9 +1,11 @@
 import toolView from './views/toolView.js';
 import buttonView from './views/buttonView.js';
+import dropdownView from './views/dropdownView.js';
 import historyView from './views/historyView.js';
 import calcDisplayView from './views/calcDisplayView.js';
-
 import * as standardModel from './models/standardModel.js';
+
+// when app first loads the tool is set to standard calculator
 
 const controlBtnPress = function (btnVal) {
   // 1. process input
@@ -23,6 +25,7 @@ const clearBtnPress = function () {
 const menuBtnPress = function (selection) {
   toolView.setTool(selection);
   toolView.render();
+  /// development code
 };
 
 const initCalc = function () {
@@ -41,5 +44,3 @@ const initCalc = function () {
 }; // end initCalc
 
 initCalc();
-
-//DisplayView.render();

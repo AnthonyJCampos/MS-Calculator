@@ -12,15 +12,21 @@ const converterLayout = `
       <div class=" display_container display_container--converter">
       <p class="display_unit">0</p>
       </div>
-      <button class="converter_unit_dropdown ">
-        Centimeters ${dropdownIcon}
-      </button>  
+      <div class="dropdown">
+        <button class="btn--unit">
+          Centimeters ${dropdownIcon}
+        </button> 
+        <ul class="dropdown-content hidden">
+          <li><button class="list_btn">Centimeters</button></li>
+          <li><button class="list_btn">Millimeters</button></li>
+        </ul> 
+      </div>
     </div>
     <div class="convert_unit_section">
       <div class=" display_container display_container--converter">
       <p class="display_unit">0</p>
       </div>
-      <button class="converter_unit_dropdown">
+      <button class="btn--unit">
         Centimeters ${dropdownIcon}
       </button>  
     </div>

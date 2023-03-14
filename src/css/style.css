@@ -248,7 +248,7 @@ svg {
   grid-row: 1 / -1;
 }
 
-.converter_unit_dropdown {
+.btn--unit {
   margin-top: 6px;
   display: flex;
   align-items: center;
@@ -261,10 +261,23 @@ svg {
   border: none;
 }
 
-.converter_unit_dropdown:hover,
-.converter_unit_dropdown:active {
+.btn--unit:hover,
+.btn--unit:active {
   color: #495057;
   stroke: var(--color-font-tertiary);
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  position: absolute;
+  background-color: bisque;
+  list-style: none;
+  position: relative;
+  z-index: 1;
 }
 
 .svg_dropdown {
