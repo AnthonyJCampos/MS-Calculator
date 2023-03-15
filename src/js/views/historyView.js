@@ -5,7 +5,6 @@ class HistoryView {
   init() {
     this._parentEl = document.querySelector('.history');
     this._listEl = document.querySelector('.history_list');
-    this._btnAnimation();
   } // end init
 
   addHandlerClear(handler) {
@@ -21,34 +20,6 @@ class HistoryView {
 
     this._parentEl.addEventListener('click', clear.bind(this));
   } // end aadHandlerClear
-
-  _btnAnimation() {
-    const mouseOver = function (event) {
-      const btn = event.target.closest('.history_btn--clear');
-      if (!btn) {
-        return;
-      }
-      btn.style.backgroundColor = '#212529';
-      const [svgGray, svgWhite] = btn.children;
-      svgGray.classList.add('hidden');
-      svgWhite.classList.remove('hidden');
-    };
-
-    this._parentEl.addEventListener('mouseover', mouseOver);
-
-    const mouseOut = function (event) {
-      const btn = event.target.closest('.history_btn--clear');
-      if (!btn) {
-        return;
-      }
-      btn.style.backgroundColor = 'white';
-      const [svgGray, svgWhite] = btn.children;
-      svgGray.classList.remove('hidden');
-      svgWhite.classList.add('hidden');
-    };
-
-    this._parentEl.addEventListener('mouseout', mouseOut);
-  } // end _btnAnimation
 
   update(data) {
     if (!data || data.length < 1) {

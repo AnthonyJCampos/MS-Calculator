@@ -70,6 +70,7 @@ header {
   box-shadow: var(--shadow-secondary);
   display: flex;
   align-items: center;
+  gap: 10px;
 }
 
 .nav__btn {
@@ -122,13 +123,13 @@ header {
   width: 100%;
 }
 
-.menu__svg {
-  height: 16px;
+.icon-menu {
+  width: 24px;
 }
 
-.menu__svg:hover,
-.menu__svg:active {
-  height: 18px;
+.icon-menu:hover,
+.icon-menu:active {
+  width: 28px;
 }
 
 /* Tool Container */
@@ -169,11 +170,12 @@ header {
 }
 
 /* Basic Button Styling */
-svg {
+
+.icon-back {
   width: 24px;
 }
 
-.btn:hover svg {
+.btn:hover .icon-back {
   transform: scale(1.5);
 }
 
@@ -281,7 +283,7 @@ svg {
   z-index: 1;
 }
 
-.svg_dropdown {
+.icon-dropdown {
   width: 20px;
 }
 
@@ -427,6 +429,16 @@ svg {
 
 .history_btn--clear:hover {
   background-color: var(--color-tertiary);
+}
+
+.icon-trash {
+  fill: #212529;
+  width: 70%;
+}
+
+.history_btn--clear:hover svg {
+  transform: scale(1.1);
+  fill: var(--color-font-secondary);
 }
 
 .trash__svg {

@@ -1,3 +1,5 @@
+import { menuIcon } from '../../img/icons.js';
+
 class ToolView {
   _parentEl = document.querySelector('.tool_container');
   _toolType;
@@ -56,11 +58,7 @@ class ToolView {
     return `
       <div class="nav__dropdown hidden">
         <button class="nav__btn">
-          <img
-            src="src/img/menu-symbol.svg"
-            alt="menu button, click to open menu"
-            class="menu__svg"
-          />
+         ${menuIcon}
         </button>
         <h2 class="nav_list--title">Calculator</h2>
         <ul class="calc_list">
@@ -77,11 +75,7 @@ class ToolView {
       </div> 
       <nav class="nav">
         <button class="nav__btn">
-          <img
-            src="src/img/menu-symbol.svg"
-            alt="menu button, click to open menu"
-            class="menu__svg"
-          />
+        ${menuIcon}
         </button>
         <h2 class="tool__title">${toolTitle}</h2>
       </nav>
