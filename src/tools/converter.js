@@ -1,5 +1,8 @@
 import buttonView from '../js/views/buttonView.js';
+import dropdownView from '../js/views/dropdownView.js';
 import converterLayout from '../js/layouts/converterLayout.js';
+
+import { LENGTH_OPTIONS } from '../js/config.js';
 
 class Converter {
   getLayoutPackage(layoutString = 'Length') {
@@ -31,6 +34,8 @@ class Converter {
   _processButtonPadInput(btnVal) {
     console.log(btnVal);
   } // end controlBtnPress
+
+  _initDropdownOptions() {}
 } // end converter
 
 export default new Converter();

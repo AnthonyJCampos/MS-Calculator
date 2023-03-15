@@ -1,9 +1,10 @@
 class DropdownView {
   _parentEl;
 
-  init(elementString) {
+  render(renderPackage) {}
+
+  setParentElement(elementString) {
     this._parentEl = document.querySelector(`.${elementString}`);
-    this._addHandlerDropdownClicked();
   }
 
   _addHandlerDropdownClicked() {
@@ -18,6 +19,23 @@ class DropdownView {
       dropdownEl.classList.toggle('hidden');
     });
   }
+
+  _generateMarkup() {
+    return `
+    <button class="btn--unit">
+    Centimeters ${dropdownIcon}
+    </button> 
+    <ul class="dropdown-content hidden">
+    </ul> 
+    `;
+  }
+
+  _generateMarkupItem() {}
 }
 
 export default new DropdownView();
+
+// use this to make a list of elements
+
+// this._data.ingredients.map(this._generateMarkupIngredient).join('')
+//

@@ -10,3 +10,16 @@ import converterLayout from './layouts/converterLayout.js';
 
 export const CONVERTER_TOOLS = new Set(['Length']);
 export const CALCULATOR_TOOLS = new Set(['Standard']);
+
+export const LENGTH_OPTIONS = [
+  'Nanometers',
+  'Microns',
+  'Centimeters',
+  'Meters',
+  'Kilometers',
+  'Inches',
+  'Feet',
+  'Yards',
+  'Miles',
+  'Nautical Miles',
+];
