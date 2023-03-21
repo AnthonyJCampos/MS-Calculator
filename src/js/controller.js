@@ -1,5 +1,4 @@
 import toolView from './views/toolView.js';
-import dropdownView from './views/dropdownView.js';
 import calculator from '../tools/calculator.js';
 import converter from '../tools/converter.js';
 

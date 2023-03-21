@@ -1,23 +1,22 @@
 import { dropdownIcon } from '../../img/icons.js';
 
-class DropdownView {
+export default class DropdownUnitComponent {
   _parentEl;
 
-  setParentElement(elementString) {
+  constructor(elementString, options) {
     this._parentEl = document.querySelector(`.${elementString}`);
-  } // end setParentElement
+    this._options = options;
+  }
 
-  render(renderPackage) {
-    if (!layoutPackage) {
+  init() {
+    if (!this._options) {
       return;
     }
 
-    const { options } = renderPackage;
-    const markup = this._generateMarkup(options);
-
+    const markup = this._generateMarkup();
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
-  } // end render
+  } // end init
 
   _addHandlerDropdownClicked() {
     this._parentEl.addEventListener('click', function (event) {
@@ -26,19 +25,18 @@ class DropdownView {
       if (!btn) {
         return;
       }
-
       const dropdownEl = document.querySelector('.dropdown-content');
       dropdownEl.classList.toggle('hidden');
     });
   } // end _addHandlerDropdownClicked
 
-  _generateMarkup(options) {
+  _generateMarkup() {
     return `
     <button class="btn--unit">
-    ${options.at(0)} ${dropdownIcon}
+    ${this._options.at(0)} ${dropdownIcon}
     </button> 
     <ul class="dropdown-content">
-      ${options.map(this._generateMarkupItem).join('')}
+      ${this._options.map(this._generateMarkupItem).join('')}
     </ul> 
     `;
   } // end _generateMarkup
@@ -52,11 +50,4 @@ class DropdownView {
   _clear() {
     this._parentEl.innerHTML = '';
   } // end clear
-}
-
-export default new DropdownView();
-
-// use this to make a list of elements
-
-// this._data.ingredients.map(this._generateMarkupIngredient).join('')
-//
+} // end DropdownUnitComponent
