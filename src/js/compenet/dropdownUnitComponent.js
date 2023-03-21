@@ -48,7 +48,7 @@ export default class DropdownUnitComponent {
       !event.target.matches('.dropdown_btn') &&
       !event.target.matches('.dropdown-content')
     ) {
-      const dropdownEl = document.querySelector('.dropdown-content');
+      const dropdownEl = this._parentEl.querySelector('.dropdown-content');
 
       if (!dropdownEl) {
         console.error('error in DropdownUnitComponent window click event');
