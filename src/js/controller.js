@@ -17,7 +17,6 @@ function changeTool(tool, selection) {
   if (!renderPackage) {
     console.error('TOOL NOT FOUND');
   }
-
   toolView.render(renderPackage);
   toolView.initComponents(tool.getUniqueComponents());
   tool.initTool();
@@ -25,6 +24,7 @@ function changeTool(tool, selection) {
 
 function menuBtnPress(selection) {
   if (CALCULATOR_TOOLS.has(selection)) {
+    converter.clearEvents();
     changeTool(calculator, selection);
   }
 
@@ -42,6 +42,8 @@ const initialInit = function () {
   const renderPackage = calculator.getLayoutPackage();
   toolView.render(renderPackage);
   toolView.addHandlerNav();
+  // this method is broken
+  // toolView.addHandlerWindowClick();
   toolView.initComponents(calculator.getUniqueComponents());
   calculator.initTool();
   toolView.addHandlerMenuSelection(menuBtnPress);

@@ -33,7 +33,6 @@ class ToolView {
   addHandlerMenuSelection(handler) {
     this._parentEl.addEventListener('click', function (event) {
       const btn = event.target.closest('.list_btn');
-      console.log(`Button Clicked: ${btn}`);
       if (!btn) {
         return;
       }
@@ -54,9 +53,29 @@ class ToolView {
       dropdownEl.classList.toggle('hidden');
     });
   }
+
+  // this method is currently broken
+  addHandlerWindowClick() {
+    window.addEventListener('click', function (event) {
+      if (
+        !event.target.matches('.nav__btn') &&
+        !event.target.matches('.icon-menu') &&
+        !event.target.matches('.nav__dropdown')
+      ) {
+        const dropdownEl = document.querySelector('.nav__dropdown');
+
+        if (!dropdownEl) {
+          console.error('error in toolview window click event');
+          return;
+        }
+        dropdownEl.classList.add('hidden');
+      }
+    });
+  } // end addHandlerWindowClick
+
   _generateMarkup(toolLayout, toolTitle) {
     return `
-      <div class="nav__dropdown hidden">
+      <div class="nav__dropdown hidden">  
         <button class="nav__btn">
          ${menuIcon}
         </button>

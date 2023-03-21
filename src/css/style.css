@@ -71,16 +71,24 @@ header {
   box-shadow: var(--shadow-secondary);
   display: flex;
   align-items: center;
-  gap: 10px;
 }
 
 .nav__btn {
-  height: 35px;
-  width: 35px;
+  height: 45px;
+  width: 45px;
   background-color: transparent;
   border-radius: 0.5rem 0 0 0.5rem;
   border: none;
-  padding: 0 10px 0 10px;
+  /* padding: 0 10px 0 10px; */
+}
+
+.icon-menu {
+  width: 24px;
+}
+
+.nav__btn:hover .icon-menu,
+.nav__btn:active .icon-menu {
+  transform: scale(1.1);
 }
 
 .nav__dropdown {
@@ -122,15 +130,6 @@ header {
   border: none;
   background-color: inherit;
   width: 100%;
-}
-
-.icon-menu {
-  width: 24px;
-}
-
-.icon-menu:hover,
-.icon-menu:active {
-  width: 28px;
 }
 
 /* Tool Container */
@@ -451,7 +450,7 @@ header {
   width: 70%;
 }
 
-.history_btn--clear:hover svg {
+.history_btn--clear:hover .icon-trash {
   transform: scale(1.1);
   fill: var(--color-font-secondary);
 }

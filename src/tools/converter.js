@@ -36,6 +36,10 @@ class Converter {
     this._dropdownElBottom._addHandlerDropdownClicked();
   }
 
+  clearEvents() {
+    this._dropdownElTop?.clearEvents();
+    this._dropdownElBottom?.clearEvents();
+  }
   _buildDropdownComponents() {
     // temp code
     const options = [
