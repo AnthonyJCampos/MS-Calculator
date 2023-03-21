@@ -31,6 +31,8 @@ class Converter {
     buttonView.addHandlerBtnPress(this._processButtonPadInput);
   }
 
+  _setOptions() {} // end _setOptions
+
   _processButtonPadInput(btnVal) {
     console.log(btnVal);
   } // end controlBtnPress

@@ -1,11 +1,23 @@
+import { dropdownIcon } from '../../img/icons.js';
+
 class DropdownView {
   _parentEl;
 
-  render(renderPackage) {}
-
   setParentElement(elementString) {
     this._parentEl = document.querySelector(`.${elementString}`);
-  }
+  } // end setParentElement
+
+  render(renderPackage) {
+    if (!layoutPackage) {
+      return;
+    }
+
+    const { options } = renderPackage;
+    const markup = this._generateMarkup(options);
+
+    this._clear();
+    this._parentEl.insertAdjacentHTML('afterbegin', markup);
+  } // end render
 
   _addHandlerDropdownClicked() {
     this._parentEl.addEventListener('click', function (event) {
@@ -18,19 +30,28 @@ class DropdownView {
       const dropdownEl = document.querySelector('.dropdown-content');
       dropdownEl.classList.toggle('hidden');
     });
-  }
+  } // end _addHandlerDropdownClicked
 
-  _generateMarkup() {
+  _generateMarkup(options) {
     return `
     <button class="btn--unit">
-    Centimeters ${dropdownIcon}
+    ${options.at(0)} ${dropdownIcon}
     </button> 
-    <ul class="dropdown-content hidden">
+    <ul class="dropdown-content">
+      ${options.map(this._generateMarkupItem).join('')}
     </ul> 
     `;
-  }
+  } // end _generateMarkup
 
-  _generateMarkupItem() {}
+  _generateMarkupItem(option) {
+    return `
+      <li><button class="list_btn">${option}</button></li>
+    `;
+  } // end _generateMarkup
+
+  _clear() {
+    this._parentEl.innerHTML = '';
+  } // end clear
 }
 
 export default new DropdownView();
