@@ -545,7 +545,9 @@ const _specialOpsDelegatory = function (inputVal) {
     _setCurrentPosValue(_getResult());
     _updateSolvedState(false);
   }
+
   if (_getSolvedState()) {
+    _resetExpression();
     // in the event
     _updateSolvedState(false);
   }
@@ -553,7 +555,7 @@ const _specialOpsDelegatory = function (inputVal) {
   /** NEW CODE END */
   // if currently positioned on a operator,
   // take first left oprend and use it
-  if (_expressionLengthIs(1)) {
+  if (_expressionLengthIs(2)) {
     if (!_leftStackIsEmpty()) {
       data.curExpression.push(_getResult());
     } else {
@@ -575,7 +577,8 @@ const _specialOpsDelegatory = function (inputVal) {
     _setResult(result);
   }
 
-  state.result = result;
+  // state.result = result;
+  state.result = _generateResultString(result);
   state.expression = output;
 };
 
@@ -598,6 +601,7 @@ export const inputDelegatory = function (inputVal) {
   _commandDelegatory(inputVal);
 
   /** TEST CODE */
+  // console.log(data);
   // console.log(data.curExpression);
   // console.log(state);
   // console.log(_getSolvedState());
