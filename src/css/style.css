@@ -2,6 +2,7 @@
   --color-primary: #ffffff;
   --color-secondary: #f1f3f5;
   --color-tertiary: #212529;
+  --color-quaternary: #dee2e6;
   --color-font-primary: #212529;
   --color-font-secondary: #ffffff;
   --color-font-tertiary: #343a40;
@@ -90,7 +91,7 @@ header {
   bottom: 0;
   grid-column: 1 / 2;
   grid-row: 1 / -1;
-  background-color: var(--color-secondary);
+  background-color: var(--color-quaternary);
   border-radius: var(--border-radius-primary);
   box-shadow: var(--shadow-primary);
 
@@ -276,11 +277,25 @@ header {
 }
 
 .dropdown-content {
-  position: absolute;
-  background-color: bisque;
   list-style: none;
-  position: relative;
+  border-radius: 0.5rem;
+  background-color: var(--color-quaternary);
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
   z-index: 1;
+}
+
+.dropdown_btn {
+  background-color: var(--color-quaternary);
+  padding: 5px 14px;
+  font-size: 20px;
+  font-weight: bold;
+  border: none;
+  border-radius: var(--border-radius-primary);
 }
 
 .icon-dropdown {

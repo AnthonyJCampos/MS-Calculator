@@ -22,19 +22,21 @@ class Converter {
   } // end getLayout
 
   getUniqueComponents() {
-    const { dropdownElTop, dropdownElBottom } = this._getDropdownComponents();
+    this._buildDropdownComponents();
     return {
       btnComp: buttonView,
-      dropdownTop: dropdownElTop,
-      dropdownBottom: dropdownElBottom,
+      dropdownTop: this._dropdownElTop,
+      dropdownBottom: this._dropdownElBottom,
     };
   } // end getUniqueComponents
 
   initTool(ToolType) {
     buttonView.addHandlerBtnPress(this._processButtonPadInput);
+    this._dropdownElTop._addHandlerDropdownClicked();
+    this._dropdownElBottom._addHandlerDropdownClicked();
   }
 
-  _getDropdownComponents() {
+  _buildDropdownComponents() {
     // temp code
     const options = [
       'Nanometers',
@@ -49,17 +51,13 @@ class Converter {
       'Miles',
     ];
 
-    const dropdownElTop = new DropdownUnitComponent('dropdown--1', options);
-    const dropdownElBottom = new DropdownUnitComponent('dropdown--2', options);
-
-    return { dropdownElTop, dropdownElBottom };
-  } // end _initDropdownComponents
+    this._dropdownElTop = new DropdownUnitComponent('dropdown--1', options);
+    this._dropdownElBottom = new DropdownUnitComponent('dropdown--2', options);
+  } // end _buildDropdownComponents
 
   _processButtonPadInput(btnVal) {
     console.log(btnVal);
   } // end controlBtnPress
-
-  _initDropdownOptions() {}
 } // end converter
 
 export default new Converter();

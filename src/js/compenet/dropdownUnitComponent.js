@@ -20,12 +20,12 @@ export default class DropdownUnitComponent {
 
   _addHandlerDropdownClicked() {
     this._parentEl.addEventListener('click', function (event) {
-      const btn = event.target.closest('.btn');
+      const btn = event.target.closest('.btn--unit');
 
       if (!btn) {
         return;
       }
-      const dropdownEl = document.querySelector('.dropdown-content');
+      const dropdownEl = btn.nextElementSibling;
       dropdownEl.classList.toggle('hidden');
     });
   } // end _addHandlerDropdownClicked
@@ -35,7 +35,7 @@ export default class DropdownUnitComponent {
     <button class="btn--unit">
     ${this._options.at(0)} ${dropdownIcon}
     </button> 
-    <ul class="dropdown-content">
+    <ul class="dropdown-content hidden">
       ${this._options.map(this._generateMarkupItem).join('')}
     </ul> 
     `;
@@ -43,7 +43,7 @@ export default class DropdownUnitComponent {
 
   _generateMarkupItem(option) {
     return `
-      <li><button class="list_btn">${option}</button></li>
+      <li><button class="dropdown_btn">${option}</button></li>
     `;
   } // end _generateMarkup
 
