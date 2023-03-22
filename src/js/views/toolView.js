@@ -59,7 +59,6 @@ class ToolView {
     window.addEventListener('click', function (event) {
       if (
         !event.target.matches('.nav__btn') &&
-        !event.target.matches('.icon-menu') &&
         !event.target.matches('.nav__dropdown')
       ) {
         const dropdownEl = document.querySelector('.nav__dropdown');

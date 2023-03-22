@@ -43,7 +43,7 @@ const initialInit = function () {
   toolView.render(renderPackage);
   toolView.addHandlerNav();
   // this method is broken
-  // toolView.addHandlerWindowClick();
+  toolView.addHandlerWindowClick();
   toolView.initComponents(calculator.getUniqueComponents());
   calculator.initTool();
   toolView.addHandlerMenuSelection(menuBtnPress);

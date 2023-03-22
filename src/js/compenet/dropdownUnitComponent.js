@@ -1,8 +1,10 @@
 import { dropdownIcon } from '../../img/icons.js';
 
 export default class DropdownUnitComponent {
+  _hideDelay = 500;
   _parentEl;
   _outEvent;
+  _overEvent;
 
   constructor(elementString, options) {
     this._parentEl = document.querySelector(`.${elementString}`);
@@ -18,8 +20,10 @@ export default class DropdownUnitComponent {
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
 
-    this._outEvent = this._outsideClickEvent.bind(this); // test
-    this._addHandlerWindowClick();
+    this._outEvent = this._mouseoutEvent.bind(this); // test
+    this._addHandlerMouseout();
+    this._overEvent = this._mouseoverEvent.bind(this);
+    this._addHandlerMouseover();
   } // end init
 
   clearEvents() {
@@ -33,30 +37,40 @@ export default class DropdownUnitComponent {
       if (!btn) {
         return;
       }
+
       const dropdownEl = btn.nextElementSibling;
       dropdownEl.classList.toggle('hidden');
     });
   } // end _addHandlerDropdownClicked
 
-  _addHandlerWindowClick() {
-    window.addEventListener('click', this._outEvent, false);
+  _addHandlerMouseout() {
+    this._parentEl
+      .querySelector('.dropdown-content')
+      .addEventListener('mouseout', this._outEvent, false);
   } // end addHandlerWindowClick
 
-  _outsideClickEvent(event) {
-    if (
-      !event.target.matches('.btn--unit') &&
-      !event.target.matches('.dropdown_btn') &&
-      !event.target.matches('.dropdown-content')
-    ) {
-      const dropdownEl = this._parentEl.querySelector('.dropdown-content');
+  _addHandlerMouseover() {
+    this._parentEl
+      .querySelector('.dropdown-content')
+      .addEventListener('mouseover', this._overEvent, false);
+  }
 
-      if (!dropdownEl) {
-        console.error('error in DropdownUnitComponent window click event');
-        return;
-      }
-      dropdownEl.classList.add('hidden');
+  _mouseoutEvent(event) {
+    const dropdownEl = this._parentEl.querySelector('.dropdown-content');
+
+    if (
+      !event.target.matches('.dropdown_item') &&
+      !event.target.matches('.dropdown_btn')
+    ) {
+      this._timeoutID = setTimeout(() => {
+        dropdownEl.classList.add('hidden');
+      }, this._hideDelay);
     }
   } // end outsideClickEvent
+
+  _mouseoverEvent(event) {
+    clearTimeout(this._timeoutID);
+  }
 
   _generateMarkup() {
     return `
@@ -71,7 +85,7 @@ export default class DropdownUnitComponent {
 
   _generateMarkupItem(option) {
     return `
-      <li><button class="dropdown_btn">${option}</button></li>
+      <li class="dropdown_item"><button class="dropdown_btn">${option}</button></li>
     `;
   } // end _generateMarkup
 
