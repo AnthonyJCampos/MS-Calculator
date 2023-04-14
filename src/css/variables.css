@@ -1,0 +1,14 @@
+:root {
+  --color-primary: #ffffff;
+  --color-secondary: #f1f3f5;
+  --color-tertiary: #212529;
+  --color-quaternary: #dee2e6;
+  --color-font-primary: #212529;
+  --color-font-secondary: #ffffff;
+  --color-font-tertiary: #343a40;
+  --shadow-primary: rgba(0, 0, 0, 0.4) 0px 2px 4px,
+    rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
+  --shadow-secondary: rgba(0, 0, 0, 0.3) 0px 2px 4px,
+    rgba(0, 0, 0, 0.2) 0px 7px 13px -3px, rgba(0, 0, 0, 0.1) 0px -3px 0px inset;
+  --border-radius-primary: 0.5rem;
+}
