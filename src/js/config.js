@@ -1,25 +1,7 @@
-import standardLayout from './layouts/standardLayout.js';
-import converterLayout from './layouts/converterLayout.js';
-// export const LAYOUT_MAP = new Map([
-//   // ['Standard', standardLayout],
-//   ['Standard', { layout: standardLayout, type: 'calculator' }],
-//   ['Length', { layout: converterLayout, type: 'converter' }],
-// ]);
+import * as lengthModel from './models/converterLengthModel.js';
 
-// export const BtnContainer = 'btn_container';
+export const CONVERTER_TOOLS_KEYS = new Set(['Length']);
 
-export const CONVERTER_TOOLS = new Set(['Length']);
+export const CONVERTER_MODELS = new Map([['Length', lengthModel]]);
+
 export const CALCULATOR_TOOLS = new Set(['Standard']);
-
-export const LENGTH_OPTIONS = [
-  'Nanometers',
-  'Microns',
-  'Centimeters',
-  'Meters',
-  'Kilometers',
-  'Inches',
-  'Feet',
-  'Yards',
-  'Miles',
-  'Nautical Miles',
-];

@@ -1,7 +1,5 @@
 /** STATE FOR CONTROLLER */
 
-'use strict';
-
 export const state = {
   result: '',
   expression: '',

@@ -30,7 +30,7 @@ export default class DropdownUnitComponent {
     window.removeEventListener('click', this._outEvent, false);
   }
 
-  _addHandlerDropdownClicked() {
+  addHandlerDropdownClicked() {
     this._parentEl.addEventListener('click', function (event) {
       const btn = event.target.closest('.btn--unit');
 
@@ -42,6 +42,28 @@ export default class DropdownUnitComponent {
       dropdownEl.classList.toggle('hidden');
     });
   } // end _addHandlerDropdownClicked
+
+  addHanlderOptionClick(handler) {
+    const dropdownWindow = this._parentEl.querySelector('.dropdown-content');
+    const dropdownBtn = this._parentEl.querySelector('.btn--unit');
+
+    dropdownWindow.addEventListener('click', function (event) {
+      const unitBtn = event.target.closest('.dropdown_btn');
+      if (!unitBtn) {
+        return;
+      }
+
+      // get option from dropdown button
+      const option = unitBtn.value;
+      handler(option);
+
+      // update displayed value
+      dropdownBtn.textContent = option;
+
+      // close window after selection
+      dropdownWindow.classList.add('hidden');
+    }); // end of event listener
+  } // end addHanlderOptionClick
 
   _addHandlerMouseout() {
     this._parentEl
@@ -85,7 +107,7 @@ export default class DropdownUnitComponent {
 
   _generateMarkupItem(option) {
     return `
-      <li class="dropdown_item"><button class="dropdown_btn">${option}</button></li>
+      <li class="dropdown_item"><button class="dropdown_btn" value="${option}" aria-label="Convert Unit ${option}" title="Unit ${option}">${option}</button></li>
     `;
   } // end _generateMarkup
 

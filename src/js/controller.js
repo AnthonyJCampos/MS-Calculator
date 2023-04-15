@@ -2,7 +2,7 @@ import toolView from './views/toolView.js';
 import calculator from '../tools/calculator.js';
 import converter from '../tools/converter.js';
 
-import { CONVERTER_TOOLS, CALCULATOR_TOOLS } from './config.js';
+import { CONVERTER_TOOLS_KEYS, CALCULATOR_TOOLS } from './config.js';
 
 // 1) get layout
 
@@ -28,7 +28,7 @@ function menuBtnPress(selection) {
     changeTool(calculator, selection);
   }
 
-  if (CONVERTER_TOOLS.has(selection)) {
+  if (CONVERTER_TOOLS_KEYS.has(selection)) {
     changeTool(converter, selection);
   }
 

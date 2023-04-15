@@ -1,22 +1,27 @@
 import buttonView from '../js/views/buttonView.js';
-import DropdownUnitComponent from '../js/compenet/dropdownUnitComponent.js';
-import converterLayout from '../js/layouts/converterLayout.js';
+import DropdownUnitComponent from '../js/components/dropdownUnitComponent.js';
 
-import { LENGTH_OPTIONS } from '../js/config.js';
+import { CONVERTER_TOOLS_KEYS, CONVERTER_MODELS } from '../js/config.js';
 
 class Converter {
-  getLayoutPackage(layoutString = 'Length') {
-    const layoutMap = new Map([['Length', converterLayout]]);
+  // current tool model that is in use
+  _currentToolModel;
 
-    const layout = layoutMap.get(layoutString);
+  getLayoutPackage(toolSubType = CONVERTER_TOOLS_KEYS[0]) {
+    // get tool model from current converter tools set in the config file
+    this._currentToolModel = CONVERTER_MODELS.get(toolSubType);
 
-    if (!layout) {
+    // update this later to throw and error
+    if (!this._currentToolModel) {
       return;
     }
 
+    // get layout from model
+    const { layout } = this._currentToolModel.renderPackage;
+
     return {
       toolType: 'converter',
-      toolTitle: layoutString,
+      toolTitle: toolSubType,
       toolLayout: layout,
     };
   } // end getLayout
@@ -30,10 +35,17 @@ class Converter {
     };
   } // end getUniqueComponents
 
-  initTool(ToolType) {
+  initTool() {
     buttonView.addHandlerBtnPress(this._processButtonPadInput);
-    this._dropdownElTop._addHandlerDropdownClicked();
-    this._dropdownElBottom._addHandlerDropdownClicked();
+    // init top unit dropdown
+    this._dropdownElTop.addHandlerDropdownClicked();
+    this._dropdownElTop.addHanlderOptionClick(this._setFirstUnit.bind(this));
+
+    // init bottom unit dropdown
+    this._dropdownElBottom.addHandlerDropdownClicked();
+    this._dropdownElBottom.addHanlderOptionClick(
+      this._setSecondUnit.bind(this)
+    );
   }
 
   clearEvents() {
@@ -41,20 +53,8 @@ class Converter {
     this._dropdownElBottom?.clearEvents();
   }
   _buildDropdownComponents() {
-    // temp code
-    const options = [
-      'Nanometers',
-      'Microns',
-      'Millimeters',
-      'Centimeter',
-      'Meters',
-      'Kilometers',
-      'Inches',
-      'Feet',
-      'Yards',
-      'Miles',
-    ];
-
+    // get models current options from its renderPackage
+    const { options } = this._currentToolModel.renderPackage;
     this._dropdownElTop = new DropdownUnitComponent('dropdown--1', options);
     this._dropdownElBottom = new DropdownUnitComponent('dropdown--2', options);
   } // end _buildDropdownComponents
@@ -62,6 +62,14 @@ class Converter {
   _processButtonPadInput(btnVal) {
     console.log(btnVal);
   } // end controlBtnPress
+
+  _setFirstUnit(topVal) {
+    this._currentToolModel.setFirstUnitType(topVal);
+  }
+
+  _setSecondUnit(botVal) {
+    this._currentToolModel.setSecondUnitType(botVal);
+  }
 } // end converter
 
 export default new Converter();

@@ -29,7 +29,7 @@ class Calculator {
     };
   } // end getUniqueComponents
 
-  initTool(ToolType) {
+  initTool() {
     buttonView.addHandlerBtnPress(this._processButtonPadInput);
     historyView.addHandlerClear(this._clearBtnPress);
   }
