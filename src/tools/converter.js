@@ -38,7 +38,7 @@ class Converter {
   } // end getUniqueComponents
 
   initTool() {
-    buttonView.addHandlerBtnPress(this._processButtonPadInput);
+    buttonView.addHandlerBtnPress(this._processButtonPadInput.bind(this));
     // init top unit dropdown
     this._dropdownElTop.addHandlerDropdownClicked();
     this._dropdownElTop.addHanlderOptionClick(this._setFirstUnit.bind(this));
@@ -95,7 +95,13 @@ class Converter {
   } // end _processDisplayClick
 
   _processButtonPadInput(btnVal) {
-    console.log(btnVal);
+    // 1. process input
+    this._currentToolModel.inputDelegatory(btnVal);
+    // 2. update active display with expression
+    // 3. update non active display with result
+    this._displayComponents.forEach(displayComponent => {
+      displayComponent.update(this._currentToolModel.state);
+    });
   } // end controlBtnPress
 
   _setFirstUnit(topVal) {

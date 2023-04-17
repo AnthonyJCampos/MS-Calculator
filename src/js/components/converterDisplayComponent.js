@@ -37,7 +37,14 @@ export default class ConverterDisplayComponent {
       return;
     }
 
-    this._parentEl.querySelector('.display_unit').textContent = data;
+    const displayElement = this._parentEl.querySelector('.display_unit');
+
+    console.log(data);
+    if (data.activeDisplay === this._unit) {
+      displayElement.textContent = data.activeContent;
+    } else {
+      displayElement.textContent = data.nonContent;
+    }
   } // end update
 
   _generateMarkup() {
