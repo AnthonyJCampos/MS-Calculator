@@ -18,10 +18,19 @@ export const renderPackage = {
 };
 
 export const state = {
+  activeDisplay: 0,
   firstUnitType: renderPackage.options[0],
   secondUnitType: renderPackage.options[0],
   result: '',
 }; // end state
+
+export const getActiveDisplay = function () {
+  return state.activeDisplay;
+};
+
+export const setActiveDisplay = function (controlUnit) {
+  state.activeDisplay = controlUnit;
+};
 
 export const setFirstUnitType = function (firstUnit) {
   state.firstUnitType = firstUnit;

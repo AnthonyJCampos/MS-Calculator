@@ -1,11 +1,13 @@
 import buttonView from '../js/views/buttonView.js';
 import DropdownUnitComponent from '../js/components/dropdownUnitComponent.js';
+import ConverterDisplayComponent from '../js/components/converterDisplayComponent.js';
 
 import { CONVERTER_TOOLS_KEYS, CONVERTER_MODELS } from '../js/config.js';
 
 class Converter {
   // current tool model that is in use
   _currentToolModel;
+  _displayComponents = [];
 
   getLayoutPackage(toolSubType = CONVERTER_TOOLS_KEYS[0]) {
     // get tool model from current converter tools set in the config file
@@ -46,6 +48,10 @@ class Converter {
     this._dropdownElBottom.addHanlderOptionClick(
       this._setSecondUnit.bind(this)
     );
+
+    this._displayComponents.forEach(displayComponent => {
+      displayComponent.addHandlerClick(this._processDisplayClick.bind(this));
+    });
   }
 
   clearEvents() {
@@ -54,10 +60,39 @@ class Converter {
   }
   _buildDropdownComponents() {
     // get models current options from its renderPackage
-    const { options } = this._currentToolModel.renderPackage;
+    const { options, firstUnitSelected, secondUnitSelected } =
+      this._currentToolModel.renderPackage;
     this._dropdownElTop = new DropdownUnitComponent('dropdown--1', options);
     this._dropdownElBottom = new DropdownUnitComponent('dropdown--2', options);
+
+    // set display units
+    this._displayComponents.push(
+      new ConverterDisplayComponent(
+        'display_unit--0',
+        this._currentToolModel.getActiveDisplay()
+      )
+    );
+
+    this._displayComponents.push(
+      new ConverterDisplayComponent(
+        'display_unit--1',
+        this._currentToolModel.getActiveDisplay()
+      )
+    );
   } // end _buildDropdownComponents
+
+  _processDisplayClick(controlUnit) {
+    // check if display unit is already active unit, if so do nothing
+    if (this._currentToolModel.getActiveDisplay() === controlUnit) {
+      return;
+    } else {
+      this._currentToolModel.setActiveDisplay(controlUnit);
+    }
+
+    this._displayComponents.forEach(displayComponent => {
+      displayComponent.setActive(controlUnit);
+    });
+  } // end _processDisplayClick
 
   _processButtonPadInput(btnVal) {
     console.log(btnVal);

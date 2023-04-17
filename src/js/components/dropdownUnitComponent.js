@@ -20,7 +20,7 @@ export default class DropdownUnitComponent {
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
 
-    this._outEvent = this._mouseoutEvent.bind(this); // test
+    this._outEvent = this._mouseoutEvent.bind(this);
     this._addHandlerMouseout();
     this._overEvent = this._mouseoverEvent.bind(this);
     this._addHandlerMouseover();

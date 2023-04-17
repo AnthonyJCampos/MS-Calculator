@@ -33,6 +33,12 @@
 .display_unit {
   font-size: 26px;
   font-weight: bold;
+  transition: all 0.3s ease-in;
+}
+
+.display--active {
+  /* border: 2px solid var(--color-tertiary); */
+  box-shadow: var(--shadow-primary);
 }
 
 .convert_unit_section {

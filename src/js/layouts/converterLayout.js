@@ -9,7 +9,7 @@ const converterBtnLayout = `
 const converterLayout = `
   <main class="tool tool--converter">
     <div class="convert_unit_section">
-      <div class=" display_container display_container--converter">
+      <div class="display_container display_container--converter" id="display_unit--0">
       <p class="display_unit">0</p>
       </div>
       <div class="dropdown dropdown--1">
@@ -23,7 +23,7 @@ const converterLayout = `
       </div>
     </div>
     <div class="convert_unit_section">
-      <div class=" display_container display_container--converter">
+      <div class="display_container display_container--converter" id="display_unit--1">
       <p class="display_unit">0</p>
       </div>
       <div class="dropdown dropdown--2">
