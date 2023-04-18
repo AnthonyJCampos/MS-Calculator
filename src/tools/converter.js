@@ -106,10 +106,16 @@ class Converter {
 
   _setFirstUnit(topVal) {
     this._currentToolModel.setFirstUnitType(topVal);
+    this._displayComponents[
+      this._currentToolModel.getNonActiveDisplay()
+    ].update(this._currentToolModel.state);
   }
 
   _setSecondUnit(botVal) {
     this._currentToolModel.setSecondUnitType(botVal);
+    this._displayComponents[
+      this._currentToolModel.getNonActiveDisplay()
+    ].update(this._currentToolModel.state);
   }
 } // end converter
 

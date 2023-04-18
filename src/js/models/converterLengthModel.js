@@ -82,6 +82,10 @@ export const setActiveDisplay = function (controlUnit) {
   state.activeDisplay = controlUnit;
 };
 
+export const getNonActiveDisplay = function () {
+  return state.activeDisplay === 0 ? 1 : 0;
+};
+
 const _getFirstUnitType = function () {
   return state.unitTypeArray[0];
 };
@@ -91,11 +95,27 @@ const _getSecondUnitType = function () {
 };
 
 export const setFirstUnitType = function (firstUnit) {
+  // 1. check if unit type is different from current
+  if (state.unitTypeArray[0] === firstUnit) {
+    return;
+  }
+
   state.unitTypeArray[0] = firstUnit;
+
+  // 2. update non active display
+  _updateNonActiveState();
 };
 
 export const setSecondUnitType = function (secondUnit) {
+  // 1. check if unit type is different from current
+  if (state.unitTypeArray[1] === secondUnit) {
+    return;
+  }
+  // 2. chech if first unit type is current active unit
   state.unitTypeArray[1] = secondUnit;
+
+  // 2. update non active display
+  _updateNonActiveState();
 };
 
 const _sameUnitCheck = function () {
@@ -117,7 +137,6 @@ const _getNonActiveUnit = function () {
 // RESULTS/INPUT SUBSECTION
 
 const _generateString = function (input) {
-  console.log(input);
   if (isFinite(input)) {
     return _removeTrailingZeros(bigDecimal.getPrettyValue(input));
   }
@@ -145,13 +164,7 @@ const _numberDelegatory = function (inputVal) {
   state.activeContent = _generateString(_getCurrentExpression());
   // 3. convert active display expression to selected convert unit
 
-  if (_sameUnitCheck()) {
-    _setResult(_getCurrentExpression());
-  } else {
-    _setResult(_convert());
-  }
-  // 4. generate string output of exppression for non-active display
-  state.nonContent = _generateString(_getResult());
+  _updateNonActiveState();
 }; // end _numberDelegatory
 
 const _validateInput = function (val, inputVal) {
@@ -169,6 +182,16 @@ const _validateInput = function (val, inputVal) {
 
   return val;
 }; // end _validateInput
+
+function _updateNonActiveState() {
+  if (_sameUnitCheck()) {
+    _setResult(_getCurrentExpression());
+  } else {
+    _setResult(_convert());
+  }
+  // generate string output of exppression for non-active display
+  state.nonContent = _generateString(_getResult());
+}
 
 const _convert = function () {
   const lengthConvertMap = new Map([
@@ -194,7 +217,23 @@ const _convert = function () {
   return result;
 };
 
-const _commandDelegatory = function (inputVal) {}; // end _commandDelegatory
+////// COMMAND METHODS
+
+const _commandDelegatory = function (inputVal) {
+  const cmdMap = new Map([
+    ['clear entry', _clearEntry],
+    ['back', _back],
+  ]);
+
+  const cmd = cmdMap.get(inputVal);
+  if (!cmd) {
+    return;
+  } // end of guard
+}; // end _commandDelegatory
+
+const _clearEntry = function () {};
+
+const _back = function () {};
 
 /** ------------------------ CONVERTER FORMULAS SECTION ------------------------ */
 
@@ -251,7 +290,7 @@ const nanometersToNauticalMiles = function () {
 
 const _getMicronsConversation = function (nonActiveUnit) {
   const micronsMap = new Map([
-    ['Nanometers,', micronstoNanometers],
+    ['Nanometers', micronstoNanometers],
     ['Centimeters', micronsToCentimeters],
     ['Meters', micronsToMeters],
     ['Kilometers', micronsToKilometers],
@@ -300,7 +339,7 @@ const micronsToNauticalMiles = function () {
 
 const _getCentimetersConversation = function (nonActiveUnit) {
   const centimetersMap = new Map([
-    ['Nanometers,', centimeterstoNanometers],
+    ['Nanometers', centimeterstoNanometers],
     ['Microns', centimetersToMicrons],
     ['Meters', centimetersToMeters],
     ['Kilometers', centimetersToKilometers],
@@ -349,7 +388,7 @@ const centimetersToNauticalMiles = function () {
 
 const _getMetersConversation = function (nonActiveUnit) {
   const metersMap = new Map([
-    ['Nanometers,', meterstoNanometers],
+    ['Nanometers', meterstoNanometers],
     ['Microns', metersToMicrons],
     ['Centimeters', metersToCentimeters],
     ['Kilometers', metersToKilometers],
@@ -398,7 +437,7 @@ const metersToNauticalMiles = function () {
 
 const _getKilometersConversation = function (nonActiveUnit) {
   const kilometersMap = new Map([
-    ['Nanometers,', kilometerstoNanometers],
+    ['Nanometers', kilometerstoNanometers],
     ['Microns', kilometersToMicrons],
     ['Centimeters', kilometersToCentimeters],
     ['Meters', kilometersToMeters],
@@ -447,7 +486,7 @@ const kilometersToNauticalMiles = function () {
 
 const _getInchesConversation = function (nonActiveUnit) {
   const inchesMap = new Map([
-    ['Nanometers,', inchestoNanometers],
+    ['Nanometers', inchestoNanometers],
     ['Microns', inchesToMicrons],
     ['Centimeters', inchesToCentimeters],
     ['Meters', inchesToMeters],
@@ -496,7 +535,7 @@ const inchesToNauticalMiles = function () {
 
 const _getFeetConversation = function (nonActiveUnit) {
   const feetMap = new Map([
-    ['Nanometers,', feettoNanometers],
+    ['Nanometers', feettoNanometers],
     ['Microns', feetToMicrons],
     ['Centimeters', feetToCentimeters],
     ['Meters', feetToMeters],
@@ -545,7 +584,7 @@ const feetToNauticalMiles = function () {
 
 const _getYardsConversation = function (nonActiveUnit) {
   const yardsMap = new Map([
-    ['Nanometers,', yardstoNanometers],
+    ['Nanometers', yardstoNanometers],
     ['Microns', yardsToMicrons],
     ['Centimeters', yardsToCentimeters],
     ['Meters', yardsToMeters],
@@ -594,7 +633,7 @@ const yardsToNauticalMiles = function () {
 
 const _getMilesConversation = function (nonActiveUnit) {
   const milesMap = new Map([
-    ['Nanometers,', milestoNanometers],
+    ['Nanometers', milestoNanometers],
     ['Microns', milesToMicrons],
     ['Centimeters', milesToCentimeters],
     ['Meters', milesToMeters],
@@ -643,7 +682,7 @@ const milesToNauticalMiles = function () {
 
 const _getNauticalMilesConversation = function (nonActiveUnit) {
   const nauticalMilesMap = new Map([
-    ['Nanometers,', nauticalMilestoNanometers],
+    ['Nanometers', nauticalMilestoNanometers],
     ['Microns', nauticalMilesToMicrons],
     ['Centimeters', nauticalMilesToCentimeters],
     ['Meters', nauticalMilesToMeters],

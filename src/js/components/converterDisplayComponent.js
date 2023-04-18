@@ -39,7 +39,6 @@ export default class ConverterDisplayComponent {
 
     const displayElement = this._parentEl.querySelector('.display_unit');
 
-    console.log(data);
     if (data.activeDisplay === this._unit) {
       displayElement.textContent = data.activeContent;
     } else {
