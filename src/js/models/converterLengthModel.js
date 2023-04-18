@@ -176,6 +176,12 @@ const _convert = function () {
     ['Microns', _getMicronsConversation],
     ['Centimeters', _getCentimetersConversation],
     ['Meters', _getMetersConversation],
+    ['Kilometers', _getKilometersConversation],
+    ['Inches', _getInchesConversation],
+    ['Feet', _getFeetConversation],
+    ['Yards', _getYardsConversation],
+    ['Miles', _getMilesConversation],
+    ['Nautical Miles', _getNauticalMilesConversation],
   ]);
 
   const result = lengthConvertMap.get(_getActiveUnit())?.(_getNonActiveUnit());
@@ -386,7 +392,7 @@ const metersToNauticalMiles = function () {
   return bigDecimal.divide(_getCurrentExpression(), 1852);
 };
 
-////// METERS METHODS
+////// KILOMETERS METHODS
 
 /**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
 
@@ -408,29 +414,274 @@ const _getKilometersConversation = function (nonActiveUnit) {
 };
 
 const kilometerstoNanometers = function () {
-  return bigDecimal.multiply(_getCurrentExpression(), 1000000000);
+  return bigDecimal.multiply(_getCurrentExpression(), 1000000000000);
 };
 const kilometersToMicrons = function () {
-  return bigDecimal.multiply(_getCurrentExpression(), 1000000);
+  return bigDecimal.multiply(_getCurrentExpression(), 1000000000);
 };
 const kilometersToCentimeters = function () {
-  return bigDecimal.multiply(_getCurrentExpression(), 100);
+  return bigDecimal.multiply(_getCurrentExpression(), 100000);
 };
 const kilometersToMeters = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1000);
+  return bigDecimal.multiply(_getCurrentExpression(), 1000);
 };
 const kilometersToInches = function () {
-  return bigDecimal.multiply(_getCurrentExpression(), 39.37);
+  return bigDecimal.multiply(_getCurrentExpression(), 39370);
 };
 const kilometersToFeet = function () {
-  return bigDecimal.multiply(_getCurrentExpression(), 3.2808);
+  return bigDecimal.multiply(_getCurrentExpression(), 3280.8);
 };
 const kilometersToYards = function () {
-  return bigDecimal.multiply(_getCurrentExpression(), 1.0936);
+  return bigDecimal.multiply(_getCurrentExpression(), 1093.6);
 };
 const kilometersToMiles = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1609.344);
+  return bigDecimal.multiply(_getCurrentExpression(), 0.62137);
 };
 const kilometersToNauticalMiles = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1852);
+  return bigDecimal.divide(_getCurrentExpression(), 1.852);
+};
+
+////// INCHES METHODS
+
+/**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
+
+const _getInchesConversation = function (nonActiveUnit) {
+  const inchesMap = new Map([
+    ['Nanometers,', inchestoNanometers],
+    ['Microns', inchesToMicrons],
+    ['Centimeters', inchesToCentimeters],
+    ['Meters', inchesToMeters],
+    ['Kilometers', inchesToKilometers],
+    ['Feet', inchesToFeet],
+    ['Yards', inchesToYards],
+    ['Miles', inchesToMiles],
+    ['Nautical Miles', inchesToNauticalMiles],
+  ]);
+
+  const result = inchesMap.get(nonActiveUnit)?.();
+  return result;
+};
+
+const inchestoNanometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 25400000);
+};
+const inchesToMicrons = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 25400);
+};
+const inchesToCentimeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 2.54);
+};
+const inchesToMeters = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 39.37);
+};
+const inchesToKilometers = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 39370);
+};
+const inchesToFeet = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 12);
+};
+const inchesToYards = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 36);
+};
+const inchesToMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 63360);
+};
+const inchesToNauticalMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 72910);
+};
+
+////// FEET METHODS
+
+/**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
+
+const _getFeetConversation = function (nonActiveUnit) {
+  const feetMap = new Map([
+    ['Nanometers,', feettoNanometers],
+    ['Microns', feetToMicrons],
+    ['Centimeters', feetToCentimeters],
+    ['Meters', feetToMeters],
+    ['Kilometers', feetToKilometers],
+    ['Inches', feetToInches],
+    ['Yards', feetToYards],
+    ['Miles', feetToMiles],
+    ['Nautical Miles', feetToNauticalMiles],
+  ]);
+
+  const result = feetMap.get(nonActiveUnit)?.();
+  return result;
+};
+
+const feettoNanometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 304800000);
+};
+const feetToMicrons = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 304800);
+};
+const feetToCentimeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 30.48);
+};
+const feetToMeters = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 3.2808);
+};
+const feetToKilometers = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 3280.8);
+};
+const feetToInches = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 12);
+};
+const feetToYards = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 3);
+};
+const feetToMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 5280);
+};
+const feetToNauticalMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 6076);
+};
+
+////// YARDS METHODS
+
+/**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
+
+const _getYardsConversation = function (nonActiveUnit) {
+  const yardsMap = new Map([
+    ['Nanometers,', yardstoNanometers],
+    ['Microns', yardsToMicrons],
+    ['Centimeters', yardsToCentimeters],
+    ['Meters', yardsToMeters],
+    ['Kilometers', yardsToKilometers],
+    ['Inches', yardsToInches],
+    ['Feet', yardsToFeet],
+    ['Miles', yardsToMiles],
+    ['Nautical Miles', yardsToNauticalMiles],
+  ]);
+
+  const result = yardsMap.get(nonActiveUnit)?.();
+  return result;
+};
+
+const yardstoNanometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 914400000);
+};
+const yardsToMicrons = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 914400);
+};
+const yardsToCentimeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 91.44);
+};
+const yardsToMeters = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 1.0936);
+};
+const yardsToKilometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 0.000914);
+};
+const yardsToInches = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 36);
+};
+const yardsToFeet = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 3);
+};
+const yardsToMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 1760);
+};
+const yardsToNauticalMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 2025);
+};
+
+////// MILES METHODS
+
+/**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
+
+const _getMilesConversation = function (nonActiveUnit) {
+  const milesMap = new Map([
+    ['Nanometers,', milestoNanometers],
+    ['Microns', milesToMicrons],
+    ['Centimeters', milesToCentimeters],
+    ['Meters', milesToMeters],
+    ['Kilometers', milesToKilometers],
+    ['Inches', milesToInches],
+    ['Feet', milesToFeet],
+    ['Yards', milesToYards],
+    ['Nautical Miles', milesToNauticalMiles],
+  ]);
+
+  const result = milesMap.get(nonActiveUnit)?.();
+  return result;
+};
+
+const milestoNanometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1609344000000);
+};
+const milesToMicrons = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1609344000);
+};
+const milesToCentimeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 160934.4);
+};
+const milesToMeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1609.344);
+};
+const milesToKilometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1.609344);
+};
+const milesToInches = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 63360);
+};
+const milesToFeet = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 5280);
+};
+const milesToYards = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1760);
+};
+const milesToNauticalMiles = function () {
+  return bigDecimal.divide(_getCurrentExpression(), 1.151);
+};
+
+////// NAUTICAL MILES METHODS
+
+/**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
+
+const _getNauticalMilesConversation = function (nonActiveUnit) {
+  const nauticalMilesMap = new Map([
+    ['Nanometers,', nauticalMilestoNanometers],
+    ['Microns', nauticalMilesToMicrons],
+    ['Centimeters', nauticalMilesToCentimeters],
+    ['Meters', nauticalMilesToMeters],
+    ['Kilometers', nauticalMilesToKilometers],
+    ['Inches', nauticalMilesToInches],
+    ['Feet', nauticalMilesToFeet],
+    ['Yards', nauticalMilesToYards],
+    ['Miles', nauticalMilesToMiles],
+  ]);
+
+  const result = nauticalMilesMap.get(nonActiveUnit)?.();
+  return result;
+};
+
+const nauticalMilestoNanometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1.852e12);
+};
+const nauticalMilesToMicrons = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1.852e9);
+};
+const nauticalMilesToCentimeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 185200);
+};
+const nauticalMilesToMeters = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1852);
+};
+const nauticalMilesToKilometers = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1.852);
+};
+const nauticalMilesToInches = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 72913);
+};
+const nauticalMilesToFeet = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 6076.1);
+};
+const nauticalMilesToYards = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 2025.4);
+};
+const nauticalMilesToMiles = function () {
+  return bigDecimal.multiply(_getCurrentExpression(), 1.1508);
 };
