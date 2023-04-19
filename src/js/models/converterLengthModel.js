@@ -20,7 +20,7 @@ export const renderPackage = {
 /** DATA FOR COMPUTATION */
 export const data = {
   curExpression: '',
-  result: undefined,
+  result: '',
 }; // end data
 
 ////// EXPRESSION METHODS
@@ -46,10 +46,10 @@ const _clearExpression = function () {
 };
 
 const _clearResult = function () {
-  data.result = undefined;
+  data.result = '';
 };
 
-const _clear = function () {
+const _clearData = function () {
   _clearExpression();
   _clearResult();
 };
@@ -57,15 +57,18 @@ const _clear = function () {
 /** STATE FOR CONTROLLER */
 export const state = {
   activeDisplay: 0,
-  firstUnitType: renderPackage.options[0],
-  secondUnitType: renderPackage.options[0],
   // position 0 is first unit, position 1 is second unit
   unitTypeArray: [renderPackage.options[0], renderPackage.options[0]],
-  activeContent: '',
+  activeContent: 0,
   nonContent: 0,
 }; // end state
 
 /** STATE METHODS  */
+
+const _clearStateContent = function () {
+  state.activeContent = 0;
+  state.nonContent = 0;
+};
 
 export const getActiveDisplay = function () {
   return state.activeDisplay;
@@ -78,7 +81,7 @@ export const setActiveDisplay = function (controlUnit) {
   }
   // 2 if controlUnit is different we need to clear data
   // however we do not clear what is displayed
-  _clear();
+  _clearData();
   state.activeDisplay = controlUnit;
 };
 
@@ -101,7 +104,6 @@ export const setFirstUnitType = function (firstUnit) {
   }
 
   state.unitTypeArray[0] = firstUnit;
-
   // 2. update non active display
   _updateNonActiveState();
 };
@@ -220,6 +222,9 @@ const _convert = function () {
 ////// COMMAND METHODS
 
 const _commandDelegatory = function (inputVal) {
+  console.log('CMD');
+  console.log(state);
+  console.log('=====');
   const cmdMap = new Map([
     ['clear entry', _clearEntry],
     ['back', _back],
@@ -228,12 +233,27 @@ const _commandDelegatory = function (inputVal) {
   const cmd = cmdMap.get(inputVal);
   if (!cmd) {
     return;
-  } // end of guard
+  } // end of
+
+  cmd();
 }; // end _commandDelegatory
 
-const _clearEntry = function () {};
+const _clearEntry = function () {
+  _clearData();
+  _clearStateContent();
+};
 
-const _back = function () {};
+const _back = function () {
+  // 1. check if there is only 1 digit
+  if (_getCurrentExpression() > -10 && _getCurrentExpression() < 10) {
+    _clearEntry();
+  }
+  // 2. remove one digit from number
+  const formatedNum = Number(_getCurrentExpression().toString().slice(0, -1));
+  _setCurrentExpression(formatedNum);
+  // 3. update non-active unit
+  _updateNonActiveState();
+};
 
 /** ------------------------ CONVERTER FORMULAS SECTION ------------------------ */
 
