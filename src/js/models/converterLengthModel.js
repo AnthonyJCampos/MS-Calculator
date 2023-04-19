@@ -19,8 +19,8 @@ export const renderPackage = {
 
 /** DATA FOR COMPUTATION */
 export const data = {
-  curExpression: '',
-  result: '',
+  curExpression: '0',
+  result: '0',
 }; // end data
 
 ////// EXPRESSION METHODS
@@ -42,11 +42,11 @@ const _setResult = function (result) {
 };
 
 const _clearExpression = function () {
-  data.curExpression = '';
+  data.curExpression = '0';
 };
 
 const _clearResult = function () {
-  data.result = '';
+  data.result = '0';
 };
 
 const _clearData = function () {
@@ -59,15 +59,15 @@ export const state = {
   activeDisplay: 0,
   // position 0 is first unit, position 1 is second unit
   unitTypeArray: [renderPackage.options[0], renderPackage.options[0]],
-  activeContent: 0,
-  nonContent: 0,
+  activeContent: '0',
+  nonContent: '0',
 }; // end state
 
 /** STATE METHODS  */
 
 const _clearStateContent = function () {
-  state.activeContent = 0;
-  state.nonContent = 0;
+  state.activeContent = '0';
+  state.nonContent = '0';
 };
 
 export const getActiveDisplay = function () {
@@ -222,9 +222,6 @@ const _convert = function () {
 ////// COMMAND METHODS
 
 const _commandDelegatory = function (inputVal) {
-  console.log('CMD');
-  console.log(state);
-  console.log('=====');
   const cmdMap = new Map([
     ['clear entry', _clearEntry],
     ['back', _back],
@@ -244,13 +241,15 @@ const _clearEntry = function () {
 };
 
 const _back = function () {
+  const currentExpression = Number(_getCurrentExpression());
   // 1. check if there is only 1 digit
-  if (_getCurrentExpression() > -10 && _getCurrentExpression() < 10) {
+  if (currentExpression > -10 && currentExpression < 10) {
     _clearEntry();
   }
   // 2. remove one digit from number
-  const formatedNum = Number(_getCurrentExpression().toString().slice(0, -1));
+  const formatedNum = currentExpression.toString().slice(0, -1);
   _setCurrentExpression(formatedNum);
+  state.activeContent = _generateString(_getCurrentExpression());
   // 3. update non-active unit
   _updateNonActiveState();
 };
@@ -280,28 +279,28 @@ const nanometersToMicrons = function () {
   return bigDecimal.divide(_getCurrentExpression(), 1000);
 };
 const nanometersToCentimeters = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 10000000);
+  return bigDecimal.divide(_getCurrentExpression(), 10000000, 15);
 };
 const nanometersToMeters = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1000000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1000000000, 15);
 };
 const nanometersToKilometers = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1000000000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1000000000000, 15);
 };
 const nanometersToInches = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 25400000);
+  return bigDecimal.divide(_getCurrentExpression(), 25400000, 15);
 };
 const nanometersToFeet = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 304800000);
+  return bigDecimal.divide(_getCurrentExpression(), 304800000, 15);
 };
 const nanometersToYards = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 914400000);
+  return bigDecimal.divide(_getCurrentExpression(), 914400000, 15);
 };
 const nanometersToMiles = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1609344000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1609344000000, 15);
 };
 const nanometersToNauticalMiles = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1852000000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1852000000000, 15);
 };
 
 /**  Nanometers, Microns, Centimeters, Meters, Kilometers, Inches, Feet, Yards, Miles, Nautical Miles*/
@@ -329,28 +328,28 @@ const micronstoNanometers = function () {
   return bigDecimal.multiply(_getCurrentExpression(), 1000);
 };
 const micronsToCentimeters = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 10000);
+  return bigDecimal.divide(_getCurrentExpression(), 10000, 15);
 };
 const micronsToMeters = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1000000, 15);
 };
 const micronsToKilometers = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1000000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1000000000, 15);
 };
 const micronsToInches = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 25400);
+  return bigDecimal.divide(_getCurrentExpression(), 25400, 15);
 };
 const micronsToFeet = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 304800);
+  return bigDecimal.divide(_getCurrentExpression(), 304800, 15);
 };
 const micronsToYards = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 914400);
+  return bigDecimal.divide(_getCurrentExpression(), 914400, 15);
 };
 const micronsToMiles = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1609344000);
+  return bigDecimal.divide(_getCurrentExpression(), 1609344000, 15);
 };
 const micronsToNauticalMiles = function () {
-  return bigDecimal.divide(_getCurrentExpression(), 1852000000);
+  return bigDecimal.divide(_getCurrentExpression(), 1852000000, 15);
 };
 
 ////// CENTIMETERS METHODS
