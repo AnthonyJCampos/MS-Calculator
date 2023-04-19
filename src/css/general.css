@@ -208,6 +208,10 @@ button {
   border-radius: 5px;
   box-shadow: var(--shadow-primary);
   transition: background-color 0.25s ease-in, color 0.25s ease-in;
+
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
 }
 
 .btn:hover,
