@@ -6,7 +6,10 @@
   padding: 0;
 }
 
-h1,
+html {
+  font-size: 62.5%;
+}
+
 h2,
 h3 {
   font-size: 100%;
@@ -17,11 +20,16 @@ svg {
   pointer-events: none;
 }
 
-header {
-  height: 35px;
+.header {
+  height: 3.5rem;
   grid-area: header;
   background-color: var(--color-secondary);
   border-radius: var(--border-radius-primary);
+}
+
+.tool-heading {
+  font-size: 1.6rem;
+  padding: 1rem;
 }
 
 .background {
@@ -36,16 +44,16 @@ header {
 /* ++++++++++++++++++++++++++++++++ */
 
 .container {
-  height: 725px;
-  width: 600px;
-  padding: 10px;
+  height: 72.5rem;
+  width: 60rem;
+  padding: 1rem;
   display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: 5% auto;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.05fr auto;
   grid-template-areas: 'header' 'type__container';
   font-family: sans-serif;
   color: var(--color-font-primary);
-  border-radius: 0.5rem;
+  border-radius: 5px;
   background-color: var(--color-primary);
   box-shadow: var(--shadow-primary);
 }
@@ -55,12 +63,12 @@ header {
 /* ++++++++++++++++++++++++++++++++ */
 
 .tool__title {
-  font-size: 20px;
-  padding: 0 0 2px 0;
+  font-size: 2rem;
+  padding: 0 0 0.2rem 0;
 }
 
 .nav {
-  height: 35px;
+  height: 3.5rem;
   grid-area: nav;
   background-color: var(--color-primary);
   border-radius: var(--border-radius-primary);
@@ -74,16 +82,18 @@ button {
 }
 
 .nav__btn {
-  height: 45px;
-  width: 45px;
+  height: 4.5rem;
+  width: 4.5rem;
   background-color: transparent;
   border-radius: 0.5rem 0 0 0.5rem;
   border: none;
+  transition: all 0.3s ease-in;
   /* padding: 0 10px 0 10px; */
 }
 
 .icon-menu {
-  width: 24px;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 .nav__btn:hover .icon-menu,
@@ -111,13 +121,14 @@ button {
 }
 
 .nav_list--title {
-  font-size: 14px;
-  padding: 5px 0 5px 10px;
+  font-size: 1.4rem;
+  padding: 0.5rem 0 0.5rem 1rem;
 }
 
 .list_item {
   list-style: none;
-  padding: 5px 0 5px 0px;
+  padding: 0.5rem 0 0.5rem 0px;
+  transition: all 0.3s ease-in;
 }
 
 .list_item:hover {
@@ -125,11 +136,11 @@ button {
 }
 
 .list_btn {
-  height: 22px;
+  height: 2.2rem;
   width: 100%;
-  padding-left: 10px;
+  padding-left: 1rem;
   text-align: start;
-  font-size: 14px;
+  font-size: 1.4rem;
   border: none;
   background-color: inherit;
 }
@@ -171,8 +182,8 @@ button {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  grid-gap: 6px;
-  margin-top: 4px;
+  grid-gap: 0.6rem;
+  margin-top: 0.4rem;
 }
 
 /* ++++++++++++++++++++++++++++++++ */
@@ -180,7 +191,8 @@ button {
 /* ++++++++++++++++++++++++++++++++ */
 
 .icon-back {
-  width: 24px;
+  width: 2.4rem;
+  height: 2.4rem;
 }
 
 .btn:hover .icon-back {
@@ -188,13 +200,14 @@ button {
 }
 
 .btn {
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: bold;
   color: inherit;
   background-color: var(--color-primary);
   border: none;
   border-radius: 5px;
   box-shadow: var(--shadow-primary);
+  transition: background-color 0.25s ease-in, color 0.25s ease-in;
 }
 
 .btn:hover,

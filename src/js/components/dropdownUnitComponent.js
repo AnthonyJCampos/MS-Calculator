@@ -45,7 +45,7 @@ export default class DropdownUnitComponent {
 
   addHanlderOptionClick(handler) {
     const dropdownWindow = this._parentEl.querySelector('.dropdown-content');
-    const dropdownBtn = this._parentEl.querySelector('.btn--unit');
+    const dropdownOption = this._parentEl.querySelector('.btn--unit-text');
 
     dropdownWindow.addEventListener('click', function (event) {
       const unitBtn = event.target.closest('.dropdown_btn');
@@ -58,7 +58,7 @@ export default class DropdownUnitComponent {
       handler(option);
 
       // update displayed value
-      dropdownBtn.textContent = option;
+      dropdownOption.textContent = option;
 
       // close window after selection
       dropdownWindow.classList.add('hidden');
@@ -97,8 +97,8 @@ export default class DropdownUnitComponent {
   _generateMarkup() {
     return `
     <button class="btn--unit">
-    ${this._options.at(0)} ${dropdownIcon}
-    </button> 
+    <p class="btn--unit-text">${this._options.at(0)}</p>
+    ${dropdownIcon}</button> 
     <ul class="dropdown-content hidden">
       ${this._options.map(this._generateMarkupItem).join('')}
     </ul> 

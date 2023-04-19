@@ -16,8 +16,8 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr 0.2fr;
-  gap: 10px;
-  margin-top: 10px;
+  gap: 1rem;
+  margin-top: 1rem;
 }
 
 /* ++++++++++++++++++++++++++++++++ */
@@ -27,11 +27,11 @@
 .display_container--converter {
   height: fit-content;
   box-shadow: none;
-  padding: 10px;
+  padding: 1rem;
 }
 
 .display_unit {
-  font-size: 26px;
+  font-size: 2.4rem;
   font-weight: bold;
   transition: all 0.3s ease-in;
 }
@@ -52,7 +52,8 @@
 /* ++++++++++++++++++++++++++++++++ */
 
 .btn_container--converter {
-  margin-top: 6px;
+  /* margin-top: 0.6rem; */
+  margin: 1rem 0;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(5, 1fr);
   grid-column: 2;
@@ -60,20 +61,22 @@
 }
 
 .btn--converter {
-  /* font-size: 34px; */
-  font-size: 200%;
+  font-size: 3.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .btn--converter:hover,
 .btn--converter:active {
-  font-size: 350%;
+  font-size: calc(3.4rem * 1.5);
 }
 
 .btn--converter svg {
-  width: 50%;
+  width: 3.4rem;
+  height: 3.4rem;
 }
 .btn--converter:hover svg {
-  margin-top: 15%;
   transform: scale(1.5);
 }
 
@@ -87,10 +90,10 @@
 }
 
 .dropdown-content {
-  width: 160px;
+  width: 16rem;
   list-style: none;
-  padding: 4px 8px;
-  border-radius: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border-radius: 5px;
   background-color: var(--color-quaternary);
   position: absolute;
   top: 50%;
@@ -102,8 +105,8 @@
 
 .dropdown_btn {
   width: 100%;
-  padding: 10px 16px;
-  font-size: 16px;
+  padding: 1rem 1.6rem;
+  font-size: 1.6rem;
   font-weight: bold;
   text-align: left;
   background-color: var(--color-quaternary);
@@ -116,14 +119,14 @@
 /* ++++++++++++++++++++++++++++++++ */
 
 .btn--unit {
-  margin-top: 6px;
+  margin-top: 0.6rem;
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 0.4rem;
   width: fit-content;
-  padding: 5px;
+  padding: 0.5rem;
   background-color: transparent;
-  font-size: 20px;
+  font-size: 2rem;
   font-weight: bold;
   border: none;
   border-radius: var(--border-radius-primary);
@@ -142,5 +145,6 @@
 }
 
 .icon-dropdown {
-  width: 20px;
+  width: 2.4rem;
+  height: 2.4rem;
 }

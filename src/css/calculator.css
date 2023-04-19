@@ -13,7 +13,7 @@
 }
 
 .tool--standard {
-  margin-top: 3px;
+  margin-top: 0.3rem;
   grid-area: main;
   display: grid;
   grid-template-columns: 1fr;
@@ -30,17 +30,17 @@
 
 .display_expression--standard {
   height: fit-content;
-  padding: 5px 10px 0 10px;
+  padding: 0.5rem 1rem 0 1rem;
   text-align: right;
-  font-size: 18px;
+  font-size: 1.8rem;
 }
 
 .display_result--standard {
   height: fit-content;
   width: auto;
-  padding: 5px 10px 0 10px;
+  padding: 0.5rem 1rem 0 1rem;
   text-align: right;
-  font-size: 50px;
+  font-size: 3rem;
 }
 
 /* ++++++++++++++++++++++++++++++++ */
@@ -66,22 +66,23 @@
 .history {
   grid-area: aside;
   display: grid;
-  grid-template-rows: 35px auto 55px;
-  width: 210px;
+  grid-template-rows: 3.5rem auto 5.5rem;
+  width: 21rem;
   height: auto;
 }
 
 .history_title {
-  height: 35px;
+  height: 3.5rem;
+  font-size: 1.6rem;
 }
 
 .history_list__container {
-  height: 575px;
+  height: 57.5rem;
   width: 100%;
 }
 
 .history_list {
-  max-height: 565px;
+  max-height: 56.5rem;
   width: 100%;
   overflow: hidden;
   overflow-y: auto;
@@ -103,32 +104,32 @@
 
 .history_item {
   display: grid;
-  grid-template-rows: 20px 30px;
-  height: 50px;
-  padding: 10px;
+  grid-template-rows: 2rem 3rem;
+  height: 5rem;
+  padding: 1rem;
   color: var(--color-font-primary);
   text-align: right;
 }
 
 .history_item--expression {
-  padding: 2px;
+  padding: 0.2rem;
 }
 
 .history_item--result {
-  padding: 2px;
-  font-size: 24px;
+  padding: 0.2rem;
+  font-size: 2.4rem;
   font-weight: bold;
 }
 
 .history_bottom {
-  padding-top: 5px;
+  padding-top: 0.5rem;
   text-align: right;
 }
 
 .history_btn--clear {
-  padding-bottom: 5px;
-  height: 50px;
-  width: 50px;
+  padding-bottom: 0.5rem;
+  height: 5rem;
+  width: 5rem;
   border: none;
   border-radius: var(--border-radius-primary);
   background-color: var(--color-primary);

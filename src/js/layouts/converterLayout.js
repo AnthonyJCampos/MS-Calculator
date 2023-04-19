@@ -36,11 +36,6 @@ const converterLayout = `
       </ul> 
     </div>
     </div>
-    <div class="convert_unit_section">
-      <div class="display_container display_container--converter">
-      <p class="display_unit">Stuff For Now</p>
-      </div>
-    </div>
     ${converterBtnLayout}
   </main>`;
 
