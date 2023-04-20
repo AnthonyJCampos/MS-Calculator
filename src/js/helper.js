@@ -1,11 +1,13 @@
-export const resizeText = function (container, content) {
-  let fontSize = parseFloat(window.getComputedStyle(content).fontSize);
-  const maxHeight = container.offsetHeight;
+import { DISPLAY_LIMIT } from './config.js';
 
-  while (content.scrollHeight > maxHeight) {
-    fontSize -= 1;
-    content.style.fontSize = `${fontSize}px`;
+export const removeTrailingZeros = function (str) {
+  return str.replace(/(?:\.0+|(\.\d+?)0+)$/, '$1');
+};
 
-    console.log('here');
+export const convertToExponential = function (string) {
+  if (isFinite(string) && string.toString().length >= DISPLAY_LIMIT) {
+    return Number.parseFloat(string).toExponential();
   }
+
+  return string;
 };

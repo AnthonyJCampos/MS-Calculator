@@ -1,3 +1,5 @@
+import { INPUT_LIMIT, DISPLAY_LIMIT } from '../config.js';
+import { convertToExponential } from '../helper.js';
 /** STATE FOR CONTROLLER */
 
 export const state = {
@@ -147,7 +149,13 @@ const _validateOprend = function (val, inputVal) {
 
 const _generateResultString = function (result) {
   if (isFinite(result)) {
+    if (result.toString().length >= DISPLAY_LIMIT) {
+      return Number.parseFloat(result).toExponential();
+    }
+
     return bigDecimal.getPrettyValue(result);
+  } else {
+    return result;
   }
 }; // end _generateResultString
 
@@ -172,7 +180,7 @@ const _generateExpressionString = function () {
   if (!_leftStackIsEmpty()) {
     output = _buildSpecialExpression(data.leftOprendStack, _getValueAt(0));
   } else {
-    output = _getValueAt(0);
+    output = convertToExponential(_getValueAt(0));
   }
 
   if (_getPositionInExpression() >= 1) {
@@ -183,7 +191,7 @@ const _generateExpressionString = function () {
     if (!_rightStackIsEmpty()) {
       output += _buildSpecialExpression(data.rightOprendStack, _getValueAt(2));
     } else {
-      output += _getValueAt(2);
+      output += convertToExponential(_getValueAt(2));
     } // end if
   } // end if
 
@@ -206,6 +214,7 @@ export const clearHistory = function () {
 
 const _computeSpecialOp = function (stack, pos) {
   let result = _getValueAt(pos);
+
   stack.forEach(action => {
     if (action === 'inverse') {
       result = Math.pow(result, -1);
@@ -217,6 +226,7 @@ const _computeSpecialOp = function (stack, pos) {
       result = Math.pow(result, 2);
     }
   }); // end forEach
+
   return result;
 }; // end _computeSpecialOp
 
@@ -413,6 +423,12 @@ const _equalSign = function () {
     output = 'Cannot divide by zero';
   } // end if
 
+  if (results.result === Infinity) {
+    _updateSolvedState(false);
+    _resetData();
+    output = 'Overflow';
+  }
+
   // its a special event when the user tries to compute already solved special operator
   if (results.specialEvent) {
     // set left oprend to result
@@ -442,7 +458,7 @@ const _commandDelegatory = function (inputVal) {
 
   const [displayInput, displayExpression] = cmd();
 
-  displayInput && (state.result = displayInput);
+  displayInput && (state.result = _generateResultString(displayInput));
   displayExpression && (state.expression = displayExpression);
 
   // update calc history
@@ -521,7 +537,7 @@ const _operatorDelegatory = function (inputVal) {
 
     _setCurrentPosValue(data.result);
     _processOprend(inputVal);
-    /** TEST CODE */
+
     _updateSolvedState(false);
   }
 
@@ -536,8 +552,6 @@ const _operatorDelegatory = function (inputVal) {
 }; // end operatorDelegatory
 
 const _specialOpsDelegatory = function (inputVal) {
-  /** NEW CODE START */
-
   if (_expressionLengthIs(3) && _getSolvedState()) {
     _resetExpression();
     _setCurrentPosValue(_getResult());
@@ -550,7 +564,6 @@ const _specialOpsDelegatory = function (inputVal) {
     _updateSolvedState(false);
   }
 
-  /** NEW CODE END */
   // if currently positioned on a operator,
   // take first left oprend and use it
   if (_expressionLengthIs(2)) {
@@ -575,7 +588,12 @@ const _specialOpsDelegatory = function (inputVal) {
     _setResult(result);
   }
 
-  // state.result = result;
+  if (result === Infinity) {
+    _resetData();
+    result = 'Overflow';
+    output = '';
+  }
+
   state.result = _generateResultString(result);
   state.expression = output;
 };
@@ -583,7 +601,10 @@ const _specialOpsDelegatory = function (inputVal) {
 export const inputDelegatory = function (inputVal) {
   // check if button pressed is a number or decimal
   if (isFinite(inputVal) || inputVal === '.') {
-    _numberDelegatory(inputVal);
+    // set limit on input
+    if (_getCurrentPosValue().length < INPUT_LIMIT) {
+      _numberDelegatory(inputVal);
+    }
   } // end number check if
 
   if (OPERATORS.includes(inputVal)) {

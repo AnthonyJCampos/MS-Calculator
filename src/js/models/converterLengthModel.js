@@ -1,4 +1,5 @@
 import converterLayout from '../layouts/converterLayout.js';
+import { INPUT_LIMIT, DISPLAY_LIMIT } from '../config.js';
 
 /** CURRENT LENGTH LAYOUT AND OPTIONS FOR THE LENGTH MODEL  */
 export const renderPackage = {
@@ -30,7 +31,11 @@ const _getCurrentExpression = function () {
 }; // _getCurrentExpression
 
 const _setCurrentExpression = function (updateValue) {
-  data.curExpression = updateValue;
+  // 1. the user character limit is 19 or 15 numbers
+
+  if (updateValue.length <= INPUT_LIMIT) {
+    data.curExpression = updateValue;
+  }
 };
 
 const _getResult = function () {
@@ -140,7 +145,13 @@ const _getNonActiveUnit = function () {
 
 const _generateString = function (input) {
   if (isFinite(input)) {
-    return _removeTrailingZeros(bigDecimal.getPrettyValue(input));
+    let inputString = _removeTrailingZeros(bigDecimal.getPrettyValue(input));
+
+    if (inputString.length > DISPLAY_LIMIT) {
+      inputString = inputString.slice(0, DISPLAY_LIMIT);
+    }
+
+    return inputString;
   }
 }; // end _generateResultString
 
