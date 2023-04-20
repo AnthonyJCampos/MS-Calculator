@@ -2,8 +2,8 @@ import { backIcon } from '../../img/icons.js';
 
 const converterButtonLayout = `
 <div class="btn_spacer"></div>
-<button class="btn cmd btn--converter" value="clear entry">CE</button>
-<button class="btn cmd btn--converter" value="back">${backIcon}
+<button class="btn btn--converter" value="clear entry">CE</button>
+<button class="btn btn--svg btn--converter" value="back">${backIcon}
 </button>
 <button class="btn btn--converter" value="7">7</button>
 <button class="btn btn--converter" value="8">8</button>

@@ -121,7 +121,7 @@ button {
 }
 
 .nav_list--title {
-  font-size: 1.4rem;
+  font-size: 1.6rem;
   padding: 0.5rem 0 0.5rem 1rem;
 }
 
@@ -136,13 +136,13 @@ button {
 }
 
 .list_btn {
-  height: 2.2rem;
+  height: 3.2rem;
   width: 100%;
   padding-left: 1rem;
   text-align: start;
   font-size: 1.4rem;
   border: none;
-  background-color: inherit;
+  background-color: transparent;
 }
 
 /* ++++++++++++++++++++++++++++++++ */
@@ -208,17 +208,19 @@ button {
   border-radius: 5px;
   box-shadow: var(--shadow-primary);
   transition: background-color 0.25s ease-in, color 0.25s ease-in;
+}
 
-  /* display: flex;
+.btn--svg {
+  display: flex;
   align-items: center;
-  justify-content: center; */
+  justify-content: center;
 }
 
 .btn:hover,
 .btn:active {
   background-color: var(--color-tertiary);
   color: var(--color-font-secondary);
-  font-size: 200%;
+  font-size: calc(2rem * 1.5);
 }
 
 /* ++++++++++++++++++++++++++++++++ */

@@ -62,9 +62,6 @@
 
 .btn--converter {
   font-size: 3.4rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
 .btn--converter:hover,
