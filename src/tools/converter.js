@@ -1,8 +1,9 @@
 import buttonView from '../js/views/buttonView.js';
 import DropdownUnitComponent from '../js/components/dropdownUnitComponent.js';
 import ConverterDisplayComponent from '../js/components/converterDisplayComponent.js';
+import { CONVERTER_TOOLS_KEYS } from '../js/config.js';
 
-import { CONVERTER_TOOLS_KEYS, CONVERTER_MODELS } from '../js/config.js';
+import * as converterModel from '../js/models/converterModel.js';
 
 class Converter {
   // current tool model that is in use
@@ -10,24 +11,18 @@ class Converter {
   _displayComponents = [];
 
   getLayoutPackage(toolSubType = CONVERTER_TOOLS_KEYS[0]) {
-    // get tool model from current converter tools set in the config file
-    this._currentToolModel = CONVERTER_MODELS.get(toolSubType);
+    // reset state in event is was prev used
+    converterModel.modelReset();
 
-    // update this later to throw and error
-    if (!this._currentToolModel) {
+    // get tool model from current converter tools set in the config file
+    if (!converterModel.setConverterType(toolSubType)) {
       return;
     }
-
-    // reset state in event is was prev used
-    this._currentToolModel.modelReset();
-
-    // get layout from model
-    const { layout } = this._currentToolModel.renderPackage;
 
     return {
       toolType: 'converter',
       toolTitle: toolSubType,
-      toolLayout: layout,
+      toolLayout: converterModel.getLayout(),
     };
   } // end getLayout
 
@@ -42,8 +37,8 @@ class Converter {
 
   initTool() {
     // Safely add new events to be used by converter
-    // buttonView.addHandlerBtnPress(this._processButtonPadInput.bind(this));
-    buttonView.addHandlerBtnPress(this._processButtonPadInput);
+    buttonView.addHandlerBtnPress(this._processButtonPadInput.bind(this));
+    // buttonView.addHandlerBtnPress(this._processButtonPadInput);
     // init top unit dropdown
     this._dropdownElTop.addHandlerDropdownClicked();
     this._dropdownElTop.addHanlderOptionClick(this._setFirstUnit.bind(this));
@@ -66,13 +61,16 @@ class Converter {
   }
 
   resetState() {
-    this._currentToolModel?.modelReset();
+    converterModel?.modelReset();
   }
 
   _buildDropdownComponents() {
     // get models current options from its renderPackage
-    const { options, firstUnitSelected, secondUnitSelected } =
-      this._currentToolModel.renderPackage;
+    // const { options, firstUnitSelected, secondUnitSelected } =
+    //   this._currentToolModel.renderPackage;
+
+    const options = converterModel.getOptions();
+    converterModel.setStateInitialOptions(options[0]);
     this._dropdownElTop = new DropdownUnitComponent('dropdown--1', options);
     this._dropdownElBottom = new DropdownUnitComponent('dropdown--2', options);
 
@@ -80,24 +78,24 @@ class Converter {
     this._displayComponents.push(
       new ConverterDisplayComponent(
         'display_unit--0',
-        this._currentToolModel.getActiveDisplay()
+        converterModel.getActiveDisplay()
       )
     );
 
     this._displayComponents.push(
       new ConverterDisplayComponent(
         'display_unit--1',
-        this._currentToolModel.getActiveDisplay()
+        converterModel.getActiveDisplay()
       )
     );
   } // end _buildDropdownComponents
 
   _processDisplayClick(controlUnit) {
     // check if display unit is already active unit, if so do nothing
-    if (this._currentToolModel.getActiveDisplay() === controlUnit) {
+    if (converterModel.getActiveDisplay() === controlUnit) {
       return;
     } else {
-      this._currentToolModel.setActiveDisplay(controlUnit);
+      converterModel.setActiveDisplay(controlUnit);
     }
 
     this._displayComponents.forEach(displayComponent => {
@@ -107,26 +105,26 @@ class Converter {
 
   _processButtonPadInput(btnVal) {
     // 1. process input
-    this._currentToolModel.inputDelegatory(btnVal);
+    converterModel.inputDelegatory(btnVal);
     // 2. update active display with expression
     // 3. update non active display with result
     this._displayComponents.forEach(displayComponent => {
-      displayComponent.update(this._currentToolModel.state);
+      displayComponent.update(converterModel.state);
     });
   } // end controlBtnPress
 
   _setFirstUnit(topVal) {
-    this._currentToolModel.setFirstUnitType(topVal);
-    this._displayComponents[
-      this._currentToolModel.getNonActiveDisplay()
-    ].update(this._currentToolModel.state);
+    converterModel.setFirstUnitType(topVal);
+    this._displayComponents[converterModel.getNonActiveDisplay()].update(
+      converterModel.state
+    );
   }
 
   _setSecondUnit(botVal) {
-    this._currentToolModel.setSecondUnitType(botVal);
-    this._displayComponents[
-      this._currentToolModel.getNonActiveDisplay()
-    ].update(this._currentToolModel.state);
+    converterModel.setSecondUnitType(botVal);
+    this._displayComponents[converterModel.getNonActiveDisplay()].update(
+      converterModel.state
+    );
   }
 } // end converter
 
