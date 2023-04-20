@@ -5,7 +5,7 @@ import { CONVERTER_TOOLS_KEYS } from '../js/config.js';
 
 import * as converterModel from '../js/models/converterModel.js';
 
-class Converter {
+export default class Converter {
   // current tool model that is in use
   _currentToolModel;
   _displayComponents = [];
@@ -54,21 +54,8 @@ class Converter {
     });
   }
 
-  clearEvents() {
-    this._dropdownElTop?.clearEvents();
-    this._dropdownElBottom?.clearEvents();
-    buttonView.clearEvents();
-  }
-
-  resetState() {
-    converterModel?.modelReset();
-  }
-
   _buildDropdownComponents() {
     // get models current options from its renderPackage
-    // const { options, firstUnitSelected, secondUnitSelected } =
-    //   this._currentToolModel.renderPackage;
-
     const options = converterModel.getOptions();
     converterModel.setStateInitialOptions(options[0]);
     this._dropdownElTop = new DropdownUnitComponent('dropdown--1', options);
@@ -127,5 +114,3 @@ class Converter {
     );
   }
 } // end converter
-
-export default new Converter();

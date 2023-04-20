@@ -3,9 +3,6 @@ import { dropdownIcon } from '../../img/icons.js';
 export default class DropdownUnitComponent {
   _hideDelay = 500;
   _parentEl;
-  _outEvent;
-  _overEvent;
-  _optionEvent;
 
   constructor(elementString, options) {
     this._parentEl = document.querySelector(`.${elementString}`);
@@ -22,28 +19,9 @@ export default class DropdownUnitComponent {
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
 
     // mouse over and mouse out events
-    this._outEvent = this._mouseoutEvent.bind(this);
     this._addHandlerMouseout();
-    this._overEvent = this._mouseoverEvent.bind(this);
     this._addHandlerMouseover();
   } // end init
-
-  clearEvents() {
-    // remove mouseout event
-    this._parentEl
-      .querySelector('.dropdown-content')
-      .removeEventListener('mouseout', this._outEvent, false);
-
-    //remove mouse over event
-    this._parentEl
-      .querySelector('.dropdown-content')
-      .removeEventListener('mouseover', this._overEvent, false);
-
-    // remove option click event
-    this._parentEl
-      .querySelector('.dropdown-content')
-      .removeEventListener('click', this._optionEvent);
-  }
 
   addHandlerDropdownClicked() {
     this._parentEl.addEventListener('click', function (event) {
@@ -59,10 +37,9 @@ export default class DropdownUnitComponent {
   } // end _addHandlerDropdownClicked
 
   addHanlderOptionClick(handler) {
-    this._optionEvent = this._optionClickEvent.bind(this, handler);
     this._parentEl
       .querySelector('.dropdown-content')
-      .addEventListener('click', this._optionEvent);
+      .addEventListener('click', this._optionClickEvent.bind(this, handler));
   } // end addHanlderOptionClick
 
   _optionClickEvent(handler, event) {
@@ -88,13 +65,13 @@ export default class DropdownUnitComponent {
   _addHandlerMouseout() {
     this._parentEl
       .querySelector('.dropdown-content')
-      .addEventListener('mouseout', this._outEvent, false);
+      .addEventListener('mouseout', this._mouseoutEvent.bind(this));
   } // end addHandlerWindowClick
 
   _addHandlerMouseover() {
     this._parentEl
       .querySelector('.dropdown-content')
-      .addEventListener('mouseover', this._overEvent, false);
+      .addEventListener('mouseover', this._mouseoverEvent.bind(this));
   }
 
   _mouseoutEvent(event) {

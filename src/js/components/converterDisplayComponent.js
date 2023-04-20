@@ -37,18 +37,11 @@ export default class ConverterDisplayComponent {
       return;
     }
 
-    console.log(this._parentEl);
-    console.log(`inside display ${this._unit}`);
-    console.log(data);
     const displayElement = this._parentEl.querySelector('.display_unit');
 
     if (data.activeDisplay === this._unit) {
-      console.log('never');
       displayElement.textContent = data.activeContent;
     } else {
-      console.log('here');
-      console.log(data.nonContent);
-      console.log(displayElement);
       displayElement.textContent = data.nonContent;
     }
   } // end update
