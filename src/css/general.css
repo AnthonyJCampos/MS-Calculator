@@ -40,10 +40,10 @@ svg {
 }
 
 /* ++++++++++++++++++++++++++++++++ */
-/* BACK GROUND CONTAINER  */
+/* PRIMARY CONTAINER  */
 /* ++++++++++++++++++++++++++++++++ */
 
-.container {
+.tool_box {
   height: 72.5rem;
   width: 60rem;
   padding: 1rem;
@@ -149,10 +149,10 @@ button {
 /* Tool Container */
 /* ++++++++++++++++++++++++++++++++ */
 
-.tool_container {
+.tool_main_container {
   grid-area: type__container;
   height: auto;
-  width: auto;
+  max-width: 60rem;
   display: grid;
   grid-template-columns: 32.5% 32.5% 35%;
   grid-template-rows: 5% auto;

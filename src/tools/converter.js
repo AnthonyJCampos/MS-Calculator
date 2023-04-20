@@ -18,6 +18,9 @@ class Converter {
       return;
     }
 
+    // reset state in event is was prev used
+    this._currentToolModel.modelReset();
+
     // get layout from model
     const { layout } = this._currentToolModel.renderPackage;
 
@@ -38,7 +41,9 @@ class Converter {
   } // end getUniqueComponents
 
   initTool() {
-    buttonView.addHandlerBtnPress(this._processButtonPadInput.bind(this));
+    // Safely add new events to be used by converter
+    // buttonView.addHandlerBtnPress(this._processButtonPadInput.bind(this));
+    buttonView.addHandlerBtnPress(this._processButtonPadInput);
     // init top unit dropdown
     this._dropdownElTop.addHandlerDropdownClicked();
     this._dropdownElTop.addHanlderOptionClick(this._setFirstUnit.bind(this));
@@ -57,7 +62,13 @@ class Converter {
   clearEvents() {
     this._dropdownElTop?.clearEvents();
     this._dropdownElBottom?.clearEvents();
+    buttonView.clearEvents();
   }
+
+  resetState() {
+    this._currentToolModel?.modelReset();
+  }
+
   _buildDropdownComponents() {
     // get models current options from its renderPackage
     const { options, firstUnitSelected, secondUnitSelected } =

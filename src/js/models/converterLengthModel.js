@@ -139,6 +139,14 @@ const _getNonActiveUnit = function () {
     : state.unitTypeArray[0];
 };
 
+/** ------------------------ DATA & STATE RESET ------------------------ */
+
+export const modelReset = function () {
+  _clearData();
+  _clearStateContent();
+  setActiveDisplay(0);
+  state.unitTypeArray = [renderPackage.options[0], renderPackage.options[0]];
+};
 /** ------------------------ OUTPUT SECTION ------------------------ */
 
 // RESULTS/INPUT SUBSECTION

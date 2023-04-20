@@ -5,6 +5,7 @@ export default class DropdownUnitComponent {
   _parentEl;
   _outEvent;
   _overEvent;
+  _optionEvent;
 
   constructor(elementString, options) {
     this._parentEl = document.querySelector(`.${elementString}`);
@@ -20,6 +21,7 @@ export default class DropdownUnitComponent {
     this._clear();
     this._parentEl.insertAdjacentHTML('afterbegin', markup);
 
+    // mouse over and mouse out events
     this._outEvent = this._mouseoutEvent.bind(this);
     this._addHandlerMouseout();
     this._overEvent = this._mouseoverEvent.bind(this);
@@ -27,7 +29,20 @@ export default class DropdownUnitComponent {
   } // end init
 
   clearEvents() {
-    window.removeEventListener('click', this._outEvent, false);
+    // remove mouseout event
+    this._parentEl
+      .querySelector('.dropdown-content')
+      .removeEventListener('mouseout', this._outEvent, false);
+
+    //remove mouse over event
+    this._parentEl
+      .querySelector('.dropdown-content')
+      .removeEventListener('mouseover', this._overEvent, false);
+
+    // remove option click event
+    this._parentEl
+      .querySelector('.dropdown-content')
+      .removeEventListener('click', this._optionEvent);
   }
 
   addHandlerDropdownClicked() {
@@ -44,26 +59,31 @@ export default class DropdownUnitComponent {
   } // end _addHandlerDropdownClicked
 
   addHanlderOptionClick(handler) {
-    const dropdownWindow = this._parentEl.querySelector('.dropdown-content');
-    const dropdownOption = this._parentEl.querySelector('.btn--unit-text');
-
-    dropdownWindow.addEventListener('click', function (event) {
-      const unitBtn = event.target.closest('.dropdown_btn');
-      if (!unitBtn) {
-        return;
-      }
-
-      // get option from dropdown button
-      const option = unitBtn.value;
-      handler(option);
-
-      // update displayed value
-      dropdownOption.textContent = option;
-
-      // close window after selection
-      dropdownWindow.classList.add('hidden');
-    }); // end of event listener
+    this._optionEvent = this._optionClickEvent.bind(this, handler);
+    this._parentEl
+      .querySelector('.dropdown-content')
+      .addEventListener('click', this._optionEvent);
   } // end addHanlderOptionClick
+
+  _optionClickEvent(handler, event) {
+    const unitBtn = event.target.closest('.dropdown_btn');
+
+    if (!unitBtn) {
+      return;
+    }
+
+    const dropdownWindow = this._parentEl.querySelector('.dropdown-content');
+
+    // get option from dropdown button
+    const option = unitBtn.value;
+    handler(option);
+    const dropdownOption = this._parentEl.querySelector('.btn--unit-text');
+    // update displayed value
+    dropdownOption.textContent = option;
+
+    // close window after selection
+    dropdownWindow.classList.add('hidden');
+  } // end optionClickEvent
 
   _addHandlerMouseout() {
     this._parentEl

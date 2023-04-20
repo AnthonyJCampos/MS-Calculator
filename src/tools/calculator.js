@@ -10,6 +10,9 @@ class Calculator {
 
     const layout = layoutMap.get(layoutString);
 
+    // reset state in event is was prev used
+    standardModel.modelReset();
+
     if (!layout) {
       return;
     }

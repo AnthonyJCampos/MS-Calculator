@@ -9,7 +9,7 @@ export const state = {
 }; // end state
 
 /** DATA FOR COMPUTATION */
-export const data = {
+const data = {
   curExpression: ['0'],
   curExpPos: 0,
   result: undefined,
@@ -124,6 +124,13 @@ const _resetData = function () {
   _resetResult();
   _updateSolvedState(false);
 }; // end _resetData
+
+export const modelReset = function () {
+  _resetData();
+  state.result = '';
+  state.expression = '';
+  state.history = [];
+};
 
 /** HELPER METHODS */
 

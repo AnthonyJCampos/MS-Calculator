@@ -1,4 +1,5 @@
 import toolView from './views/toolView.js';
+import buttonView from './views/buttonView.js';
 import calculator from '../tools/calculator.js';
 import converter from '../tools/converter.js';
 
@@ -23,11 +24,14 @@ function changeTool(tool, selection) {
 }
 
 function menuBtnPress(selection) {
+  // change tool to calculator
   if (CALCULATOR_TOOLS.has(selection)) {
     converter.clearEvents();
+    // converter.resetState();
     changeTool(calculator, selection);
   }
 
+  // change tool to converter
   if (CONVERTER_TOOLS_KEYS.has(selection)) {
     changeTool(converter, selection);
   }
