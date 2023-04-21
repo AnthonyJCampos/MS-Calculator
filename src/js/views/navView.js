@@ -1,5 +1,5 @@
 import { menuIcon } from '../../img/icons.js';
-import { removeAllClassesExcept } from '../helper.js';
+import { removeAllClassesExcept } from '../helpers/helper.js';
 
 class NavView {
   _parentEl = document.querySelector('.tool_main_container');

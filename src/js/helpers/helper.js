@@ -1,4 +1,4 @@
-import { DISPLAY_LIMIT, TIMEOUT_SEC } from './config.js';
+import { DISPLAY_LIMIT } from '../configs/config.js';
 
 /** ------------------------ VIEW HELPERS SECTION ------------------------ */
 
@@ -26,26 +26,3 @@ export const convertToExponential = function (string) {
 
   return string;
 };
-
-/** ------------------------ FETCH SECTION ------------------------ */
-
-export const timeout = function (seconds) {
-  return new Promise(function (_, reject) {
-    setTimeout(function () {
-      reject(new Error(`Request too to long! timeout after ${seconds}`));
-    }, seconds * 1000);
-  });
-}; // end timeout
-
-export const getJSON = async function (url) {
-  try {
-    const response = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
-    const data = await response.json();
-    if (!response.ok) {
-      throw new Error(`${data.message} (${response.status})`);
-    }
-    return data;
-  } catch (error) {
-    throw error;
-  } // end try catch
-}; // end getJSON

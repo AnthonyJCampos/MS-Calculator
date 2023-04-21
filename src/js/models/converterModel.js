@@ -2,8 +2,7 @@ import {
   INPUT_LIMIT,
   DISPLAY_LIMIT,
   AVAILABLE_CONVERTERS_MAP,
-} from '../config.js';
-
+} from '../configs/config.js';
 
 /** ------------------------ DATA SECTION ------------------------ */
 
@@ -65,6 +64,7 @@ export const state = {
 export const setConverterType = function (toolSubType) {
   if (AVAILABLE_CONVERTERS_MAP.has(toolSubType)) {
     state.converterType = toolSubType;
+
     return true;
   }
 

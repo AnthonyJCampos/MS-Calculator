@@ -1,13 +1,13 @@
 import toolView from './views/toolView.js';
 import navView from './views/navView.js';
-import calculator from '../tools/calculator.js';
-import Converter from '../tools/converter.js';
+import calculator from '../js/tools/calculator.js';
+import Converter from '../js/tools/converter.js';
 
 import {
   CONVERTER_TOOLS_KEYS,
   CALCULATOR_TOOLS_KEYS,
   INITIAL_SETUP,
-} from './config.js';
+} from '../js/configs/config.js';
 
 function changeTool(tool, selection) {
   // 1. get render package

@@ -1,8 +1,8 @@
-import buttonView from '../js/views/buttonView.js';
-import historyView from '../js/views/historyView.js';
-import calcDisplayView from '../js/views/calcDisplayView.js';
-import * as standardModel from '../js/models/standardModel.js';
-import standardLayout from '../js/layouts/standardLayout.js';
+import buttonView from '../views/buttonView.js';
+import historyView from '../views/historyView.js';
+import calcDisplayView from '../views/calcDisplayView.js';
+import * as standardModel from '../models/standardModel.js';
+import standardLayout from '../layouts/standardLayout.js';
 
 class Calculator {
   getLayoutPackage(layoutString = 'Standard') {

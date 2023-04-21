@@ -51,6 +51,34 @@
 }
 
 /* ++++++++++++++++++++++++++++++++ */
+/* API BOX STYLES   */
+/* ++++++++++++++++++++++++++++++++ */
+
+.api_box {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.api_example {
+  margin-bottom: 0.2rem;
+}
+
+.api_timestamp {
+  margin-bottom: 0.2rem;
+}
+
+.btn--api {
+  border: transparent;
+  background-color: transparent;
+  text-decoration: underline;
+  margin-top: 0.4rem;
+  margin-bottom: 2rem;
+}
+
+/* ++++++++++++++++++++++++++++++++ */
 /* BUTTON LAYOUT CONTAINER  */
 /* ++++++++++++++++++++++++++++++++ */
 

@@ -1,5 +1,5 @@
-import { INPUT_LIMIT, DISPLAY_LIMIT } from '../config.js';
-import { convertToExponential } from '../helper.js';
+import { INPUT_LIMIT, DISPLAY_LIMIT } from '../configs/config.js';
+import { convertToExponential } from '../helpers/helper.js';
 /** STATE FOR CONTROLLER */
 
 export const state = {

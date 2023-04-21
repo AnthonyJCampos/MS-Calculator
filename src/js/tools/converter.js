@@ -1,9 +1,9 @@
-import buttonView from '../js/views/buttonView.js';
-import DropdownUnitComponent from '../js/components/dropdownUnitComponent.js';
-import ConverterDisplayComponent from '../js/components/converterDisplayComponent.js';
-import { CONVERTER_TOOLS_KEYS } from '../js/config.js';
+import buttonView from '../views/buttonView.js';
+import DropdownUnitComponent from '../components/dropdownUnitComponent.js';
+import ConverterDisplayComponent from '../components/converterDisplayComponent.js';
+import { CONVERTER_TOOLS_KEYS } from '../configs/config.js';
 
-import * as converterModel from '../js/models/converterModel.js';
+import * as converterModel from '../models/converterModel.js';
 
 export default class Converter {
   // current tool model that is in use
