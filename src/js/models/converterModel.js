@@ -4,7 +4,6 @@ import {
   AVAILABLE_CONVERTERS_MAP,
 } from '../config.js';
 
-/** ------------------------ STATE SECTION ------------------------ */
 
 /** ------------------------ DATA SECTION ------------------------ */
 

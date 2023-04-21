@@ -2,26 +2,15 @@ import { menuIcon } from '../../img/icons.js';
 
 class ToolView {
   _parentEl = document.querySelector('.tool_main_container');
-  _toolType;
 
-  render(layoutPackage) {
-    if (!layoutPackage) {
+  render(layout) {
+    if (!layout) {
       return;
     }
 
-    // remove previous styling
-    if (this._toolType) {
-      this._parentEl.classList.remove(this._toolType);
-    }
-    const { toolType, toolTitle, toolLayout } = layoutPackage;
-    // set the current tool type, options converter or calculator
-    this._toolType = toolType;
-    // add new tool type styling
-    this._parentEl.classList.add(this._toolType);
-    const markup = this._generateMarkup(toolLayout, toolTitle);
-
+    const markup = this._generateMarkup(layout);
     this._clear();
-    this._parentEl.insertAdjacentHTML('afterbegin', markup);
+    this._parentEl.insertAdjacentHTML('beforeend', markup);
   } // end render
 
   initComponents(components) {
@@ -30,79 +19,16 @@ class ToolView {
     } // end for
   }
 
-  addHandlerMenuSelection(handler) {
-    this._parentEl.addEventListener('click', function (event) {
-      const btn = event.target.closest('.list_btn');
-      if (!btn) {
-        return;
-      }
-
-      handler(btn.value);
-    });
-  }
-
-  addHandlerNav() {
-    this._parentEl.addEventListener('click', function (event) {
-      const btn = event.target.closest('.nav__btn');
-
-      if (!btn) {
-        return;
-      }
-
-      const dropdownEl = document.querySelector('.nav__dropdown');
-      dropdownEl.classList.toggle('hidden');
-    });
-  }
-
-  // this method is currently broken
-  addHandlerWindowClick() {
-    window.addEventListener('click', function (event) {
-      if (
-        !event.target.matches('.nav__btn') &&
-        !event.target.matches('.nav__dropdown')
-      ) {
-        const dropdownEl = document.querySelector('.nav__dropdown');
-
-        if (!dropdownEl) {
-          console.error('error in toolview window click event');
-          return;
-        }
-        dropdownEl.classList.add('hidden');
-      }
-    });
-  } // end addHandlerWindowClick
-
-  _generateMarkup(toolLayout, toolTitle) {
+  _generateMarkup(toolLayout) {
     return `
-      <div class="nav__dropdown hidden">  
-        <button class="nav__btn">
-         ${menuIcon}
-        </button>
-        <h2 class="nav_list--title">Calculator</h2>
-        <ul class="calc_list">
-        <li class="list_item">
-          <button class="list_btn" value="Standard">Standard</button>
-        </li>
-        </ul>
-        <h2 class="nav_list--title">Converter</h2>
-        <ul class="converter_list">
-        <li class="list_item">
-          <button class="list_btn" value="Length">Length</button>
-        </li>
-        </ul>
-      </div> 
-      <nav class="nav">
-        <button class="nav__btn">
-        ${menuIcon}
-        </button>
-        <h2 class="tool__title">${toolTitle}</h2>
-      </nav>
       ${toolLayout}
       `;
   } // end generateMarkup
 
   _clear() {
-    this._parentEl.innerHTML = '';
+    document.querySelector('.tool')?.remove();
+    // this is required for calculators
+    document.querySelector('.history')?.remove();
   } // end clear
 } // end ToolView
 
