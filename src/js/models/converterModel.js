@@ -231,15 +231,17 @@ function _updateNonActiveState() {
 }
 
 const _convert = function () {
-  const conversationMap = AVAILABLE_CONVERTERS_MAP.get(
+  // 1. get the conversation to from the available converters in config
+  const conversationTool = AVAILABLE_CONVERTERS_MAP.get(
     state.converterType
-  ).conversationMap;
+  ).conversationTool;
 
-  const result = conversationMap.get(_getActiveUnit())?.(
-    _getCurrentExpression(),
-    _getNonActiveUnit()
+  // 2. call conversation tool, base, target, current expression
+  const result = conversationTool(
+    _getActiveUnit(),
+    _getNonActiveUnit(),
+    _getCurrentExpression()
   );
-
   if (result === undefined) {
     console.error('Error In Convert Method, Result is undefined');
     return;

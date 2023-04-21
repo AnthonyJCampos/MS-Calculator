@@ -1,5 +1,4 @@
 class ButtonView {
-  // _parentEl = document.querySelector('.btn_container');
   _parentEl;
 
   init() {

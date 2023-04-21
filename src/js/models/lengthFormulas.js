@@ -522,3 +522,7 @@ export const conversationMap = new Map([
   ['Miles', _getMilesConversation],
   ['Nautical Miles', _getNauticalMilesConversation],
 ]);
+
+export const conversationTool = function (base, target, expression) {
+  return conversationMap.get(base)?.(expression, target);
+};

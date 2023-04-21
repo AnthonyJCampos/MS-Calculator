@@ -22,14 +22,31 @@ export const renderPackage = {
   timestamp: '',
 };
 
-/** ------------------------ CONVERTER FORMULAS SECTION ------------------------ */
+let ratesMap = new Map([]);
 
-const convertCurrency = function (expression) {};
-
-/** ------------------------ CONVERSATION MAP SECTION ------------------------ */
+/** ------------------------ CONVERSATION TOOL SECTION ------------------------ */
 
 // key is active unit, value is none active unit
 export const conversationMap = new Map([]);
+
+export const conversationTool = function (base, target, expression) {
+  // CURRENCY_BASE === USD
+
+  console.log(ratesMap);
+  if (base === target) {
+    return expression;
+  }
+  // 1. expression to CURRENCY_BASE => result
+
+  const baseCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(base);
+  const usd = bigDecimal.divide(expression, ratesMap.get(baseCode));
+
+  // 2. convert result to target
+  const targetCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(target);
+  const result = bigDecimal.multiply(usd, ratesMap.get(targetCode));
+  console.log(result);
+  return result;
+};
 
 /** ------------------------ INIT SECTION ------------------------ */
 
@@ -81,13 +98,16 @@ const _getInitialExchangeRates = async function () {
   const initialRateMap = ratesToMap(data);
   initOptions(initialRateMap);
 
-  console.log('++++++++ RATE MAP +++++++');
-  console.log(initialRateMap);
+  ratesMap = initialRateMap;
+  // console.log('++++++++ RATE MAP +++++++');
+  // console.log(initialRateMap);
 
-  console.log('++++++++ RENDER PACKAGE +++++++');
-  console.log(renderPackage);
+  // console.log('++++++++ RENDER PACKAGE +++++++');
+  // console.log(renderPackage);
 
   // return initialRateMap;
 };
+
+/*** TURN THIS CODE OFF DURING DEVELOPMENT TO STOP API CALLS */
 
 // _getInitialExchangeRates();
