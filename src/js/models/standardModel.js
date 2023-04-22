@@ -1,5 +1,8 @@
 import { INPUT_LIMIT, DISPLAY_LIMIT } from '../configs/config.js';
-import { convertToExponential } from '../helpers/helper.js';
+import {
+  convertToExponential,
+  removeTrailingZeros,
+} from '../helpers/helper.js';
 /** STATE FOR CONTROLLER */
 
 export const state = {
@@ -157,10 +160,10 @@ const _validateOprend = function (val, inputVal) {
 const _generateResultString = function (result) {
   if (isFinite(result)) {
     if (result.toString().length >= DISPLAY_LIMIT) {
-      return Number.parseFloat(result).toExponential();
+      return removeTrailingZeros(Number.parseFloat(result).toExponential());
     }
 
-    return bigDecimal.getPrettyValue(result);
+    return removeTrailingZeros(bigDecimal.getPrettyValue(result));
   } else {
     return result;
   }
@@ -168,7 +171,7 @@ const _generateResultString = function (result) {
 
 const _generateInputString = function (input) {
   if (isFinite(input)) {
-    return bigDecimal.getPrettyValue(input);
+    return removeTrailingZeros(bigDecimal.getPrettyValue(input));
   } else {
     return input;
   }
@@ -187,7 +190,7 @@ const _generateExpressionString = function () {
   if (!_leftStackIsEmpty()) {
     output = _buildSpecialExpression(data.leftOprendStack, _getValueAt(0));
   } else {
-    output = convertToExponential(_getValueAt(0));
+    output = removeTrailingZeros(convertToExponential(_getValueAt(0)));
   }
 
   if (_getPositionInExpression() >= 1) {
@@ -198,7 +201,7 @@ const _generateExpressionString = function () {
     if (!_rightStackIsEmpty()) {
       output += _buildSpecialExpression(data.rightOprendStack, _getValueAt(2));
     } else {
-      output += convertToExponential(_getValueAt(2));
+      output += removeTrailingZeros(convertToExponential(_getValueAt(2)));
     } // end if
   } // end if
 
@@ -299,6 +302,14 @@ const _negate = function () {
   // if current position is 1, do nothing
   if (_getPositionInExpression() === 1) {
     return [];
+  }
+
+  // if expression has already been solved, then clear expression and negate result
+  if (_getSolvedState()) {
+    _resetExpression();
+    _setCurrentPosValue(_getResult());
+    _resetResult();
+    _updateSolvedState(false);
   }
 
   _setCurrentPosValue(bigDecimal.negate(_getCurrentPosValue()));

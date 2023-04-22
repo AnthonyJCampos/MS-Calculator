@@ -39,8 +39,8 @@ class HistoryView {
   _generateMarkupItem(item) {
     return `
     <il class="history_item">
-      <div class="history__item--expression">${item.expression}</div>
-      <div class="history__item--result">${item.result}</div>
+      <div class="history_item--expression">${item.expression}</div>
+      <div class="history_item--result">${item.result}</div>
     </il>
     `;
   }
