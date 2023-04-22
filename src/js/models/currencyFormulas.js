@@ -1,16 +1,17 @@
 import converterCurrencyLayout from '../layouts/converterCurrencyLayout.js';
 import {
-  CURRENCY_BASE,
   CURRENCY_URL,
   CURRENCY_API_KEY,
   CURRENCY_SYMBOLS_MAP_BY_CODE,
   CURRENCY_SYMBOLS_MAP_BY_NAME,
+  CURRENCY_OFFLINE_RATES,
 } from '../configs/configsAPI.js';
 import {
   getJSON,
   convertTimestampToTime,
   formatDateString,
 } from '../helpers/apiHelpers.js';
+import { hasMoreThanTwoDecimalPlaces } from '../helpers/helper.js';
 
 /** ------------------------ CURRENCY CONFIG SECTION ------------------------ */
 
@@ -18,37 +19,21 @@ import {
 export const renderPackage = {
   layout: converterCurrencyLayout,
   options: [],
-  date: '',
-  timestamp: '',
 };
 
-let ratesMap = new Map([]);
+const _initOptions = function (map) {
+  map.forEach((_, key) => {
+    const option = CURRENCY_SYMBOLS_MAP_BY_CODE.get(key);
 
-/** ------------------------ CONVERSATION TOOL SECTION ------------------------ */
+    if (!option) {
+      return;
+    }
+    renderPackage.options.push(option);
+  });
+  renderPackage.options.sort();
+}; // end _initOptions
 
-// key is active unit, value is none active unit
-export const conversationMap = new Map([]);
-
-export const conversationTool = function (base, target, expression) {
-  // CURRENCY_BASE === USD
-
-  console.log(ratesMap);
-  if (base === target) {
-    return expression;
-  }
-  // 1. expression to CURRENCY_BASE => result
-
-  const baseCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(base);
-  const usd = bigDecimal.divide(expression, ratesMap.get(baseCode));
-
-  // 2. convert result to target
-  const targetCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(target);
-  const result = bigDecimal.multiply(usd, ratesMap.get(targetCode));
-  console.log(result);
-  return result;
-};
-
-/** ------------------------ INIT SECTION ------------------------ */
+/** ------------------------ RATES MAP SECTION ------------------------ */
 
 // This function takes an object as input and returns a new Map object.
 const ratesToMap = function (obj) {
@@ -68,46 +53,103 @@ const ratesToMap = function (obj) {
   return map;
 }; // end ratesToMap
 
-const initOptions = function (map) {
-  map.forEach((_, key) => {
-    const option = CURRENCY_SYMBOLS_MAP_BY_CODE.get(key);
+let ratesMap = ratesToMap(CURRENCY_OFFLINE_RATES);
 
-    if (!option) {
-      return;
+_initOptions(ratesMap);
+
+/** ------------------------ API RENDER PACKAGE SECTION ------------------------ */
+
+export const apiRenderData = {
+  apiExample: '',
+  apiTimestamp: '',
+  apiBtnText: 'Update Currency Rates',
+};
+
+const _getRate = function (baseCode, targetCode) {
+  // CURRENCY_BASE === USD
+
+  if (baseCode === targetCode) {
+    return 1;
+  }
+
+  const usd = bigDecimal.divide(1, ratesMap.get(baseCode));
+  const rate = bigDecimal.multiply(usd, ratesMap.get(targetCode));
+
+  return rate;
+}; // end _getRate
+
+export const setExample = function (
+  base = renderPackage.options.at(0),
+  target = renderPackage.options.at(0)
+) {
+  const baseCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(base);
+
+  const targetCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(target);
+
+  const rate = _getRate(baseCode, targetCode);
+
+  apiRenderData.apiExample = `1 ${baseCode} = ${rate} ${targetCode}`;
+}; // end setExample
+
+const _setTimeStamp = function (data) {
+  const date = formatDateString(data.date);
+  const time = convertTimestampToTime(data.timestamp);
+  apiRenderData.apiTimestamp = `Updated ${date} ${time}`;
+}; // end _setTimeStamp
+
+const _setApiRenderData = function (data) {
+  try {
+    if (!data) {
+      throw new Error(`Error in: ${data} data undefined`);
     }
-    renderPackage.options.push(option);
-  });
-};
 
-const _getInitialExchangeRates = async function () {
-  console.log(CURRENCY_API_KEY);
-  const myHeaders = new Headers();
-  myHeaders.append('apikey', CURRENCY_API_KEY);
+    _setTimeStamp(data);
+    setExample();
+  } catch (error) {
+    console.error(error);
+  } // end try
+}; // end
 
-  const requestOptions = {
-    method: 'GET',
-    redirect: 'follow',
-    headers: myHeaders,
-  };
+_setApiRenderData(CURRENCY_OFFLINE_RATES);
 
-  const data = await getJSON(CURRENCY_URL, requestOptions);
+/** ------------------------ INIT SECTION ------------------------ */
 
-  renderPackage.date = formatDateString(data.date);
-  renderPackage.timestamp = convertTimestampToTime(data.timestamp);
+export const updateExchangeRates = async function () {
+  try {
+    // headers required by API
+    const myHeaders = new Headers();
+    myHeaders.append('apikey', CURRENCY_API_KEY);
 
-  const initialRateMap = ratesToMap(data);
-  initOptions(initialRateMap);
+    // request options required by API
+    const requestOptions = {
+      method: 'GET',
+      redirect: 'follow',
+      headers: myHeaders,
+    };
 
-  ratesMap = initialRateMap;
-  // console.log('++++++++ RATE MAP +++++++');
-  // console.log(initialRateMap);
+    const data = await getJSON(CURRENCY_URL, requestOptions);
 
-  // console.log('++++++++ RENDER PACKAGE +++++++');
-  // console.log(renderPackage);
+    const initialRateMap = ratesToMap(data);
+    _initOptions(initialRateMap);
+    _setApiRenderData(data);
 
-  // return initialRateMap;
-};
+    ratesMap = initialRateMap;
+  } catch (error) {
+    throw new Error(error);
+  } // end try
+}; // end updateExchangeRates
 
-/*** TURN THIS CODE OFF DURING DEVELOPMENT TO STOP API CALLS */
+/** ------------------------ CONVERSATION TOOL SECTION ------------------------ */
 
-// _getInitialExchangeRates();
+export const conversationTool = function (base, target, expression) {
+  const baseCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(base);
+  const targetCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(target);
+  const rate = _getRate(baseCode, targetCode);
+  const result = bigDecimal.multiply(expression, rate);
+
+  if (hasMoreThanTwoDecimalPlaces(result) && targetCode !== 'BTC') {
+    return bigDecimal.round(result, 2);
+  }
+
+  return result;
+}; // end conversationTool

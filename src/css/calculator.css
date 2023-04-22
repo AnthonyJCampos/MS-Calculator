@@ -93,7 +93,7 @@
 }
 
 .history_list::-webkit-scrollbar {
-  width: 5px;
+  width: 0.5rem;
 }
 
 .history_list::-webkit-scrollbar-track {

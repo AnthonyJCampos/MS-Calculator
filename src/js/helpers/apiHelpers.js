@@ -29,6 +29,17 @@ export const getJSON = async function (url, options) {
 export const convertTimestampToTime = function (timestamp) {
   const date = new Date(timestamp * 1000);
   let hours = date.getHours();
+  const isDST =
+    date.getTimezoneOffset() <
+    new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      0,
+      0,
+      0
+    ).getTimezoneOffset();
+  hours = isDST ? hours - 1 : hours; // adjust for DST
   let minutes = date.getMinutes();
   const ampm = hours >= 12 ? 'PM' : 'AM';
 
@@ -38,13 +49,13 @@ export const convertTimestampToTime = function (timestamp) {
 
   const formattedTime = hours + ':' + minutes + ' ' + ampm;
   return formattedTime;
-};
+}; // end convertTimestampToTime
 
 export const formatDateString = function (dateStr) {
-  const date = new Date(dateStr);
-  return date.toLocaleDateString('en-US', {
-    month: '2-digit',
-    day: '2-digit',
-    year: 'numeric',
-  });
+  const parsedData = dateStr.split('-');
+
+  const formatedDate = `${parsedData.at(1)}/${parsedData.at(2)}/${parsedData.at(
+    0
+  )}`;
+  return formatedDate;
 };

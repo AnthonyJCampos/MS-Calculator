@@ -1,4 +1,5 @@
 import buttonView from '../views/buttonView.js';
+import ApiComponent from '../components/apiComponent.js';
 import DropdownUnitComponent from '../components/dropdownUnitComponent.js';
 import ConverterDisplayComponent from '../components/converterDisplayComponent.js';
 import { CONVERTER_TOOLS_KEYS } from '../configs/config.js';
@@ -27,18 +28,17 @@ export default class Converter {
   } // end getLayout
 
   getUniqueComponents() {
-    this._buildDropdownComponents();
+    this._buildComponents();
     return {
       btnComp: buttonView,
       dropdownTop: this._dropdownElTop,
       dropdownBottom: this._dropdownElBottom,
+      apiComponent: this._apiComponent,
     };
   } // end getUniqueComponents
 
   initTool() {
-    // Safely add new events to be used by converter
     buttonView.addHandlerBtnPress(this._processButtonPadInput.bind(this));
-    // buttonView.addHandlerBtnPress(this._processButtonPadInput);
     // init top unit dropdown
     this._dropdownElTop.addHandlerDropdownClicked();
     this._dropdownElTop.addHanlderOptionClick(this._setFirstUnit.bind(this));
@@ -52,9 +52,11 @@ export default class Converter {
     this._displayComponents.forEach(displayComponent => {
       displayComponent.addHandlerClick(this._processDisplayClick.bind(this));
     });
+
+    this._apiComponent?.addHandlerClick(this._updateApi.bind(this));
   }
 
-  _buildDropdownComponents() {
+  _buildComponents() {
     // get models current options from its renderPackage
     const options = converterModel.getOptions();
     converterModel.setStateInitialOptions(options[0]);
@@ -75,7 +77,12 @@ export default class Converter {
         converterModel.getActiveDisplay()
       )
     );
-  } // end _buildDropdownComponents
+
+    const apiRenderData = converterModel.getApiRenderData();
+    if (apiRenderData) {
+      this._apiComponent = new ApiComponent('api_box', apiRenderData);
+    }
+  } // end _buildComponents
 
   _processDisplayClick(controlUnit) {
     // check if display unit is already active unit, if so do nothing
@@ -101,10 +108,14 @@ export default class Converter {
   } // end controlBtnPress
 
   _setFirstUnit(topVal) {
+    // 1. set unit and update non-active display state
     converterModel.setFirstUnitType(topVal);
     this._displayComponents[converterModel.getNonActiveDisplay()].update(
       converterModel.state
     );
+
+    // 2. if api converter update api example text
+    this._apiComponent?.update(converterModel.getApiRenderData());
   }
 
   _setSecondUnit(botVal) {
@@ -112,5 +123,14 @@ export default class Converter {
     this._displayComponents[converterModel.getNonActiveDisplay()].update(
       converterModel.state
     );
+    // 2. if api converter update api example text
+    this._apiComponent?.update(converterModel.getApiRenderData());
+  }
+
+  async _updateApi() {
+    // 1. update API data
+    await converterModel.updateApi();
+    // 2. update api component render details
+    this._apiComponent.update(converterModel.getApiRenderData());
   }
 } // end converter

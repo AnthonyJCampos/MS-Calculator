@@ -26,3 +26,7 @@ export const convertToExponential = function (string) {
 
   return string;
 };
+
+export const hasMoreThanTwoDecimalPlaces = function (number) {
+  return (number * 100) % 1 !== 0;
+};

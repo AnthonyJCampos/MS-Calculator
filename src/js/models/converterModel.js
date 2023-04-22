@@ -47,6 +47,43 @@ const _clearData = function () {
   _clearResult();
 };
 
+const _getAssignedConverter = function () {
+  return AVAILABLE_CONVERTERS_MAP.get(state.converterType);
+}; // end _getAssignedConverter
+
+/** ------------------------ API SECTION ------------------------ */
+
+export const getApiRenderData = function () {
+  const converter = _getAssignedConverter();
+  if (!converter.apiRenderData) {
+    return undefined;
+  }
+  return converter.apiRenderData;
+};
+
+const _updateApiRenderData = function () {
+  const converter = _getAssignedConverter();
+  if (!converter.apiRenderData) {
+    return undefined;
+  }
+  converter.setExample(_getActiveUnit(), _getNonActiveUnit());
+}; // end updateApiRenderData
+
+export const updateApi = async function () {
+  const converter = _getAssignedConverter();
+  if (!converter.apiRenderData) {
+    return undefined;
+  }
+
+  // 1. make API call
+  await converter.updateExchangeRates();
+
+  try {
+  } catch (error) {
+    console.error(error);
+  }
+};
+
 /** ------------------------ STATE SECTION ------------------------ */
 
 /** STATE FOR CONTROLLER */
@@ -72,12 +109,12 @@ export const setConverterType = function (toolSubType) {
 };
 
 export const getLayout = function () {
-  const converter = AVAILABLE_CONVERTERS_MAP.get(state.converterType);
+  const converter = _getAssignedConverter();
   return converter.renderPackage.layout;
 };
 
 export const getOptions = function () {
-  const converter = AVAILABLE_CONVERTERS_MAP.get(state.converterType);
+  const converter = _getAssignedConverter();
   return converter.renderPackage.options;
 };
 
@@ -117,6 +154,20 @@ const _getSecondUnitType = function () {
   return state.unitTypeArray[1];
 };
 
+const _sameUnitCheck = function () {
+  return state.unitTypeArray[0] === state.unitTypeArray[1];
+};
+
+function _getActiveUnit() {
+  return state.unitTypeArray[state.activeDisplay];
+}
+
+function _getNonActiveUnit() {
+  return state.activeDisplay === 0
+    ? state.unitTypeArray[1]
+    : state.unitTypeArray[0];
+}
+
 export const setFirstUnitType = function (firstUnit) {
   // 1. check if unit type is different from current
   if (state.unitTypeArray[0] === firstUnit) {
@@ -126,6 +177,9 @@ export const setFirstUnitType = function (firstUnit) {
   state.unitTypeArray[0] = firstUnit;
   // 2. update non active display
   _updateNonActiveState();
+
+  // 3. update api render data if converter uses api
+  _updateApiRenderData();
 };
 
 export const setSecondUnitType = function (secondUnit) {
@@ -138,20 +192,9 @@ export const setSecondUnitType = function (secondUnit) {
 
   // 2. update non active display
   _updateNonActiveState();
-};
 
-const _sameUnitCheck = function () {
-  return state.unitTypeArray[0] === state.unitTypeArray[1];
-};
-
-const _getActiveUnit = function () {
-  return state.unitTypeArray[state.activeDisplay];
-};
-
-const _getNonActiveUnit = function () {
-  return state.activeDisplay === 0
-    ? state.unitTypeArray[1]
-    : state.unitTypeArray[0];
+  // 3. update api render data if converter uses api
+  _updateApiRenderData();
 };
 
 /** ------------------------ DATA & STATE RESET ------------------------ */
@@ -232,9 +275,7 @@ function _updateNonActiveState() {
 
 const _convert = function () {
   // 1. get the conversation to from the available converters in config
-  const conversationTool = AVAILABLE_CONVERTERS_MAP.get(
-    state.converterType
-  ).conversationTool;
+  const conversationTool = _getAssignedConverter().conversationTool;
 
   // 2. call conversation tool, base, target, current expression
   const result = conversationTool(

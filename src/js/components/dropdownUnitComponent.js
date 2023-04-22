@@ -21,6 +21,7 @@ export default class DropdownUnitComponent {
     // mouse over and mouse out events
     this._addHandlerMouseout();
     this._addHandlerMouseover();
+    this._addHandlerDropdownKeyDown();
   } // end init
 
   addHandlerDropdownClicked() {
@@ -61,6 +62,32 @@ export default class DropdownUnitComponent {
     // close window after selection
     dropdownWindow.classList.add('hidden');
   } // end optionClickEvent
+
+  _addHandlerDropdownKeyDown() {
+    const dropdownEl = this._parentEl.querySelector('.dropdown-content');
+    const dropdownItems = dropdownEl.querySelectorAll('.dropdown_item');
+
+    this._parentEl.addEventListener('keydown', event => {
+      if (dropdownEl.classList.contains('hidden')) {
+        return;
+      }
+
+      // get the key code
+      const keyPressed = event.keyCode;
+
+      // find the first option starting with the pressed key
+      const matchingOption = Array.from(dropdownItems).find(option => {
+        return option.textContent
+          .toUpperCase()
+          .startsWith(String.fromCharCode(keyPressed));
+      });
+
+      // if an option was found, scroll to it
+      if (matchingOption) {
+        dropdownEl.scrollTop = matchingOption.offsetTop;
+      }
+    });
+  }
 
   _addHandlerMouseout() {
     this._parentEl
