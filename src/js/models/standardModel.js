@@ -3,15 +3,19 @@ import {
   convertToExponential,
   removeTrailingZeros,
 } from '../helpers/helper.js';
-/** STATE FOR CONTROLLER */
 
+/** VALID OPERATORS */
+const OPERATORS = ['/', '*', '-', '+'];
+
+/** ------------------------ STATE FOR CONTROLLER SECTION ------------------------ */
 export const state = {
   result: '',
   expression: '',
   history: [],
 }; // end state
 
-/** DATA FOR COMPUTATION */
+/** ------------------------ DATA FOR COMPUTATION SECTION ------------------------ */
+
 const data = {
   curExpression: ['0'],
   curExpPos: 0,
@@ -21,12 +25,6 @@ const data = {
   leftOprendStack: [],
   rightOprendStack: [],
 }; // end data
-
-/** VALID OPERATORS */
-
-const OPERATORS = ['/', '*', '-', '+'];
-
-/** DATA METHODS  */
 
 ////// RESULTS METHODS
 const _setResult = function (val) {
@@ -128,28 +126,34 @@ const _resetData = function () {
   _updateSolvedState(false);
 }; // end _resetData
 
+/** ------------------------ HELPER  SECTION ------------------------ */
+
 export const modelReset = function () {
   _resetData();
   state.result = '';
   state.expression = '';
   state.history = [];
-};
-
-/** HELPER METHODS */
+}; // end modelReset
 
 const _validateOprend = function (val, inputVal) {
+  // If the current value is 0 and the input value is not a decimal point,
+  // set the current value to the input value.
   if (val === '0' && inputVal !== '.') {
     return (val = inputVal);
   }
 
+  // If the input value is a decimal point and the current value does not already include a decimal point,
+  // append the decimal point to the current value.
   if (inputVal === '.' && !val.includes('.')) {
     return (val += inputVal);
   }
 
+  // If the input value is not a decimal point, append it to the current value.
   if (inputVal !== '.') {
     return (val += inputVal);
   }
-
+  // If the input value is a decimal point and the current value already includes a decimal point,
+  // return the current value as is (i.e. do nothing).
   return val;
 }; // end _validateOprend
 
@@ -158,53 +162,74 @@ const _validateOprend = function (val, inputVal) {
 // RESULTS/INPUT SUBSECTION
 
 const _generateResultString = function (result) {
+  // Check if the result is a finite number
   if (isFinite(result)) {
+    // If the result is a number and its length is greater than the display limit,
+    // convert it to exponential notation with trailing zeros removed.
     if (result.toString().length >= DISPLAY_LIMIT) {
       return removeTrailingZeros(Number.parseFloat(result).toExponential());
     }
-
+    // Otherwise, convert the result to a pretty value with trailing zeros removed.
     return removeTrailingZeros(bigDecimal.getPrettyValue(result));
   } else {
+    // If the result is not a number, return the result as is.
     return result;
   }
 }; // end _generateResultString
 
 const _generateInputString = function (input) {
+  // Check if the input is a finite number
   if (isFinite(input)) {
+    // If the input is a number, convert it to a pretty value with trailing zeros removed.
     return removeTrailingZeros(bigDecimal.getPrettyValue(input));
   } else {
+    // If the input is not a number, return the input as is.
     return input;
   }
 }; // end _generateInputString
 
 // EXPRESSION SUBSECTION
+
+// This function builds a string representation of an expression with special operators
 const _buildSpecialExpression = function (stack, oprend) {
+  // Iterate through each item in the stack
   stack.forEach(action => {
+    // If the current item is not 'inverse', concatenate it with the current operand
+    // Otherwise, add the '1/' operator and concatenate with the current operand
     oprend = `${action !== 'inverse' ? action : '1/'}(${oprend})`;
   });
+  // Return the resulting string representation of the expression
   return oprend;
 }; // end _buildSpecialExpression
 
+// This function generates a string representation of the current expression
 const _generateExpressionString = function () {
   let output = ' ';
+
+  // If the left operand stack is not empty, build the expression with special operators using the stack and the first operand
   if (!_leftStackIsEmpty()) {
     output = _buildSpecialExpression(data.leftOprendStack, _getValueAt(0));
   } else {
+    // Otherwise, set the output string to the value of the first operand converted to exponential notation
     output = removeTrailingZeros(convertToExponential(_getValueAt(0)));
   }
 
+  // If there is an operator in the expression, add it to the output string
   if (_getPositionInExpression() >= 1) {
     output += ` ${_getValueAt(1)} `;
   }
 
+  // If there is a right operand stack, build the expression with special operators using the stack and the third operand
   if (_getPositionInExpression() === 2) {
     if (!_rightStackIsEmpty()) {
       output += _buildSpecialExpression(data.rightOprendStack, _getValueAt(2));
     } else {
+      // Otherwise, set the output string to the value of the third operand converted to exponential notation
       output += removeTrailingZeros(convertToExponential(_getValueAt(2)));
     } // end if
   } // end if
 
+  // Return the resulting string representation of the expression
   return output;
 }; // end generateExpressionString
 
@@ -223,8 +248,10 @@ export const clearHistory = function () {
 /** CALCULATION METHODS */
 
 const _computeSpecialOp = function (stack, pos) {
+  // get the value from the current position
   let result = _getValueAt(pos);
 
+  // iterate over each action in the stack
   stack.forEach(action => {
     if (action === 'inverse') {
       result = Math.pow(result, -1);
@@ -237,34 +264,43 @@ const _computeSpecialOp = function (stack, pos) {
     }
   }); // end forEach
 
+  // return the computed value
   return result;
 }; // end _computeSpecialOp
 
 const _determineExpression = function () {
+  // get the current expression
   let [oprendL, operator, oprendR] = data.curExpression;
   if (!_leftStackIsEmpty()) {
+    // compute the special operation on the left operand
     oprendL = _computeSpecialOp(data.leftOprendStack, 0);
   }
 
   if (!_rightStackIsEmpty()) {
+    // compute the special operation on the right operand
     oprendR = _computeSpecialOp(data.rightOprendStack, 2);
   }
 
+  // return the computed expression
   return [oprendL, operator, oprendR];
 }; // end  _determineExpression
 
 const _performSpecialOp = function (inputVal) {
   let result;
+
+  // If the position is 0, add the input value to the left operand stack and compute the special operation on the stack
   if (_getPositionInExpression() === 0) {
     data.leftOprendStack.push(inputVal);
     result = _computeSpecialOp(data.leftOprendStack, 0);
   } // end if
 
+  // If the position is 2, add the input value to the right operand stack and compute the special operation on the stack
   if (_getPositionInExpression() === 2) {
     data.rightOprendStack.push(inputVal);
     result = _computeSpecialOp(data.rightOprendStack, 2);
   } // end if
 
+  // Return the result of the special operation
   return result;
 }; // end _performSpecialOp
 
@@ -363,9 +399,13 @@ const _clearEntry = function () {
   if (_getSolvedState()) {
     return _clear();
   }
+
   // don't clear operators
-  if (_getPositionInExpression() !== 1) {
+  const currPosition = _getPositionInExpression();
+  if (currPosition !== 1) {
     _setCurrentPosValue('0');
+    // clear current special operator stack
+    currPosition === 0 ? _resetLeftStack() : _resetRightStack();
   }
 
   return [_getCurrentPosValue()];
@@ -566,11 +606,7 @@ const _operatorDelegatory = function (inputVal) {
   }
 
   // if operator is 1st or 2nd input and is not already in expression
-  if (
-    !_hasOperator(OPERATORS, inputVal) &&
-    // this.#curExpression.length < 2
-    _getPositionInExpression() === 0
-  ) {
+  if (!_hasOperator(OPERATORS, inputVal) && _getPositionInExpression() === 0) {
     _processOprend(inputVal);
   }
 }; // end operatorDelegatory
@@ -642,11 +678,4 @@ export const inputDelegatory = function (inputVal) {
 
   // we can just run the commmand at the end for now
   _commandDelegatory(inputVal);
-
-  /** TEST CODE */
-  // console.log(data);
-  // console.log(data.curExpression);
-  // console.log(state);
-  // console.log(_getSolvedState());
-  // console.log(data.curExpPos);
 }; // end inputDelegatory
