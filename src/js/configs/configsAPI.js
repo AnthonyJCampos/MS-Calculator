@@ -1,12 +1,10 @@
 /** ------------------------ GENERAL API CONFIG SECTION ------------------------ */
 
-export const TIMEOUT_SEC = 10;
+export const TIMEOUT_SEC = 25;
 /** ------------------------ CURRENCY CONFIG SECTION ------------------------ */
 
-const CURRENCY_SYMBOLS = 'USD,EUR,CNY,JPY,KRW,MXN,GBP,CHF,OMR,BHD,CAD';
-
 export const CURRENCY_BASE = 'USD';
-export const CURRENCY_URL = `https://api.apilayer.com/exchangerates_data/latest?symbols=${CURRENCY_SYMBOLS}&base=${CURRENCY_BASE}`;
+export const CURRENCY_URL = `https://api.apilayer.com/exchangerates_data/latest?base=${CURRENCY_BASE}`;
 export const CURRENCY_API_KEY = 'JvhGI10xYKOM5m2xMCRtAIxVGrrMh1dn';
 
 export const CURRENCY_SYMBOLS_MAP_BY_CODE = new Map([

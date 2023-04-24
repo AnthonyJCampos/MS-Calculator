@@ -72,8 +72,14 @@ const _getRate = function (baseCode, targetCode) {
     return 1;
   }
 
-  const usd = bigDecimal.divide(1, ratesMap.get(baseCode));
-  const rate = bigDecimal.multiply(usd, ratesMap.get(targetCode));
+  const baseCodeRate = ratesMap.get(baseCode);
+  const targetCodeRate = ratesMap.get(targetCode);
+
+  console.log(
+    `BASE CODE RATE ${baseCodeRate}, TARGET CODE RATE ${targetCodeRate}`
+  );
+  const usd = bigDecimal.divide(1, baseCodeRate);
+  const rate = bigDecimal.multiply(usd, targetCodeRate);
 
   return rate;
 }; // end _getRate
@@ -132,7 +138,6 @@ export const updateExchangeRates = async function () {
     const initialRateMap = ratesToMap(data);
     _initOptions(initialRateMap);
     _setApiRenderData(data);
-
     ratesMap = initialRateMap;
   } catch (error) {
     throw new Error(error);

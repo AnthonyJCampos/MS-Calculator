@@ -26,7 +26,7 @@ class HistoryView {
       return;
     } // end of guard
 
-    if (data.length < this._listEl.childElementCount) {
+    if (data.length <= this._listEl.childElementCount) {
       return;
     }
     const markup = this._generateMarkupItem(data.at(-1));
