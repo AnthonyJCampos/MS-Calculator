@@ -1,4 +1,4 @@
-import { dropdownIcon } from '../../img/icons.js';
+import { dropdownIcon } from '../../icons/icons.js';
 
 export default class DropdownUnitComponent {
   _hideDelay = 500;

@@ -1,8 +1,8 @@
-import { trashIcon } from '../../img/icons.js';
+import { trashIcon } from '../../../icons/icons.js';
 
 const historyLayout = `
 <aside class="history">
-  <div class="history_title"><h3>History</h3></div>
+  <div class="history_title_box"><h3 class="history_heading">History</h3></div>
   <div class="history_list__container">
     <ul class="history_list">
     </ul>

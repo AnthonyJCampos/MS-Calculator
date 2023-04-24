@@ -1,17 +1,17 @@
-import converterCurrencyLayout from '../layouts/converterCurrencyLayout.js';
+import converterCurrencyLayout from '../../layouts/converterLayouts/converterCurrencyLayout.js';
 import {
   CURRENCY_URL,
   CURRENCY_API_KEY,
   CURRENCY_SYMBOLS_MAP_BY_CODE,
   CURRENCY_SYMBOLS_MAP_BY_NAME,
   CURRENCY_OFFLINE_RATES,
-} from '../configs/configsAPI.js';
+} from '../../configs/configsAPI.js';
 import {
   getJSON,
   convertTimestampToTime,
   formatDateString,
-} from '../helpers/apiHelpers.js';
-import { hasMoreThanTwoDecimalPlaces } from '../helpers/helper.js';
+} from '../../helpers/apiHelpers.js';
+import { hasMoreThanTwoDecimalPlaces } from '../../helpers/helper.js';
 
 /** ------------------------ CURRENCY CONFIG SECTION ------------------------ */
 

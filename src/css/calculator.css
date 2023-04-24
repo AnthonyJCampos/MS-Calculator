@@ -56,8 +56,6 @@
   grid-row: 3 / -1;
 }
 
-.expo {
-}
 .expo--standard {
   vertical-align: super;
   font-size: 50%;
@@ -75,8 +73,12 @@
   height: auto;
 }
 
-.history_title {
+.history_title_box {
   height: 3.5rem;
+  padding: 1rem;
+}
+
+.history_heading {
   font-size: 1.6rem;
 }
 
@@ -86,7 +88,6 @@
 }
 
 .history_list {
-  /* max-height: 56.5rem; */
   height: 100%;
   max-width: 21rem;
   display: flex;

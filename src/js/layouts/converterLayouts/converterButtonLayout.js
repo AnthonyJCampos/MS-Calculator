@@ -1,4 +1,4 @@
-import { backIcon } from '../../img/icons.js';
+import { backIcon } from '../../../icons/icons.js';
 
 const converterButtonLayout = `
 <div class="btn_spacer"></div>

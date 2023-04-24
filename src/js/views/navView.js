@@ -1,4 +1,4 @@
-import { menuIcon } from '../../img/icons.js';
+import { menuIcon } from '../../icons/icons.js';
 import { removeAllClassesExcept } from '../helpers/helper.js';
 
 class NavView {

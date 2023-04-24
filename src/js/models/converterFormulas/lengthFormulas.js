@@ -1,4 +1,4 @@
-import converterLayout from '../layouts/converterLayout.js';
+import converterLayout from '../../layouts/converterLayouts/converterLayout.js';
 
 /** CURRENT LENGTH LAYOUT AND OPTIONS FOR THE LENGTH MODEL  */
 

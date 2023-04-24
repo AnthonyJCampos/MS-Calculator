@@ -1,5 +1,3 @@
-import { menuIcon } from '../../img/icons.js';
-
 class ToolView {
   _parentEl = document.querySelector('.tool_main_container');
 

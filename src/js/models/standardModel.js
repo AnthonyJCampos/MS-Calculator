@@ -546,6 +546,12 @@ const _operatorDelegatory = function (inputVal) {
     _updateSolvedState(false);
   }
 
+  if (_getSolvedState()) {
+    _resetExpression();
+    _setCurrentPosValue(_getResult());
+    _updateSolvedState(false);
+  }
+
   // so if expression is full
   if (_getPositionInExpression() === 2) {
     // compute result

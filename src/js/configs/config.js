@@ -1,7 +1,8 @@
-import * as lengthFormulas from '../models/lengthFormulas.js';
-import * as currencyForumlas from '../models/currencyFormulas.js';
+import * as lengthFormulas from '../models/converterFormulas/lengthFormulas.js';
+import * as currencyForumlas from '../models/converterFormulas/currencyFormulas.js';
 
 /** ------------------------ DISPLAY SECTION ------------------------ */
+
 export const INPUT_LIMIT = 15;
 export const DISPLAY_LIMIT = 19;
 

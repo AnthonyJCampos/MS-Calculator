@@ -1,7 +1,7 @@
 import calcNumButtonLayout from './calcNumButtonLayout.js';
 import calcDisplayLayout from './calcDisplayLayout.js';
 import historyLayout from './historyLayout.js';
-import { backIcon } from '../../img/icons.js';
+import { backIcon } from '../../../icons/icons.js';
 
 const standardCmdLayout = `
   <button class="btn" value="%">&percnt;</button>

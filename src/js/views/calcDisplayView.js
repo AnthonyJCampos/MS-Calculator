@@ -1,5 +1,4 @@
 class CalcDisplayView {
-  // _parentEl = document.querySelector('.display_container');
   _parentEl;
   _resultEl;
   _expressionEl;

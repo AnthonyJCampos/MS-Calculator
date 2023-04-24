@@ -2,7 +2,7 @@ import buttonView from '../views/buttonView.js';
 import historyView from '../views/historyView.js';
 import calcDisplayView from '../views/calcDisplayView.js';
 import * as standardModel from '../models/standardModel.js';
-import standardLayout from '../layouts/standardLayout.js';
+import standardLayout from '../layouts/calculatorLayouts/standardLayout.js';
 
 class Calculator {
   getLayoutPackage(layoutString = 'Standard') {

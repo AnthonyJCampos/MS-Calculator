@@ -10,12 +10,6 @@ html {
   font-size: 62.5%;
 }
 
-h2,
-h3 {
-  font-size: 100%;
-  padding: 10px;
-}
-
 svg {
   pointer-events: none;
 }
