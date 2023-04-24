@@ -679,3 +679,5 @@ export const inputDelegatory = function (inputVal) {
   // we can just run the commmand at the end for now
   _commandDelegatory(inputVal);
 }; // end inputDelegatory
+
+/** ------------------------ END OF STANDARD CALCULATOR MODEL ------------------------ */

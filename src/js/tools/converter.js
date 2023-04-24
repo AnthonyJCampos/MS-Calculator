@@ -95,6 +95,9 @@ export default class Converter {
     this._displayComponents.forEach(displayComponent => {
       displayComponent.setActive(controlUnit);
     });
+
+    // if api converter update api example text
+    this._apiComponent?.update(converterModel.getApiRenderData());
   } // end _processDisplayClick
 
   _processButtonPadInput(btnVal) {

@@ -140,6 +140,8 @@ export const setActiveDisplay = function (controlUnit) {
   // however we do not clear what is displayed
   _clearData();
   state.activeDisplay = controlUnit;
+  // 3. update api render data if converter uses api
+  _updateApiRenderData();
 };
 
 export const getNonActiveDisplay = function () {
