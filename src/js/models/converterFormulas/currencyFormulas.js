@@ -144,9 +144,9 @@ export const updateExchangeRates = async function () {
   } // end try
 }; // end updateExchangeRates
 
-/** ------------------------ CONVERSATION TOOL SECTION ------------------------ */
+/** ------------------------ Conversion TOOL SECTION ------------------------ */
 
-export const conversationTool = function (base, target, expression) {
+export const conversionTool = function (base, target, expression) {
   const baseCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(base);
   const targetCode = CURRENCY_SYMBOLS_MAP_BY_NAME.get(target);
   const rate = _getRate(baseCode, targetCode);

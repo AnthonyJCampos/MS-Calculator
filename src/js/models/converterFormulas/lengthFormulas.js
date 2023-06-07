@@ -508,9 +508,9 @@ const nauticalMilesToMiles = function (expression) {
   return bigDecimal.multiply(expression, 1.1508);
 };
 
-/** ------------------------ CONVERSATION MAP SECTION ------------------------ */
+/** ------------------------ conversion MAP SECTION ------------------------ */
 
-export const conversationMap = new Map([
+export const conversionMap = new Map([
   ['Nanometers', _getNanometerConversation],
   ['Microns', _getMicronsConversation],
   ['Centimeters', _getCentimetersConversation],
@@ -523,6 +523,6 @@ export const conversationMap = new Map([
   ['Nautical Miles', _getNauticalMilesConversation],
 ]);
 
-export const conversationTool = function (base, target, expression) {
-  return conversationMap.get(base)?.(expression, target);
+export const conversionTool = function (base, target, expression) {
+  return conversionMap.get(base)?.(expression, target);
 };

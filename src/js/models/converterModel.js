@@ -276,11 +276,11 @@ function _updateNonActiveState() {
 }
 
 const _convert = function () {
-  // 1. get the conversation to from the available converters in config
-  const conversationTool = _getAssignedConverter().conversationTool;
+  // 1. get the conversion from the available converters in config
+  const conversionTool = _getAssignedConverter().conversionTool;
 
-  // 2. call conversation tool, base, target, current expression
-  const result = conversationTool(
+  // 2. call conversion tool, base, target, current expression
+  const result = conversionTool(
     _getActiveUnit(),
     _getNonActiveUnit(),
     _getCurrentExpression()
